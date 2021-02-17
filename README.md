@@ -1,1 +1,1 @@
-# ece342
+# ECE 342 Computer Hardware
