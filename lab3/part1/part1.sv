@@ -11,11 +11,14 @@ logic sign;	// sign of mantissa
 logic [23:0] mantissa_X, mantissa_Y;
 logic [22:0] mantissa_final;
 logic [47:0] product_normalized;
-logic [7:0] exponent;
-logic [24:0] product_rounded;
+logic [7:0] exponent, exponent_final;
+logic [24:0] product_rounded, product_final;
 
 // XOR sign of both numbers X and Y to get the sign of the result
 assign sign = X[31] ^ Y[31];
+
+// Add both exponents
+assign exponent = X[30:23] + Y[30:23] - 8'd127;
 
 // Extract the mantissas for each number and add a 1 for normalization to the MSB
 assign mantissa_X = {1'b1, X[22:0]};
@@ -28,25 +31,13 @@ assign product_normalized = mantissa_X * mantissa_Y;
 assign product_rounded = product_normalized[47:23];
 
 // Normalize the mantissa by shifting it right if it is greater than 1
-always_comb begin : normalize_mantissa
-	if(product_rounded > 1'd1) begin
-		product_rounded = product_rounded >> 1;
-		exponent = exponent + 1;
-	end
-	else begin
-		product_rounded = product_rounded >> 0;
-		exponent = exponent + 0;
-	end
-end
+assign product_final = product_rounded ? product_rounded >> 1 : product_rounded >> 0;
+assign exponent_final = product_rounded ? exponent + 1 : exponent + 0;
 
 // Truncate the 2 most significant bits of the result mantissa
-assign mantissa_final = product_rounded[22:0];
-
-// Add both exponents
-assign exponent = X[30:23] + Y[30:23] - 8'd127;
+assign mantissa_final = product_final[22:0];
 
 // product the result
-assign result = {sign, exponent, mantissa_final};
-end
+assign result = {sign, exponent_final, mantissa_final};
 
 endmodule
