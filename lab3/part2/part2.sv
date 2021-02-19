@@ -59,7 +59,7 @@ always_comb begin : special_cases
 	end
 
 	// check for underflow
-	else if({1'b0, X[30:23]} + {1'b0, Y[30:23]} - 9'sd127 < LOWER)begin
+	else if({1'b0, X[30:23]} + {1'b0, Y[30:23]} < LOWER + 9'sd127)begin
 		result = 32'b0;
 		{_inf, _nan, _zero, _overflow, _underflow} = 5'b00001;
 	end
