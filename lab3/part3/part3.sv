@@ -62,7 +62,7 @@ always_comb begin : special_cases
 	// check for infinity
 	else if(((X[BITS - 2:MAN] == {EXP{1'b1}}) && X[MAN - 1:0] == 0) || ((Y[BITS - 2:MAN] == {EXP{1'b1}}) && Y[MAN - 1:0] == 0) || ((product[BITS - 2:MAN] == {EXP{1'b1}}) && product[MAN - 1:0] == 0))begin
 		result = {1'b0, {EXP{1'b1}}, {MAN{1'b0}}};
-		{_inf, _nan, _zero, _overflow, _underflow} = 5'b100000;
+		{_inf, _nan, _zero, _overflow, _underflow} = 5'b10000;
 	end
 
 	// check for underflow

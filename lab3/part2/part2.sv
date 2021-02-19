@@ -58,7 +58,7 @@ always_comb begin : special_cases
 	// check for infinity
 	else if(((X[30:23] == E_B) && X[22:0] == 0) || ((Y[30:23] == E_B) && Y[22:0] == 0) || ((product[30:23] == E_B) && product[22:0] == 0))begin
 		result = {1'b0, E_B, 23'b0};
-		{_inf, _nan, _zero, _overflow, _underflow} = 5'b100000;
+		{_inf, _nan, _zero, _overflow, _underflow} = 5'b10000;
 	end
 
 	// check for underflow
