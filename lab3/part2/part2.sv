@@ -46,27 +46,33 @@ always_comb begin : special_cases
 	end
 
 	// check for NaN
-	if(((X[30:23] == E_B) && X[22:0] != 0) || ((Y[30:23] == E_B) && Y[22:0] != 0) || ((product[30:23] == E_B) && product[22:0] != 0)) begin
+	else if(((X[30:23] == E_B) && X[22:0] != 0) || ((Y[30:23] == E_B) && Y[22:0] != 0) || ((product[30:23] == E_B) && product[22:0] != 0)) begin
 		result = {1'b0, E_B, 23'b0};
 		{_inf, _nan, _zero, _overflow, _underflow} = 5'b01000;
 	end
 
 	// check for infinity
-	if(((X[30:23] == E_B) && X[22:0] == 0) || ((Y[30:23] == E_B) && Y[22:0] == 0) || ((product[30:23] == E_B) && product[22:0] == 0))begin
+	else if(((X[30:23] == E_B) && X[22:0] == 0) || ((Y[30:23] == E_B) && Y[22:0] == 0) || ((product[30:23] == E_B) && product[22:0] == 0))begin
 		result = {1'b0, E_B, 23'b0};
 		{_inf, _nan, _zero, _overflow, _underflow} = 5'b100000;
 	end
 
 	// check for underflow
-	if(exponent < 0)begin
+	else if(exponent < 0)begin
 		result = 32'b0;
 		{_inf, _nan, _zero, _overflow, _underflow} = 5'b00001;
 	end
 
 	//check for overflow
-	if(exponent > E_B)begin
+	else if(exponent > E_B)begin
 		result = {1'b0, E_B, 23'b0};
 		{_inf, _nan, _zero, _overflow, _underflow} = 5'b00010;
+	end
+
+	// no special cases therefore results is within range
+	else begin
+		result = product;
+		{_inf, _nan, _zero, _overflow, _underflow} = 5'b0;
 	end
 end
 
