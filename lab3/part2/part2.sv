@@ -16,14 +16,15 @@ logic [31:0] product;
 logic _inf, _nan, _zero, _overflow, _underflow;
 
 // declare some local parameters
+localparam UPPER = 9'sd255;
+localparam LOWER = 9'sd0;
 localparam E_B = 8'd255;
-localparam ZERO = 8'b0;
 
 // XOR the signs
 assign product[31] = X[31] ^ Y[31];
 
 // Add the exponents
-assign exponent = X[30:23] + Y[30:23] - 127;
+assign exponent = X[30:23] + Y[30:23] - 8'd127;
 
 // Multiple X & Y Mantissas to yield a 48-bit result
 assign product_normalized = {1'b1, X[22:0]} * {1'b1, Y[22:0]};
@@ -58,13 +59,13 @@ always_comb begin : special_cases
 	end
 
 	// check for underflow
-	else if(exponent < 0)begin
+	else if({1'b0, X[30:23]} + {1'b0, Y[30:23]} - 9'sd127 < LOWER)begin
 		result = 32'b0;
 		{_inf, _nan, _zero, _overflow, _underflow} = 5'b00001;
 	end
 
 	//check for overflow
-	else if(exponent > E_B)begin
+	else if({1'b0, X[30:23]} + {1'b0, Y[30:23]} - 9'sd127 > UPPER)begin
 		result = {1'b0, E_B, 23'b0};
 		{_inf, _nan, _zero, _overflow, _underflow} = 5'b00010;
 	end
