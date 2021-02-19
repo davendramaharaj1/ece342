@@ -18,15 +18,14 @@ module part3
 // Design your 32-bit Floating Point unit here. 
 // declare all logic signals
 logic [EXP - 1:0] exponent;
-logic [2 * (MAN + 1):0] product_normalized;
+logic [(2*MAN)+1:0] product_normalized;
 logic [MAN + 1:0] product_round;
 logic [BITS - 1:0] product;
 logic _inf, _nan, _zero, _overflow, _underflow;
 
 // declare some local parameters
-localparam UPPER = 2**EXP - 1;
-localparam LOWER = 0;
-localparam E_B = {EXP{1'b1}};
+//localparam UPPER = 2**EXP - 1;
+//localparam LOWER = 0;
 
 // XOR the signs
 assign product[BITS - 1] = X[BITS -1] ^ Y[BITS - 1];
@@ -38,10 +37,10 @@ assign exponent = X[BITS - 2:MAN] + Y[BITS - 2:MAN] - BIAS;
 assign product_normalized = {1'b1, X[MAN - 1:0]} * {1'b1, Y[MAN - 1:0]};
 
 // Truncate and normalize the mantissa
-assign product_round = product_normalized[2 * (MAN + 1) - 1] ? product_normalized[2 * (MAN + 1) - 1:MAN] >> 1 : product_normalized[2 * (MAN + 1)-1:MAN];
+assign product_round = product_normalized[(2*MAN)+1] ? product_normalized[(2*MAN)+1:MAN] >> 1 : product_normalized[(2*MAN)+1:MAN];
 
 // Add to exponent if the mantissa is greater than 1
-assign product[BITS - 2:MAN] = product_normalized[2 * (MAN + 1) - 1] ? exponent + 1 : exponent;
+assign product[BITS - 2:MAN] = product_normalized[2*(MAN) + 1] ? exponent + 1 : exponent;
 
 // Truncate he 2 hidden bits in the rounded mantissa with 25-bits
 assign product[MAN - 1:0] = product_round[MAN - 1:0];
@@ -55,25 +54,25 @@ always_comb begin : special_cases
 	end
 
 	// check for NaN
-	else if(((X[BITS - 2:MAN] == E_B) && X[MAN - 1:0] != 0) || ((Y[BITS - 2:MAN] == E_B) && Y[MAN-1:0] != 0) || ((product[BITS - 2:MAN] == E_B) && product[MAN - 1:0] != 0)) begin
+	else if(((X[BITS - 2:MAN] == {EXP{1'b1}}) && X[MAN - 1:0] != 0) || ((Y[BITS - 2:MAN] == {EXP{1'b1}}) && Y[MAN-1:0] != 0) || ((product[BITS - 2:MAN] == {EXP{1'b1}}) && product[MAN - 1:0] != 0)) begin
 		result = {1'b0, {EXP{1'b1}}, {MAN{1'b0}}};
 		{_inf, _nan, _zero, _overflow, _underflow} = 5'b01000;
 	end
 
 	// check for infinity
-	else if(((X[BITS - 2:MAN] == E_B) && X[MAN - 1:0] == 0) || ((Y[BITS - 2:MAN] == E_B) && Y[MAN - 1:0] == 0) || ((product[BITS - 2:MAN] == E_B) && product[MAN - 1:0] == 0))begin
+	else if(((X[BITS - 2:MAN] == {EXP{1'b1}}) && X[MAN - 1:0] == 0) || ((Y[BITS - 2:MAN] == {EXP{1'b1}}) && Y[MAN - 1:0] == 0) || ((product[BITS - 2:MAN] == {EXP{1'b1}}) && product[MAN - 1:0] == 0))begin
 		result = {1'b0, {EXP{1'b1}}, {MAN{1'b0}}};
 		{_inf, _nan, _zero, _overflow, _underflow} = 5'b100000;
 	end
 
 	// check for underflow
-	else if({1'b0, X[BITS - 2:MAN]} + {1'b0, Y[BITS - 2:MAN]} < LOWER + BIAS)begin
+	else if({1'b0, X[BITS - 2:MAN]} + {1'b0, Y[BITS - 2:MAN]} < BIAS)begin
 		result = {BITS{1'b0}};
 		{_inf, _nan, _zero, _overflow, _underflow} = 5'b00001;
 	end
 
 	//check for overflow
-	else if({1'b0, X[BITS - 2:MAN]} + {1'b0, Y[BITS - 2:MAN]} - BIAS > UPPER)begin
+	else if({1'b0, X[BITS - 2:MAN]} + {1'b0, Y[BITS - 2:MAN]} > 3*BIAS)begin
 		result = {1'b0, {EXP{1'b1}}, {MAN{1'b0}}};
 		{_inf, _nan, _zero, _overflow, _underflow} = 5'b00010;
 	end
