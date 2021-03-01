@@ -16,12 +16,9 @@ logic [31:0] product;
 logic _inf, _nan, _zero, _overflow, _underflow;
 
 // declare some local parameters
+localparam E_B = 8'd255;
 localparam UPPER = 9'sd255;
 localparam LOWER = 9'sd0;
-localparam E_B = 8'd255;
-reg signed [8:0] X_exponent = {1'b0, X[30:23]};
-reg signed [8:0] Y_exponent = {1'b0, Y[30:23]};
-reg signed [8:0] Sum_exponent = X_exponent + Y_exponent - 9'sd127;
 
 // XOR the signs
 assign product[31] = X[31] ^ Y[31];
@@ -62,13 +59,13 @@ always_comb begin : special_cases
 	end
 
 	// check for underflow
-	else if(Sum_exponent < LOWER)begin
+	else if({1'b0, X[30:23]} + {1'b0, Y[30:23]} < LOWER + 9'sd127)begin
 		result = 32'b0;
 		{_inf, _nan, _zero, _overflow, _underflow} = 5'b00001;
 	end
 
 	//check for overflow
-	else if(Sum_exponent > UPPER)begin
+	else if({1'b0, X[30:23]} + {1'b0, Y[30:23]} - 9'sd127 > UPPER)begin
 		result = {1'b0, E_B, 23'b0};
 		{_inf, _nan, _zero, _overflow, _underflow} = 5'b00010;
 	end
