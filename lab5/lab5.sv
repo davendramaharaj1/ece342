@@ -42,6 +42,7 @@ module cpu # (
 	/* ALU Registers and signals */
 	logic [3:0] Alu_op;
 	logic [IW-1] result;
+	logic resultIn;
 	logic Alu_en;
 
 	/* define states to represent stages in processing instructions */
@@ -104,6 +105,7 @@ module cpu # (
 		pc_increment = 1'b0;
 		pc_byte_en = 4'b1111;
 		Alu_en = 1'b0;
+		resultIn = 1'b0;
 		nextstate = state;
 
 		case(state)
@@ -130,23 +132,29 @@ module cpu # (
 				/* next state depends on the ALU operation */
 				case (Alu_op)
 					R_TYPE, I_IMM, I_JUMP, U_LD, U_PC, J_TYPE: begin
+						/* non memory instructions so store result into reg file */
 						nextstate = DEST_REG;
 					end
 					B_TYPE: begin
+						/* fetch another instruction from the branched PC */
 						nextstate = FETCH;
 					end
 					I_LD, S_TYPE: begin
+						/* wait to get the memory accessed target */
 						nextstate = MEM_ACCESS;
 					end
 				endcase
 			end
 
 			MEM_ACCESS: begin
-				
+				nextstate = DEST_REG;
 			end
 
 			DEST_REG: begin
-				
+				/* load value in result register to appropriate register in reg file */
+				resultIn = 1'b1;
+				/* transition to fetch the next instruction */
+				nextstate = FETCH;
 			end
 		endcase
 
@@ -367,9 +375,18 @@ module cpu # (
 				PC = PC - 4 + immediate;
 			end
 		end
+	end
 
-		/* always keep the first register in the register file as zero */
-		REG_FILE[0] = 32'b0;
+	/* load result into reg file */
+	always_ff @(clk) begin : Reg_file_load
+		if(resultIn) begin
+			if(rd == 5'b0)begin
+				REG_FILE[rd] <= 32'b0;
+			end
+			else begin
+				REG_FILE[rd] <= result;
+			end
+		end
 	end
 	/***************************************########## RISC V DATAPATH ############***************************************/
 
