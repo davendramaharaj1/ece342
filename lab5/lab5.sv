@@ -90,7 +90,7 @@ module cpu # (
 
 	/* Control FSM Flip Flops */
 	integer i;
-	always_ff @(posedge clk) begin : FSMTransition
+	always_ff @(posedge clk or posedge reset) begin : FSMTransition
 		if(reset) begin
 			/* set the PC to point to the first instruction */
 			PC <= 32'b0;
@@ -220,9 +220,12 @@ module cpu # (
 	end
 
 	/* increment PC by 4 from the control signal */
-	always_ff @(posedge clk) begin : PC_Increment
-		if(pc_increment) begin
-			PC <= PC + 3'd4;
+	always_ff @(posedge clk or posedge reset) begin : PC_Increment
+		if(reset)begin
+			PC <= 32'b0;
+		end
+		else if(pc_increment) begin
+			PC <= PC + 4;
 		end
 	end
 
