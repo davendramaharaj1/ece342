@@ -48,9 +48,12 @@ module cpu # (
 	/* Load/Store reg control signals */
 	logic [IW-1:0] ldst_addr;
 	logic [IW-1:0] ldst_rddata;
+	logic [IW-1:0] ldst_wrdata;
 	logic [3:0] ldst_byte_en;
 	logic ldst_rd;
 	logic ldst_wr;
+	logic loadIn;
+	
 
 	/* define states to represent stages in processing instructions */
 	enum int unsigned {
@@ -74,6 +77,7 @@ module cpu # (
 
 	/* store PC instruction into IR */ 
 	assign IR = i_pc_rddata;
+	assign ldst_rddata = i_ldst_rddata;
 
 	/* define the different opcodes */
 	localparam [6:0] R		= 7'b0110011;
@@ -113,6 +117,10 @@ module cpu # (
 		pc_byte_en = 4'b1111;
 		Alu_en = 1'b0;
 		resultIn = 1'b0;
+		ldst_rd = 1'b0;
+		ldst_wr = 1'b0;
+		ldst_byte_en = 4'b1111;
+		loadIn = 1'b0;
 		nextstate = state;
 
 		case(state)
@@ -154,14 +162,80 @@ module cpu # (
 			end
 
 			MEM_ACCESS: begin
-				nextstate = DEST_REG;
+				// load instruction
+				if(Alu_op == I_LD)begin
+					//load byte
+					if(funct3 == 4'h0)begin
+						ldst_rd = 1'b1;
+						ldst_byte_en = 4'b0001;
+						nextstate = DEST_REG;
+					end
+					// load half word
+					else if(funct3 == 4'h1)begin
+						ldst_rd = 1'b1;
+						ldst_byte_en = 4'b0011;
+						nextstate = DEST_REG;
+					end
+					// load word
+					else if(funct3 == 4'h2)begin
+						ldst_rd = 1'b1;
+						ldst_byte_en = 4'b1111;
+						nextstate = DEST_REG;
+					end
+					// load byte unsigned
+					else if(funct3 == 4'h4)begin
+						ldst_rd = 1'b1;
+						ldst_byte_en = 4'b0001;
+						nextstate = DEST_REG;
+					end		
+					//load half unsigned
+					else if(funct3 == 4'h5)begin
+						ldst_rd = 1'b1;
+						ldst_byte_en = 4'b0011;
+						nextstate = DEST_REG;
+					end		
+				end
+				//store instruction
+				else if(Alu_op == S_TYPE)begin
+					// store byte
+					if(funct3 == 4'h0) begin
+						ldst_wr = 1'b1;
+						ldst_byte_en = 4'b0001;
+						nextstate = DEST_REG;
+					end
+					// store half
+					else if(funct3 == 4'h1) begin
+						ldst_wr = 1'b1;
+						ldst_byte_en = 4'b0011;
+						nextstate = DEST_REG;
+					end
+					// store word
+					if(funct3 == 4'h2) begin
+						ldst_wr = 1'b1;
+						ldst_byte_en = 4'b1111;
+						nextstate = DEST_REG;
+					end
+				end
 			end
 
 			DEST_REG: begin
-				/* load value in result register to appropriate register in reg file */
-				resultIn = 1'b1;
-				/* transition to fetch the next instruction */
-				nextstate = FETCH;
+				case (Alu_op)
+					// write result to corresponsding register_file[rd] for R-type, U-type, J-type, I_imm/jump-type
+					R_TYPE, I_IMM, I_JUMP, U_LD, U_PC, J_TYPE: begin
+						resultIn = 1'b1;
+						/* non memory instructions so store result into reg file */
+						nextstate = FETCH;
+					end
+					I_LD: begin
+						/* copy value loaded from memory into register file*/
+						loadIn = 1'b1;
+						/* wait to get the memory accessed target */
+						nextstate = FETCH;
+					end
+					S_TYPE:begin
+						nextstate = FETCH;
+					end
+				endcase 
 			end
 		endcase
 
@@ -346,23 +420,23 @@ module cpu # (
 					PC <= $signed(REG_FILE[rs1]) == $signed(REG_FILE[rs2]) ? PC - 4 + immediate : PC;
 				end
 				// bne
-				if(funct3 == 4'h1)begin
+				else if(funct3 == 4'h1)begin
 					PC <= $signed(REG_FILE[rs1]) != $signed(REG_FILE[rs2]) ? PC - 4 + immediate : PC;
 				end
 				//blt
-				if(funct3 == 4'h4)begin
+				else if(funct3 == 4'h4)begin
 					PC <= $signed(REG_FILE[rs1]) < $signed(REG_FILE[rs2]) ? PC - 4 + immediate : PC;
 				end
 				//bge
-				if(funct3 == 4'h5)begin
+				else if(funct3 == 4'h5)begin
 					PC <= $signed(REG_FILE[rs1]) >= $signed(REG_FILE[rs2]) ? PC - 4 + immediate : PC;
 				end
 				//bltu
-				if(funct3 == 4'h6)begin
+				else if(funct3 == 4'h6)begin
 					PC <= REG_FILE[rs1] < REG_FILE[rs2] ? PC - 4 + immediate : PC;
 				end
 				//bgeu
-				if(funct3 == 4'h7)begin
+				else if(funct3 == 4'h7)begin
 					PC <= REG_FILE[rs1] >= REG_FILE[rs2] ? PC - 4 + immediate : PC;
 				end
 			end
@@ -384,6 +458,55 @@ module cpu # (
 				result <= PC;
 				PC <= PC - 4 + immediate;
 			end
+
+			/* loading instructions */
+			else if(Alu_op == I_LD) begin
+				// load byte
+				if(funct3 == 4'h0)begin
+					ldst_addr <= ($signed(REG_FILE[rs1]) + immediate);
+				end
+
+				// load half
+				else if(funct3 == 4'h1) begin
+					ldst_addr <= ($signed(REG_FILE[rs1]) + immediate);
+				end
+
+				// load word
+				else if(funct3 == 4'h2) begin
+					ldst_addr <= ($signed(REG_FILE[rs1]) + immediate);
+				end
+
+				// load byte (U)
+				else if(funct3 == 4'h4) begin
+					ldst_addr <= (REG_FILE[rs1] + immediate);
+				end
+
+				// Load Half
+				else if(funct3 == 4'h5)begin
+					ldst_addr <= (REG_FILE[rs1] + immediate);
+				end
+			end
+
+			/* Store */
+			else if(Alu_op == S_TYPE)begin
+				// store byte
+				if(funct3 == 4'h0)begin
+					ldst_addr <= ($signed(REG_FILE[rs1]) + immediate);
+					ldst_wrdata <= $signed(REG_FILE[rs2][7:0]);
+				end
+
+				//store half
+				else if(funct3 == 4'h1)begin
+					ldst_addr <= $signed(REG_FILE[rs1]) + immediate;
+					ldst_wrdata <= $signed(REG_FILE[rs2][15:0]);
+				end
+
+				//store word
+				else if(funct3 == 4'h2)begin
+					ldst_addr <= ($signed(REG_FILE[rs1]) + immediate);
+					ldst_wrdata <= $signed(REG_FILE[rs2]);
+				end
+			end
 		end
 	end
 
@@ -398,6 +521,34 @@ module cpu # (
 			end
 		end
 	end
+
+	/* load value from memory into reg file */
+	always_ff @(clk) begin : Load
+		if(loadIn) begin
+			case(funct3)
+				//load byte
+				4'h0: begin
+					REG_FILE[rd] <= $signed(ldst_rddata);
+				end
+				//load half
+				4'h1: begin
+					REG_FILE[rd] <= $signed(ldst_rddata);
+				end
+				// load word
+				4'h2: begin
+					REG_FILE[rd] <= $signed(ldst_rddata);
+				end
+				// load byte (U)
+				4'h4: begin
+					REG_FILE[rd] <= ldst_rddata;
+				end
+				//load half (U)
+				4'h5: begin
+					REG_FILE[rd] <= ldst_rddata;
+				end
+			endcase 
+		end
+	end
 	/***************************************########## RISC V DATAPATH ############***************************************/
 
 	/* outputs to the Processor Signal Interface */
@@ -405,4 +556,9 @@ module cpu # (
 	assign o_tb_regs = REG_FILE;
 	assign o_pc_addr = PC;
 	assign o_pc_byte_en = pc_byte_en;
+	assign o_ldst_addr = ldst_addr;
+	assign o_ldst_rd = ldst_rd;
+	assign o_ldst_wr = ldst_wr;
+	assign o_ldst_byte_en = ldst_byte_en;
+	assign o_ldst_wrdata = ldst_wrdata;
 endmodule
