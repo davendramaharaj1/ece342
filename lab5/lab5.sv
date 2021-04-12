@@ -40,7 +40,7 @@ module cpu # (
 	logic [IW-1] REG_FILE [0:REGS-1]
 
 	/* ALU Registers and signals */
-	logic [2:0] ALU_op;
+	logic [3:0] Alu_op;
 	logic [IW-1] result;
 	logic Alu_en;
 
@@ -53,28 +53,30 @@ module cpu # (
 		DEST_REG
 	} state, nextstate;
 
-	/* ALU operation enums */
-	localparam [2:0] R_TYPE	= 3'd0;
-	localparam [2:0] I_IMM	= 3'd1;
-	localparam [2:0] I_LD	= 3'd2;
-	localparam [2:0] I_JUMP	= 3'd3;
-	localparam [2:0] S_TYPE	= 3'd4;
-	localparam [2:0] B_TYPE	= 3'd5;
-	localparam [2:0] U_TYPE	= 3'd6;
-	localparam [2:0] J_TYPE	= 3'd7;
+	/* ALU operation types */
+	localparam [3:0] R_TYPE	= 4'd0;
+	localparam [3:0] I_IMM	= 4'd1;
+	localparam [3:0] I_LD	= 4'd2;
+	localparam [3:0] I_JUMP	= 4'd3;
+	localparam [3:0] S_TYPE	= 4'd4;
+	localparam [3:0] B_TYPE	= 4'd5;
+	localparam [3:0] U_LD	= 4'd6;
+	localparam [3:0] U_PC	= 4'd7;
+	localparam [3:0] J_TYPE	= 4'd8;
 
 	/* store PC instruction into IR */ 
 	assign IR = i_pc_rddata;
 
 	/* define the different opcodes */
-	localparam [6:0] R = 7'b0110011;
-	localparam [6:0] I_imm = 7'b0010011;
-	localparam [6:0] I_ld = 7'b0000011;
+	localparam [6:0] R		= 7'b0110011;
+	localparam [6:0] I_imm 	= 7'b0010011;
+	localparam [6:0] I_ld 	= 7'b0000011;
 	localparam [6:0] I_jump = 7'b1100111;
-	localparam [6:0] S = 7'b0110011;
-	localparam [6:0] B = 7'b0110011;
-	localparam [6:0] U = 7'b0110011; 
-	localparam [6:0] J = 7'b0110011;
+	localparam [6:0] S 		= 7'b0100011;
+	localparam [6:0] B 		= 7'b1100011;
+	localparam [6:0] U_ld 	= 7'b0110111; 
+	localparam [6:0] U_pc 	= 7'b0010111;
+	localparam [6:0] J 		= 7'b1101111;
 	
 	/***************************************########### RISC V FSM ###############***************************************/
 
@@ -126,8 +128,8 @@ module cpu # (
 				/* enable alu to perform appropriate operation */
 				Alu_en = 1'b1;
 				/* next state depends on the ALU operation */
-				case (ALU_op)
-					R_TYPE, I_IMM, I_JUMP, U_TYPE, J_TYPE: begin
+				case (Alu_op)
+					R_TYPE, I_IMM, I_JUMP, U_LD, U_PC, J_TYPE: begin
 						nextstate = DEST_REG;
 					end
 					B_TYPE: begin
@@ -189,7 +191,7 @@ module cpu # (
 					immediate = {{20{IR[31]}},IR[7],IR[30:25],IR[11:8],1'b0};
 				end
 				/* U Type instruction */
-				U: begin
+				U_ld, U_pc: begin
 					rd = IR[11:7];
 					immediate = {IR[31:12],12'b0};
 				end
@@ -212,14 +214,15 @@ module cpu # (
 	/* Get the ALU Op code to know which ALU Operation to perform */
 	always_comb begin : ALUOP
 		case (IR[6:0])
-			R: 		ALU_op = R_TYPE;
-			I_imm:	ALU_op = I_IMM;
-			I_ld: 	ALU_op = I_LD;
-			I_jump: ALU_op = I_JUMP;
-			S: 		ALU_op = S_TYPE;
-			B:		ALU_op = B_TYPE;
-			U:		ALU_op = U_TYPE;
-			J:		ALU_op = J_TYPE; 
+			R: 		Alu_op = R_TYPE;
+			I_imm:	Alu_op = I_IMM;
+			I_ld: 	Alu_op = I_LD;
+			I_jump: Alu_op = I_JUMP;
+			S: 		Alu_op = S_TYPE;
+			B:		Alu_op = B_TYPE;
+			U_ld:	Alu_op = U_LD;
+			U_pc:	Alu_op = U_PC
+			J:		Alu_op = J_TYPE; 
 		endcase
 	end
 
@@ -313,7 +316,7 @@ module cpu # (
 			/* arithmetic I type with register and PC */
 			else if(Alu_op == I_JUMP)begin
 				if(funct3 == 4'h0)begin
-					result = PC + 2'd4;
+					result = PC;
 					PC = REG_FILE[rs1] + immediate;
 				end
 			end
@@ -322,30 +325,51 @@ module cpu # (
 			else if(Alu_op == B_TYPE)begin
 				// beq
 				if(funct3 == 4'h0)begin
-					PC = $signed(REG_FILE[rs1]) == $signed(REG_FILE[rs2]) ? PC + immediate : PC + 2'd4;
+					PC = $signed(REG_FILE[rs1]) == $signed(REG_FILE[rs2]) ? PC - 4 + immediate : PC;
 				end
 				// bne
 				if(funct3 == 4'h1)begin
-					PC = $signed(REG_FILE[rs1]) != $signed(REG_FILE[rs2]) ? PC + immediate : PC + 2'd4;
+					PC = $signed(REG_FILE[rs1]) != $signed(REG_FILE[rs2]) ? PC - 4 + immediate : PC;
 				end
 				//blt
 				if(funct3 == 4'h4)begin
-					PC = $signed(REG_FILE[rs1]) < $signed(REG_FILE[rs2]) ? PC + immediate : PC + 2'd4;
+					PC = $signed(REG_FILE[rs1]) < $signed(REG_FILE[rs2]) ? PC - 4 + immediate : PC;
 				end
 				//bge
 				if(funct3 == 4'h5)begin
-					PC = $signed(REG_FILE[rs1]) >= $signed(REG_FILE[rs2]) ? PC + immediate : PC + 2'd4;
+					PC = $signed(REG_FILE[rs1]) >= $signed(REG_FILE[rs2]) ? PC - 4 + immediate : PC;
 				end
 				//bltu
 				if(funct3 == 4'h6)begin
-					PC = REG_FILE[rs1] < REG_FILE[rs2] ? PC + immediate : PC + 2'd4;
+					PC = REG_FILE[rs1] < REG_FILE[rs2] ? PC - 4 + immediate : PC;
 				end
 				//bgeu
 				if(funct3 == 4'h7)begin
-					PC = REG_FILE[rs1] >= REG_FILE[rs2] ? PC + immediate : PC + 2'd4;
+					PC = REG_FILE[rs1] >= REG_FILE[rs2] ? PC - 4 + immediate : PC;
 				end
 			end
+
+			/************* u type ****************/
+			/* lui */
+			else if(Alu_op == U_LD)begin
+				result = immediate;
+			end
+			
+			/* auipc */
+			else if(Alu_op == U_PC)begin
+				result = PC - 4 + (immediate);
+			end
+			/************* u type ****************/
+
+			/* jump type */
+			else if(Alu_op == J_TYPE)begin
+				result = PC;
+				PC = PC - 4 + immediate;
+			end
 		end
+
+		/* always keep the first register in the register file as zero */
+		REG_FILE[0] = 32'b0;
 	end
 	/***************************************########## RISC V DATAPATH ############***************************************/
 
