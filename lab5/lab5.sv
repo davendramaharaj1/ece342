@@ -23,12 +23,12 @@ module cpu # (
 );
 
 	/* Process Memory Interface Registers */ 
-	logic [IW-1] IR;	// instruction register
-	logic [IW-1] immediate // holds immediate value --> extended to 32 bits (if arithemtic-op then signed else zero-padded)
+	logic [IW-1:0] IR;	// instruction register
+	logic [IW-1:0] immediate; // holds immediate value --> extended to 32 bits (if arithemtic-op then signed else zero-padded)
 
 	/* Address Generator Registers and signals  */
-	logic [IW-1] PC;	// holds address to the next instruction
-	logic [3:0] pc_byte_en 	// size of pc to read : word/half-word/byte
+	logic [IW-1:0] PC;	// holds address to the next instruction
+	logic [3:0] pc_byte_en;	// size of pc to read : word/half-word/byte
 	logic decode;		// decode the IR instruction
 	logic fetch;		// control signal to fetch instruction from memory
 	logic pc_increment;		// control signal to increment pc 
@@ -37,13 +37,20 @@ module cpu # (
 	logic [4:0] rs1, rs2, rd;
 	logic [2:0] funct3;
 	logic [6:0] funct7;
-	logic [IW-1] REG_FILE [0:REGS-1]
+	logic [IW-1:0] REG_FILE [0:REGS-1];
 
 	/* ALU Registers and signals */
 	logic [3:0] Alu_op;
-	logic [IW-1] result;
+	logic [IW-1:0] result;
 	logic resultIn;
 	logic Alu_en;
+
+	/* Load/Store reg control signals */
+	logic [IW-1:0] ldst_addr;
+	logic [IW-1:0] ldst_rddata;
+	logic [3:0] ldst_byte_en;
+	logic ldst_rd;
+	logic ldst_wr;
 
 	/* define states to represent stages in processing instructions */
 	enum int unsigned {
@@ -82,12 +89,12 @@ module cpu # (
 	/***************************************########### RISC V FSM ###############***************************************/
 
 	/* Control FSM Flip Flops */
+	integer i;
 	always_ff @(posedge clk) begin : FSMTransition
 		if(reset) begin
 			/* set the PC to point to the first instruction */
 			PC <= 32'b0;
 			/* Ensure the register file is zeroed */
-			integer i;
 			for(i = 0; i < IW; i=i+1)begin
 				REG_FILE[i] <= 32'b0;
 			end
@@ -166,54 +173,54 @@ module cpu # (
 	/***************************************######### RISC V DATAPATH #############***************************************/
 
 	/* decoder to load the appropriate registers after receiving instruction on IR*/
-	always_comb begin : Decoder
+	always_ff@(posedge clk) begin : Decoder
 		if(decode) begin
 			case (IR[6:0])
 				/* R Type instruction */
 				R: begin
-					rs1 = IR[19:15];
-					rs2 = IR[24:20];
-					rd = IR[11:7];
-					funct3 = IR[14:12];
-					funct7 = IR[31:25];
+					rs1 <= IR[19:15];
+					rs2 <= IR[24:20];
+					rd <= IR[11:7];
+					funct3 <= IR[14:12];
+					funct7 <= IR[31:25];
 				end
 				/* I Type instruction */
 				I_imm, I_ld, I_jump: begin
-					rs1 = IR[19:15];
-					rd = IR[11:7];
-					funct3 = IR[14:12];
-					immediate = {{21{IR[31]}},IR[30:20]};
+					rs1 <= IR[19:15];
+					rd <= IR[11:7];
+					funct3 <= IR[14:12];
+					immediate <= {{21{IR[31]}},IR[30:20]};
 				end
 				/* S Type instruction */
 				S: begin
-					rs1 = IR[19:15];
-					rs2 = IR[24:20];
-					funct3 = IR[14:12];
-					immediate = {{21{IR[31]}},IR[30:25],IR[11:7]};
+					rs1 <= IR[19:15];
+					rs2 <= IR[24:20];
+					funct3 <= IR[14:12];
+					immediate <= {{21{IR[31]}},IR[30:25],IR[11:7]};
 				end
 				/* B Type instruction */
 				B: begin
-					rs1 = IR[19:15];
-					rs2 = IR[24:20];
-					funct3 = IR[14:12];
-					immediate = {{20{IR[31]}},IR[7],IR[30:25],IR[11:8],1'b0};
+					rs1 <= IR[19:15];
+					rs2 <= IR[24:20];
+					funct3 <= IR[14:12];
+					immediate <= {{20{IR[31]}},IR[7],IR[30:25],IR[11:8],1'b0};
 				end
 				/* U Type instruction */
 				U_ld, U_pc: begin
-					rd = IR[11:7];
-					immediate = {IR[31:12],12'b0};
+					rd <= IR[11:7];
+					immediate <= {IR[31:12],12'b0};
 				end
 				/* J Type instruction */
 				J: begin
 					rd = IR[11:7];
-					immediate = {{12{IR[31]}},IR[19:12],IR[20],IR[30:21],1'b0};
+					immediate <= {{12{IR[31]}},IR[19:12],IR[20],IR[30:21],1'b0};
 				end
 			endcase
 		end
 	end
 
 	/* increment PC by 4 from the control signal */
-	always_ff @(clk) begin : PC_Increment
+	always_ff @(posedge clk) begin : PC_Increment
 		if(pc_increment) begin
 			PC <= PC + 3'd4;
 		end
@@ -229,103 +236,103 @@ module cpu # (
 			S: 		Alu_op = S_TYPE;
 			B:		Alu_op = B_TYPE;
 			U_ld:	Alu_op = U_LD;
-			U_pc:	Alu_op = U_PC
+			U_pc:	Alu_op = U_PC;
 			J:		Alu_op = J_TYPE; 
 		endcase
 	end
 
 	/* ALU logic */
-	always_comb begin : ALU_logic
+	always_ff @(posedge clk) begin : ALU_logic
 		if(Alu_en) begin
 			/* registers as operands for arithmetic */
 			if(Alu_op == R_TYPE) begin
 				// add
-				if(funct3 = 4'h0 and funt7 = 8'h00) begin
-					result = REG_FILE[rs1] + REG_FILE[rs2];
+				if(funct3 == 4'h0 && funct7 == 8'h00) begin
+					result <= REG_FILE[rs1] + REG_FILE[rs2];
 				end
 				// sub
-				else if (funct3 = 4'h0 and funct7 == 8'h20) begin
-					result = REG_FILE[rs1] - REG_FILE[rs2];
+				else if (funct3 == 4'h0 && funct7 == 8'h20) begin
+					result <= REG_FILE[rs1] - REG_FILE[rs2];
 				end
 				// xor
-				else if(funct3 = 4'h4 and funct7 == 8'h00)begin
-					result = REG_FILE[rs1] ^ REG_FILE[rs2];
+				else if(funct3 == 4'h4 && funct7 == 8'h00)begin
+					result <= REG_FILE[rs1] ^ REG_FILE[rs2];
 				end
 				// or
-				else if(funct3 == 4'h6 and funct7 == 8'h00)begin
-					result = REG_FILE[rs1] | REG_FILE[rs2];
+				else if(funct3 == 4'h6 && funct7 == 8'h00)begin
+					result <= REG_FILE[rs1] | REG_FILE[rs2];
 				end
 				// and
-				else if(funct3 == 4'h7 and funct7 == 8'h00)begin
-					result = REG_FILE[rs1] & REG_FILE[rs2];
+				else if(funct3 == 4'h7 && funct7 == 8'h00)begin
+					result <= REG_FILE[rs1] & REG_FILE[rs2];
 				end
 				//sll
-				else if(funct3 == 4'h1 and funct7 == 8'h00)begin
-					result = REG_FILE[rs1] << REG_FILE[rs2][4:0];
+				else if(funct3 == 4'h1 && funct7 == 8'h00)begin
+					result <= REG_FILE[rs1] << REG_FILE[rs2][4:0];
 				end
 				//srl
-				else if(funct3 == 4'h5 and funct7 == 8'h00)begin
-					result = REG_FILE[rs1] >> REG_FILE[rs2][4:0];
+				else if(funct3 == 4'h5 && funct7 == 8'h00)begin
+					result <= REG_FILE[rs1] >> REG_FILE[rs2][4:0];
 				end
 				//sra
-				else if(funct3 == 4'h5 and funct7 == 8'h20)begin
-					result = $signed(REG_FILE[rs1]) >>> REG_FILE[rs2][4:0];
+				else if(funct3 == 4'h5 && funct7 == 8'h20)begin
+					result <= $signed(REG_FILE[rs1]) >>> REG_FILE[rs2][4:0];
 				end
 				//slt
-				else if(funct3 == 4'h2 and funct7 == 8'h00)begin
-					result = $signed(REG_FILE[rs1]) < $signed(REG_FILE[rs2]) ? 1 : 0;
+				else if(funct3 == 4'h2 && funct7 == 8'h00)begin
+					result <= $signed(REG_FILE[rs1]) < $signed(REG_FILE[rs2]) ? 1 : 0;
 				end
 				//sltu
-				else if(funct3 == 4'h3 and funct7 == 8'h00)begin
-					result = REG_FILE[rs1] < REG_FILE[rs2] ? 1 : 0;
+				else if(funct3 == 4'h3 && funct7 == 8'h00)begin
+					result <= REG_FILE[rs1] < REG_FILE[rs2] ? 1 : 0;
 				end
 			end
 
 			/* arithmetic I type with register and immediate value */
 			else if(Alu_op == I_IMM)begin
 				// addi
-				if(funct3 = 4'h0) begin
-					result = REG_FILE[rs1] + immediate;
+				if(funct3 == 4'h0) begin
+					result <= REG_FILE[rs1] + immediate;
 				end
 				// xori
-				else if(funct3 = 4'h4)begin
-					result = REG_FILE[rs1] ^ immediate;
+				else if(funct3 == 4'h4)begin
+					result <= REG_FILE[rs1] ^ immediate;
 				end
 				// ori
 				else if(funct3 == 4'h6)begin
-					result = REG_FILE[rs1] | immediate;
+					result <= REG_FILE[rs1] | immediate;
 				end
 				// andi
 				else if(funct3 == 4'h7)begin
-					result = REG_FILE[rs1] & immediate;
+					result <= REG_FILE[rs1] & immediate;
 				end
 				//slli
-				else if(funct3 == 4'h1 and immediate[11:5] == 8'h00)begin
-					result = REG_FILE[rs1] << immediate[4:0];
+				else if(funct3 == 4'h1 && immediate[11:5] == 8'h00)begin
+					result <= REG_FILE[rs1] << immediate[4:0];
 				end
 				//srli
-				else if(funct3 == 4'h5 and immediate[11:5] == 8'h00)begin
-					result = REG_FILE[rs1] >> immediate[4:0];
+				else if(funct3 == 4'h5 && immediate[11:5] == 8'h00)begin
+					result <= REG_FILE[rs1] >> immediate[4:0];
 				end
 				//srai
-				else if(funct3 == 4'h5 and immediate[11:5] == 8'h20)begin
-					result = $signed(REG_FILE[rs1]) >>> immediate[4:0];
+				else if(funct3 == 4'h5 && immediate[11:5] == 8'h20)begin
+					result <= $signed(REG_FILE[rs1]) >>> immediate[4:0];
 				end
 				//slti
 				else if(funct3 == 4'h2) begin
-					result = $signed(REG_FILE[rs1]) < $signed(immediate) ? 1 : 0;
+					result <= $signed(REG_FILE[rs1]) < $signed(immediate) ? 1 : 0;
 				end
 				//sltiu
-				else if(funct3 == 4'h3 and funct7 == 8'h00)begin
-					result = REG_FILE[rs1] < immediate ? 1 : 0;
+				else if(funct3 == 4'h3 && funct7 == 8'h00)begin
+					result <= REG_FILE[rs1] < immediate ? 1 : 0;
 				end
 			end
 
 			/* arithmetic I type with register and PC */
 			else if(Alu_op == I_JUMP)begin
 				if(funct3 == 4'h0)begin
-					result = PC;
-					PC = REG_FILE[rs1] + immediate;
+					result <= PC;
+					PC <= REG_FILE[rs1] + immediate;
 				end
 			end
 
@@ -333,52 +340,52 @@ module cpu # (
 			else if(Alu_op == B_TYPE)begin
 				// beq
 				if(funct3 == 4'h0)begin
-					PC = $signed(REG_FILE[rs1]) == $signed(REG_FILE[rs2]) ? PC - 4 + immediate : PC;
+					PC <= $signed(REG_FILE[rs1]) == $signed(REG_FILE[rs2]) ? PC - 4 + immediate : PC;
 				end
 				// bne
 				if(funct3 == 4'h1)begin
-					PC = $signed(REG_FILE[rs1]) != $signed(REG_FILE[rs2]) ? PC - 4 + immediate : PC;
+					PC <= $signed(REG_FILE[rs1]) != $signed(REG_FILE[rs2]) ? PC - 4 + immediate : PC;
 				end
 				//blt
 				if(funct3 == 4'h4)begin
-					PC = $signed(REG_FILE[rs1]) < $signed(REG_FILE[rs2]) ? PC - 4 + immediate : PC;
+					PC <= $signed(REG_FILE[rs1]) < $signed(REG_FILE[rs2]) ? PC - 4 + immediate : PC;
 				end
 				//bge
 				if(funct3 == 4'h5)begin
-					PC = $signed(REG_FILE[rs1]) >= $signed(REG_FILE[rs2]) ? PC - 4 + immediate : PC;
+					PC <= $signed(REG_FILE[rs1]) >= $signed(REG_FILE[rs2]) ? PC - 4 + immediate : PC;
 				end
 				//bltu
 				if(funct3 == 4'h6)begin
-					PC = REG_FILE[rs1] < REG_FILE[rs2] ? PC - 4 + immediate : PC;
+					PC <= REG_FILE[rs1] < REG_FILE[rs2] ? PC - 4 + immediate : PC;
 				end
 				//bgeu
 				if(funct3 == 4'h7)begin
-					PC = REG_FILE[rs1] >= REG_FILE[rs2] ? PC - 4 + immediate : PC;
+					PC <= REG_FILE[rs1] >= REG_FILE[rs2] ? PC - 4 + immediate : PC;
 				end
 			end
 
 			/************* u type ****************/
 			/* lui */
 			else if(Alu_op == U_LD)begin
-				result = immediate;
+				result <= immediate;
 			end
 			
 			/* auipc */
 			else if(Alu_op == U_PC)begin
-				result = PC - 4 + (immediate);
+				result <= PC - 4 + (immediate);
 			end
 			/************* u type ****************/
 
 			/* jump type */
 			else if(Alu_op == J_TYPE)begin
-				result = PC;
-				PC = PC - 4 + immediate;
+				result <= PC;
+				PC <= PC - 4 + immediate;
 			end
 		end
 	end
 
 	/* load result into reg file */
-	always_ff @(clk) begin : Reg_file_load
+	always_ff @(posedge clk) begin : Reg_file_load
 		if(resultIn) begin
 			if(rd == 5'b0)begin
 				REG_FILE[rd] <= 32'b0;
@@ -396,4 +403,3 @@ module cpu # (
 	assign o_pc_addr = PC;
 	assign o_pc_byte_en = pc_byte_en;
 endmodule
-
