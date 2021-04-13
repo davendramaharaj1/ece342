@@ -523,7 +523,7 @@ module cpu # (
 	end
 
 	/* load value from memory into reg file */
-	always_ff @(clk) begin : Load
+	always_ff @(posedge clk) begin : Load
 		if(loadIn) begin
 			case(funct3)
 				//load byte
