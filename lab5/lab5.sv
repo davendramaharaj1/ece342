@@ -528,11 +528,11 @@ module cpu # (
 			case(funct3)
 				//load byte
 				4'h0: begin
-					REG_FILE[rd] <= $signed(ldst_rddata);
+					REG_FILE[rd] <= $signed(ldst_rddata[7:0]);
 				end
 				//load half
 				4'h1: begin
-					REG_FILE[rd] <= $signed(ldst_rddata);
+					REG_FILE[rd] <= $signed(ldst_rddata[15:0]);
 				end
 				// load word
 				4'h2: begin
