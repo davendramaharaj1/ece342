@@ -540,11 +540,11 @@ module cpu # (
 				end
 				// load byte (U)
 				4'h4: begin
-					REG_FILE[rd] <= ldst_rddata;
+					REG_FILE[rd] <= ldst_rddata[7:0];
 				end
 				//load half (U)
 				4'h5: begin
-					REG_FILE[rd] <= ldst_rddata;
+					REG_FILE[rd] <= ldst_rddata[15:0];
 				end
 			endcase 
 		end
