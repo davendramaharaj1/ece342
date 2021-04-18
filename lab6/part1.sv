@@ -30,4 +30,25 @@ cpu#(.IW(32), .REGS(32)) cpu(
     .o_tb_regs()
 );
 
+/* Instantiate 32KB memory module */
+mem#(.WIDTH(32), .DEPTH(8192), .HEX_FILE("part1.hex")) memory(
+
+    .clk(),
+    .reset(),
+
+    /* Read only port */
+    .p2_addr(),
+    .p2_read(),
+    .p2_byteenable(),
+    .p2_readdata(),
+
+    /* Read/Write Port */
+    .p1_addr(),
+    .p1_read(),
+    .p1_write(),
+    .p1_readdata(),
+    .p1_writedata(),
+    .p1_byteenable()
+);
+
 endmodule
