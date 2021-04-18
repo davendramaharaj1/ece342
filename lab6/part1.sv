@@ -6,17 +6,26 @@ module part1
     output      [ 7: 0]         LEDR
 );
 
+// logic wires to connect the memory, cpu and sw/ledr registers together
+logic [3:0] pc_byte_enable;
+logic pc_read;
+logic [31:0] instruction, pc_address;
+logic [12:0] memory_addr;
+
+/* decoder for processor to memory (accessing instructions) */
+assign memory_address = (pc_address >> 2)[12:0];
+
 /* instantiate RISC-V CPU from Lab 5 */
 cpu#(.IW(32), .REGS(32)) cpu(
 
-    .clk(),
-    .reset(),
+    .clk(clk),
+    .reset(reset),
 
-    // read only port connecting to read only port on 32KB RAM or SW
-    .o_pc_addr(),
-    .o_pc_rd(),
-    .i_pc_rddata(),
-    .o_pc_byte_en(),
+    // read only port for Instructions
+    .o_pc_addr(pc_address),
+    .o_pc_rd(pc_read),
+    .o_pc_byte_en(pc_byte_enable),
+    .i_pc_rddata(instruction),
 
     // read/write port connecting to read/write port on 32KB RAM or LED
     .o_ldst_addr(),
@@ -33,14 +42,14 @@ cpu#(.IW(32), .REGS(32)) cpu(
 /* Instantiate 32KB memory module */
 mem#(.WIDTH(32), .DEPTH(8192), .HEX_FILE("part1.hex")) memory(
 
-    .clk(),
-    .reset(),
+    .clk(clk),
+    .reset(reset),
 
-    /* Read only port */
-    .p2_addr(),
-    .p2_read(),
-    .p2_byteenable(),
-    .p2_readdata(),
+     /* Read only port */
+    .p2_addr(memory_address),
+    .p2_read(pc_read),
+    .p2_byteenable(pc_byte_enable),
+    .p2_readdata(instruction),
 
     /* Read/Write Port */
     .p1_addr(),
