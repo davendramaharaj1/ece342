@@ -34,12 +34,12 @@ assign memory_address = (pc_address >> 2)[12:0];
 
 /* decoder for inputing memory data or switch data into cpu */
 assign data_address = (mem_ldst_address >> 2)[12:0];
-assign sel_data = (read && mem_ldst_address[27:24] != 4'hA);    // if last byte is not A and read = 1, load data from memory
+assign sel_data = (read && mem_ldst_address[15:12] != 4'hA);    // if last byte is not A and read = 1, load data from memory
 assign i_readdata = sel_data ? mem_readdata : switch;           // 2:1 mux to select data from memory or switches
 
 /* decoder for writing data to ledr reg or memory */
-assign write_mem = (write && mem_ldst_address[27:24] != 4'hA);
-assign write_led = (write && mem_ldst_address == 32'hA000);
+assign write_mem = (write && mem_ldst_address[15:12] != 4'hA);
+assign write_led = (write && mem_ldst_address[15:0] == 16'hA000);
 
 /* instantiate RISC-V CPU from Lab 5 */
 cpu#(.IW(32), .REGS(32)) cpu(
