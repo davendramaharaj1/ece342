@@ -39,7 +39,7 @@ assign i_readdata = sel_data ? mem_readdata : switch;           // 2:1 mux to se
 
 /* decoder for writing data to ledr reg or memory */
 assign write_mem = (write && mem_ldst_address[27:24] != 4'hA);
-assign write_led = (write && mem_ldst_address == 32'hA010);
+assign write_led = (write && mem_ldst_address == 32'hA000);
 
 /* instantiate RISC-V CPU from Lab 5 */
 cpu#(.IW(32), .REGS(32)) cpu(
