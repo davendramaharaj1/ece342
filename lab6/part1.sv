@@ -33,7 +33,7 @@ logic [31:0] mem_ldst_address, i_readdata, mem_readdata, write_data;
 assign memory_address = (pc_address >> 2)[12:0];
 
 /* decoder for inputing memory data or switch data into cpu */
-assign data_address = (mem_ldst_address >> 2)[12:0];
+assign data_address = mem_ldst_address[15:12] != 4'hA ? (mem_ldst_address >> 2)[12:0] : 13'b0;
 assign sel_data = (read && mem_ldst_address[15:12] != 4'hA);    // if last byte is not A and read = 1, load data from memory
 assign i_readdata = sel_data ? mem_readdata : switch;           // 2:1 mux to select data from memory or switches
 
