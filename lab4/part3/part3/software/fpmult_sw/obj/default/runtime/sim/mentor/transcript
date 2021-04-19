@@ -1,0 +1,1525 @@
+# Reading C:/intelFPGA_lite/18.0/modelsim_ase/tcl/vsim/pref.tcl
+# do load_sim.tcl
+# obj/default/runtime/sim
+# [exec] file_copy
+# List Of Command Line Aliases
+# 
+# file_copy                                         -- Copy ROM/RAM files to simulation directory
+# 
+# dev_com                                           -- Compile device library files
+# 
+# com                                               -- Compile the design files in correct order
+# 
+# elab                                              -- Elaborate top level design
+# 
+# elab_debug                                        -- Elaborate the top level design with novopt option
+# 
+# ld                                                -- Compile all the design files and elaborate the top level design
+# 
+# ld_debug                                          -- Compile all the design files and elaborate the top level design with -novopt
+# 
+# 
+# 
+# List Of Variables
+# 
+# TOP_LEVEL_NAME                                    -- Top level module name.
+#                                                      For most designs, this should be overridden
+#                                                      to enable the elab/elab_debug aliases.
+# 
+# SYSTEM_INSTANCE_NAME                              -- Instantiated system module name inside top level module.
+# 
+# QSYS_SIMDIR                                       -- Platform Designer base simulation directory.
+# 
+# QUARTUS_INSTALL_DIR                               -- Quartus installation directory.
+# 
+# USER_DEFINED_COMPILE_OPTIONS                      -- User-defined compile options, added to com/dev_com aliases.
+# 
+# USER_DEFINED_ELAB_OPTIONS                         -- User-defined elaboration options, added to elab/elab_debug aliases.
+# 
+# USER_DEFINED_VHDL_COMPILE_OPTIONS                 -- User-defined vhdl compile options, added to com/dev_com aliases.
+# 
+# USER_DEFINED_VERILOG_COMPILE_OPTIONS              -- User-defined verilog compile options, added to com/dev_com aliases.
+#  ld
+# [exec] dev_com
+# [exec] com
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:18:54 on Mar 06,2021
+# vlog -reportprogress 300 -sv C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/verbosity_pkg.sv -work altera_common_sv_packages 
+# -- Compiling package verbosity_pkg
+# 
+# Top level modules:
+# 	--none--
+# End time: 00:18:54 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:18:54 on Mar 06,2021
+# vlog -reportprogress 300 -sv C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_mm_interconnect_0_avalon_st_adapter_error_adapter_0.sv -L altera_common_sv_packages -work error_adapter_0 
+# -- Compiling module nios_system_mm_interconnect_0_avalon_st_adapter_error_adapter_0
+# 
+# Top level modules:
+# 	nios_system_mm_interconnect_0_avalon_st_adapter_error_adapter_0
+# End time: 00:18:54 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:18:54 on Mar 06,2021
+# vlog -reportprogress 300 C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_mm_interconnect_0_avalon_st_adapter.v -work avalon_st_adapter 
+# -- Compiling module nios_system_mm_interconnect_0_avalon_st_adapter
+# 
+# Top level modules:
+# 	nios_system_mm_interconnect_0_avalon_st_adapter
+# End time: 00:18:54 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:18:55 on Mar 06,2021
+# vlog -reportprogress 300 -sv C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_mm_interconnect_0_rsp_mux_001.sv -L altera_common_sv_packages -work rsp_mux_001 
+# -- Compiling module nios_system_mm_interconnect_0_rsp_mux_001
+# 
+# Top level modules:
+# 	nios_system_mm_interconnect_0_rsp_mux_001
+# End time: 00:18:55 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:18:55 on Mar 06,2021
+# vlog -reportprogress 300 -sv C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/altera_merlin_arbitrator.sv -L altera_common_sv_packages -work rsp_mux_001 
+# -- Compiling module altera_merlin_arbitrator
+# -- Compiling module altera_merlin_arb_adder
+# 
+# Top level modules:
+# 	altera_merlin_arbitrator
+# End time: 00:18:55 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:18:55 on Mar 06,2021
+# vlog -reportprogress 300 -sv C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_mm_interconnect_0_rsp_mux.sv -L altera_common_sv_packages -work rsp_mux 
+# -- Compiling module nios_system_mm_interconnect_0_rsp_mux
+# 
+# Top level modules:
+# 	nios_system_mm_interconnect_0_rsp_mux
+# End time: 00:18:55 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:18:55 on Mar 06,2021
+# vlog -reportprogress 300 -sv C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/altera_merlin_arbitrator.sv -L altera_common_sv_packages -work rsp_mux 
+# -- Compiling module altera_merlin_arbitrator
+# -- Compiling module altera_merlin_arb_adder
+# 
+# Top level modules:
+# 	altera_merlin_arbitrator
+# End time: 00:18:55 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:18:55 on Mar 06,2021
+# vlog -reportprogress 300 -sv C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_mm_interconnect_0_rsp_demux_002.sv -L altera_common_sv_packages -work rsp_demux_002 
+# -- Compiling module nios_system_mm_interconnect_0_rsp_demux_002
+# 
+# Top level modules:
+# 	nios_system_mm_interconnect_0_rsp_demux_002
+# End time: 00:18:55 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:18:55 on Mar 06,2021
+# vlog -reportprogress 300 -sv C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_mm_interconnect_0_cmd_mux_002.sv -L altera_common_sv_packages -work cmd_mux_002 
+# -- Compiling module nios_system_mm_interconnect_0_cmd_mux_002
+# 
+# Top level modules:
+# 	nios_system_mm_interconnect_0_cmd_mux_002
+# End time: 00:18:55 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:18:55 on Mar 06,2021
+# vlog -reportprogress 300 -sv C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/altera_merlin_arbitrator.sv -L altera_common_sv_packages -work cmd_mux_002 
+# -- Compiling module altera_merlin_arbitrator
+# -- Compiling module altera_merlin_arb_adder
+# 
+# Top level modules:
+# 	altera_merlin_arbitrator
+# End time: 00:18:56 on Mar 06,2021, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:18:56 on Mar 06,2021
+# vlog -reportprogress 300 -sv C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_mm_interconnect_0_cmd_mux.sv -L altera_common_sv_packages -work cmd_mux 
+# -- Compiling module nios_system_mm_interconnect_0_cmd_mux
+# 
+# Top level modules:
+# 	nios_system_mm_interconnect_0_cmd_mux
+# End time: 00:18:56 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:18:56 on Mar 06,2021
+# vlog -reportprogress 300 -sv C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/altera_merlin_arbitrator.sv -L altera_common_sv_packages -work cmd_mux 
+# -- Compiling module altera_merlin_arbitrator
+# -- Compiling module altera_merlin_arb_adder
+# 
+# Top level modules:
+# 	altera_merlin_arbitrator
+# End time: 00:18:56 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:18:56 on Mar 06,2021
+# vlog -reportprogress 300 -sv C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_mm_interconnect_0_cmd_demux_001.sv -L altera_common_sv_packages -work cmd_demux_001 
+# -- Compiling module nios_system_mm_interconnect_0_cmd_demux_001
+# 
+# Top level modules:
+# 	nios_system_mm_interconnect_0_cmd_demux_001
+# End time: 00:18:56 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:18:56 on Mar 06,2021
+# vlog -reportprogress 300 -sv C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_mm_interconnect_0_cmd_demux.sv -L altera_common_sv_packages -work cmd_demux 
+# -- Compiling module nios_system_mm_interconnect_0_cmd_demux
+# 
+# Top level modules:
+# 	nios_system_mm_interconnect_0_cmd_demux
+# End time: 00:18:56 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:18:56 on Mar 06,2021
+# vlog -reportprogress 300 -sv C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_mm_interconnect_0_router_004.sv -L altera_common_sv_packages -work router_004 
+# -- Compiling module nios_system_mm_interconnect_0_router_004_default_decode
+# -- Compiling module nios_system_mm_interconnect_0_router_004
+# 
+# Top level modules:
+# 	nios_system_mm_interconnect_0_router_004
+# End time: 00:18:56 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:18:56 on Mar 06,2021
+# vlog -reportprogress 300 -sv C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_mm_interconnect_0_router_002.sv -L altera_common_sv_packages -work router_002 
+# -- Compiling module nios_system_mm_interconnect_0_router_002_default_decode
+# -- Compiling module nios_system_mm_interconnect_0_router_002
+# 
+# Top level modules:
+# 	nios_system_mm_interconnect_0_router_002
+# End time: 00:18:56 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:18:57 on Mar 06,2021
+# vlog -reportprogress 300 -sv C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_mm_interconnect_0_router_001.sv -L altera_common_sv_packages -work router_001 
+# -- Compiling module nios_system_mm_interconnect_0_router_001_default_decode
+# -- Compiling module nios_system_mm_interconnect_0_router_001
+# 
+# Top level modules:
+# 	nios_system_mm_interconnect_0_router_001
+# End time: 00:18:57 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:18:57 on Mar 06,2021
+# vlog -reportprogress 300 -sv C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_mm_interconnect_0_router.sv -L altera_common_sv_packages -work router 
+# -- Compiling module nios_system_mm_interconnect_0_router_default_decode
+# -- Compiling module nios_system_mm_interconnect_0_router
+# 
+# Top level modules:
+# 	nios_system_mm_interconnect_0_router
+# End time: 00:18:57 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:18:57 on Mar 06,2021
+# vlog -reportprogress 300 C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/altera_avalon_sc_fifo.v -work nios2_gen2_0_debug_mem_slave_agent_rsp_fifo 
+# -- Compiling module altera_avalon_sc_fifo
+# 
+# Top level modules:
+# 	altera_avalon_sc_fifo
+# End time: 00:18:57 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:18:57 on Mar 06,2021
+# vlog -reportprogress 300 -sv C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/altera_merlin_slave_agent.sv -L altera_common_sv_packages -work nios2_gen2_0_debug_mem_slave_agent 
+# -- Compiling module altera_merlin_slave_agent
+# ** Warning: C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/altera_merlin_slave_agent.sv(618): (vlog-2186) SystemVerilog testbench feature
+# (randomization, coverage or assertion) detected in the design.
+# These features are only supported in Questasim.
+# ** Warning: C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/altera_merlin_slave_agent.sv(488): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+# ** Warning: C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/altera_merlin_slave_agent.sv(489): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+# ** Warning: C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/altera_merlin_slave_agent.sv(490): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+# ** Warning: C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/altera_merlin_slave_agent.sv(491): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+# ** Warning: C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/altera_merlin_slave_agent.sv(34): (vlog-2186) SystemVerilog testbench feature
+# (randomization, coverage or assertion) detected in the design.
+# These features are only supported in Questasim.
+# 
+# Top level modules:
+# 	altera_merlin_slave_agent
+# End time: 00:18:57 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 6
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:18:57 on Mar 06,2021
+# vlog -reportprogress 300 -sv C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/altera_merlin_burst_uncompressor.sv -L altera_common_sv_packages -work nios2_gen2_0_debug_mem_slave_agent 
+# -- Compiling module altera_merlin_burst_uncompressor
+# 
+# Top level modules:
+# 	altera_merlin_burst_uncompressor
+# End time: 00:18:57 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:18:57 on Mar 06,2021
+# vlog -reportprogress 300 -sv C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/altera_merlin_master_agent.sv -L altera_common_sv_packages -work nios2_gen2_0_data_master_agent 
+# -- Compiling module altera_merlin_master_agent
+# 
+# Top level modules:
+# 	altera_merlin_master_agent
+# End time: 00:18:57 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:18:57 on Mar 06,2021
+# vlog -reportprogress 300 -sv C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/altera_merlin_slave_translator.sv -L altera_common_sv_packages -work nios2_gen2_0_debug_mem_slave_translator 
+# -- Compiling module altera_merlin_slave_translator
+# 
+# Top level modules:
+# 	altera_merlin_slave_translator
+# End time: 00:18:58 on Mar 06,2021, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:18:58 on Mar 06,2021
+# vlog -reportprogress 300 -sv C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/altera_merlin_master_translator.sv -L altera_common_sv_packages -work nios2_gen2_0_data_master_translator 
+# -- Compiling module altera_merlin_master_translator
+# 
+# Top level modules:
+# 	altera_merlin_master_translator
+# End time: 00:18:58 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:18:58 on Mar 06,2021
+# vlog -reportprogress 300 C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v -work cpu 
+# -- Compiling module nios_system_nios2_gen2_0_cpu_register_bank_a_module
+# -- Compiling module nios_system_nios2_gen2_0_cpu_register_bank_b_module
+# -- Compiling module nios_system_nios2_gen2_0_cpu_nios2_oci_debug
+# -- Compiling module nios_system_nios2_gen2_0_cpu_nios2_oci_break
+# -- Compiling module nios_system_nios2_gen2_0_cpu_nios2_oci_xbrk
+# -- Compiling module nios_system_nios2_gen2_0_cpu_nios2_oci_dbrk
+# -- Compiling module nios_system_nios2_gen2_0_cpu_nios2_oci_itrace
+# -- Compiling module nios_system_nios2_gen2_0_cpu_nios2_oci_td_mode
+# -- Compiling module nios_system_nios2_gen2_0_cpu_nios2_oci_dtrace
+# -- Compiling module nios_system_nios2_gen2_0_cpu_nios2_oci_compute_input_tm_cnt
+# -- Compiling module nios_system_nios2_gen2_0_cpu_nios2_oci_fifo_wrptr_inc
+# -- Compiling module nios_system_nios2_gen2_0_cpu_nios2_oci_fifo_cnt_inc
+# -- Compiling module nios_system_nios2_gen2_0_cpu_nios2_oci_fifo
+# -- Compiling module nios_system_nios2_gen2_0_cpu_nios2_oci_pib
+# -- Compiling module nios_system_nios2_gen2_0_cpu_nios2_oci_im
+# -- Compiling module nios_system_nios2_gen2_0_cpu_nios2_performance_monitors
+# -- Compiling module nios_system_nios2_gen2_0_cpu_nios2_avalon_reg
+# -- Compiling module nios_system_nios2_gen2_0_cpu_ociram_sp_ram_module
+# -- Compiling module nios_system_nios2_gen2_0_cpu_nios2_ocimem
+# -- Compiling module nios_system_nios2_gen2_0_cpu_nios2_oci
+# -- Compiling module nios_system_nios2_gen2_0_cpu
+# 
+# Top level modules:
+# 	nios_system_nios2_gen2_0_cpu_nios2_performance_monitors
+# 	nios_system_nios2_gen2_0_cpu
+# End time: 00:18:58 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:18:58 on Mar 06,2021
+# vlog -reportprogress 300 C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu_debug_slave_sysclk.v -work cpu 
+# -- Compiling module nios_system_nios2_gen2_0_cpu_debug_slave_sysclk
+# 
+# Top level modules:
+# 	nios_system_nios2_gen2_0_cpu_debug_slave_sysclk
+# End time: 00:18:58 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:18:58 on Mar 06,2021
+# vlog -reportprogress 300 C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu_debug_slave_tck.v -work cpu 
+# -- Compiling module nios_system_nios2_gen2_0_cpu_debug_slave_tck
+# 
+# Top level modules:
+# 	nios_system_nios2_gen2_0_cpu_debug_slave_tck
+# End time: 00:18:58 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:18:58 on Mar 06,2021
+# vlog -reportprogress 300 C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu_debug_slave_wrapper.v -work cpu 
+# -- Compiling module nios_system_nios2_gen2_0_cpu_debug_slave_wrapper
+# 
+# Top level modules:
+# 	nios_system_nios2_gen2_0_cpu_debug_slave_wrapper
+# End time: 00:18:58 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:18:59 on Mar 06,2021
+# vlog -reportprogress 300 C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu_test_bench.v -work cpu 
+# -- Compiling module nios_system_nios2_gen2_0_cpu_test_bench
+# 
+# Top level modules:
+# 	nios_system_nios2_gen2_0_cpu_test_bench
+# End time: 00:18:59 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:18:59 on Mar 06,2021
+# vlog -reportprogress 300 C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/altera_reset_controller.v -work rst_controller 
+# -- Compiling module altera_reset_controller
+# 
+# Top level modules:
+# 	altera_reset_controller
+# End time: 00:18:59 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:18:59 on Mar 06,2021
+# vlog -reportprogress 300 C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/altera_reset_synchronizer.v -work rst_controller 
+# -- Compiling module altera_reset_synchronizer
+# 
+# Top level modules:
+# 	altera_reset_synchronizer
+# End time: 00:18:59 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:18:59 on Mar 06,2021
+# vlog -reportprogress 300 -sv C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_irq_mapper.sv -L altera_common_sv_packages -work irq_mapper 
+# -- Compiling module nios_system_irq_mapper
+# 
+# Top level modules:
+# 	nios_system_irq_mapper
+# End time: 00:18:59 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:18:59 on Mar 06,2021
+# vlog -reportprogress 300 C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_mm_interconnect_0.v -work mm_interconnect_0 
+# -- Compiling module nios_system_mm_interconnect_0
+# 
+# Top level modules:
+# 	nios_system_mm_interconnect_0
+# End time: 00:18:59 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:18:59 on Mar 06,2021
+# vlog -reportprogress 300 C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_onchip_memory2_0.v -work onchip_memory2_0 
+# -- Compiling module nios_system_onchip_memory2_0
+# 
+# Top level modules:
+# 	nios_system_onchip_memory2_0
+# End time: 00:18:59 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:18:59 on Mar 06,2021
+# vlog -reportprogress 300 C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0.v -work nios2_gen2_0 
+# -- Compiling module nios_system_nios2_gen2_0
+# 
+# Top level modules:
+# 	nios_system_nios2_gen2_0
+# End time: 00:19:00 on Mar 06,2021, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:19:00 on Mar 06,2021
+# vlog -reportprogress 300 -sv C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/avalon_fp_mult.sv -L altera_common_sv_packages -work avs_fp_mult_0 
+# -- Compiling module avalon_fp_mult
+# 
+# Top level modules:
+# 	avalon_fp_mult
+# End time: 00:19:00 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:19:00 on Mar 06,2021
+# vlog -reportprogress 300 -sv C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/avalon_slave.sv -L altera_common_sv_packages -work avs_fp_mult_0 
+# -- Compiling module avalon_slave
+# -- Compiling module control_path
+# -- Compiling module datapath
+# 
+# Top level modules:
+# 	avalon_slave
+# End time: 00:19:00 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:19:00 on Mar 06,2021
+# vlog -reportprogress 300 C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/fp_mult.v -work avs_fp_mult_0 
+# -- Compiling module fp_mult_altfp_mult_her
+# -- Compiling module fp_mult
+# 
+# Top level modules:
+# 	fp_mult
+# End time: 00:19:00 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:19:00 on Mar 06,2021
+# vlog -reportprogress 300 -sv C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/altera_avalon_reset_source.sv -L altera_common_sv_packages -work nios_system_inst_reset_bfm 
+# -- Compiling module altera_avalon_reset_source
+# -- Importing package altera_common_sv_packages.verbosity_pkg
+# 
+# Top level modules:
+# 	altera_avalon_reset_source
+# End time: 00:19:00 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:19:00 on Mar 06,2021
+# vlog -reportprogress 300 -sv C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/altera_avalon_clock_source.sv -L altera_common_sv_packages -work nios_system_inst_clk_bfm 
+# -- Compiling module altera_avalon_clock_source
+# -- Importing package altera_common_sv_packages.verbosity_pkg
+# 
+# Top level modules:
+# 	altera_avalon_clock_source
+# End time: 00:19:00 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:19:00 on Mar 06,2021
+# vlog -reportprogress 300 C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system.v -work nios_system_inst 
+# -- Compiling module nios_system
+# 
+# Top level modules:
+# 	nios_system
+# End time: 00:19:00 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:19:00 on Mar 06,2021
+# vlog -reportprogress 300 C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/nios_system_tb.v 
+# -- Compiling module nios_system_tb
+# 
+# Top level modules:
+# 	nios_system_tb
+# End time: 00:19:01 on Mar 06,2021, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+# [exec] elab
+# vsim -t ps -L work -L work_lib -L altera_common_sv_packages -L error_adapter_0 -L avalon_st_adapter -L rsp_mux_001 -L rsp_mux -L rsp_demux_002 -L cmd_mux_002 -L cmd_mux -L cmd_demux_001 -L cmd_demux -L router_004 -L router_002 -L router_001 -L router -L nios2_gen2_0_debug_mem_slave_agent_rsp_fifo -L nios2_gen2_0_debug_mem_slave_agent -L nios2_gen2_0_data_master_agent -L nios2_gen2_0_debug_mem_slave_translator -L nios2_gen2_0_data_master_translator -L cpu -L rst_controller -L irq_mapper -L mm_interconnect_0 -L onchip_memory2_0 -L nios2_gen2_0 -L avs_fp_mult_0 -L nios_system_inst_reset_bfm -L nios_system_inst_clk_bfm -L nios_system_inst -L altera_ver -L lpm_ver -L sgate_ver -L altera_mf_ver -L altera_lnsim_ver -L cyclonev_ver -L cyclonev_hssi_ver -L cyclonev_pcie_hip_ver nios_system_tb 
+# Start time: 00:19:01 on Mar 06,2021
+# Loading work.nios_system_tb
+# Loading nios_system_inst.nios_system
+# Loading sv_std.std
+# Loading avs_fp_mult_0.avalon_fp_mult
+# Loading avs_fp_mult_0.avalon_slave
+# Loading avs_fp_mult_0.control_path
+# Loading avs_fp_mult_0.datapath
+# Loading avs_fp_mult_0.fp_mult
+# Loading avs_fp_mult_0.fp_mult_altfp_mult_her
+# Loading lpm_ver.lpm_add_sub
+# Loading lpm_ver.lpm_mult
+# Loading lpm_ver.LPM_HINT_EVALUATION
+# Loading nios2_gen2_0.nios_system_nios2_gen2_0
+# Loading cpu.nios_system_nios2_gen2_0_cpu
+# Loading cpu.nios_system_nios2_gen2_0_cpu_test_bench
+# Loading cpu.nios_system_nios2_gen2_0_cpu_register_bank_a_module
+# Loading altera_mf_ver.altsyncram
+# Loading cpu.nios_system_nios2_gen2_0_cpu_register_bank_b_module
+# Loading cpu.nios_system_nios2_gen2_0_cpu_nios2_oci
+# Loading cpu.nios_system_nios2_gen2_0_cpu_nios2_oci_debug
+# Loading altera_mf_ver.altera_std_synchronizer
+# Loading cpu.nios_system_nios2_gen2_0_cpu_nios2_oci_break
+# Loading cpu.nios_system_nios2_gen2_0_cpu_nios2_oci_xbrk
+# Loading cpu.nios_system_nios2_gen2_0_cpu_nios2_oci_dbrk
+# Loading cpu.nios_system_nios2_gen2_0_cpu_nios2_oci_itrace
+# Loading cpu.nios_system_nios2_gen2_0_cpu_nios2_oci_dtrace
+# Loading cpu.nios_system_nios2_gen2_0_cpu_nios2_oci_td_mode
+# Loading cpu.nios_system_nios2_gen2_0_cpu_nios2_oci_fifo
+# Loading cpu.nios_system_nios2_gen2_0_cpu_nios2_oci_compute_input_tm_cnt
+# Loading cpu.nios_system_nios2_gen2_0_cpu_nios2_oci_fifo_wrptr_inc
+# Loading cpu.nios_system_nios2_gen2_0_cpu_nios2_oci_fifo_cnt_inc
+# Loading cpu.nios_system_nios2_gen2_0_cpu_nios2_oci_pib
+# Loading cpu.nios_system_nios2_gen2_0_cpu_nios2_oci_im
+# Loading cpu.nios_system_nios2_gen2_0_cpu_nios2_avalon_reg
+# Loading cpu.nios_system_nios2_gen2_0_cpu_nios2_ocimem
+# Loading cpu.nios_system_nios2_gen2_0_cpu_ociram_sp_ram_module
+# Loading cpu.nios_system_nios2_gen2_0_cpu_debug_slave_wrapper
+# Loading cpu.nios_system_nios2_gen2_0_cpu_debug_slave_tck
+# Loading cpu.nios_system_nios2_gen2_0_cpu_debug_slave_sysclk
+# Loading onchip_memory2_0.nios_system_onchip_memory2_0
+# Loading mm_interconnect_0.nios_system_mm_interconnect_0
+# Loading nios2_gen2_0_data_master_translator.altera_merlin_master_translator
+# Loading nios2_gen2_0_debug_mem_slave_translator.altera_merlin_slave_translator
+# Loading nios2_gen2_0_data_master_agent.altera_merlin_master_agent
+# Loading nios2_gen2_0_debug_mem_slave_agent.altera_merlin_slave_agent
+# Loading nios2_gen2_0_debug_mem_slave_agent.altera_merlin_burst_uncompressor
+# Loading nios2_gen2_0_debug_mem_slave_agent_rsp_fifo.altera_avalon_sc_fifo
+# Loading router.nios_system_mm_interconnect_0_router
+# Loading router.nios_system_mm_interconnect_0_router_default_decode
+# Loading router_001.nios_system_mm_interconnect_0_router_001
+# Loading router_001.nios_system_mm_interconnect_0_router_001_default_decode
+# Loading router_002.nios_system_mm_interconnect_0_router_002
+# Loading router_002.nios_system_mm_interconnect_0_router_002_default_decode
+# Loading router_004.nios_system_mm_interconnect_0_router_004
+# Loading router_004.nios_system_mm_interconnect_0_router_004_default_decode
+# Loading cmd_demux.nios_system_mm_interconnect_0_cmd_demux
+# Loading cmd_demux_001.nios_system_mm_interconnect_0_cmd_demux_001
+# Loading cmd_mux.nios_system_mm_interconnect_0_cmd_mux
+# Loading cmd_mux.altera_merlin_arbitrator
+# Loading cmd_mux.altera_merlin_arb_adder
+# Loading cmd_mux_002.nios_system_mm_interconnect_0_cmd_mux_002
+# Loading rsp_demux_002.nios_system_mm_interconnect_0_rsp_demux_002
+# Loading rsp_mux.nios_system_mm_interconnect_0_rsp_mux
+# Loading rsp_mux.altera_merlin_arbitrator
+# Loading rsp_mux.altera_merlin_arb_adder
+# Loading rsp_mux_001.nios_system_mm_interconnect_0_rsp_mux_001
+# Loading rsp_mux_001.altera_merlin_arbitrator
+# Loading rsp_mux_001.altera_merlin_arb_adder
+# Loading avalon_st_adapter.nios_system_mm_interconnect_0_avalon_st_adapter
+# Loading error_adapter_0.nios_system_mm_interconnect_0_avalon_st_adapter_error_adapter_0
+# Loading irq_mapper.nios_system_irq_mapper
+# Loading rst_controller.altera_reset_controller
+# Loading altera_common_sv_packages.verbosity_pkg
+# Loading nios_system_inst_clk_bfm.altera_avalon_clock_source
+# Loading nios_system_inst_reset_bfm.altera_avalon_reset_source
+# Loading altera_mf_ver.altsyncram_body
+# Loading altera_mf_ver.ALTERA_DEVICE_FAMILIES
+# Loading altera_mf_ver.ALTERA_MF_MEMORY_INITIALIZATION
+# Loading rst_controller.altera_reset_synchronizer
+# ** Warning: (vsim-8311) System Verilog assertions are supported only in Questasim.
+# ** Warning: (vsim-3017) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(50): [TFMPC] - Too few port connections. Expected 23, found 6.
+#    Time: 0 ps  Iteration: 0  Instance: /nios_system_tb/nios_system_inst/nios2_gen2_0/cpu/nios_system_nios2_gen2_0_cpu_register_bank_a/the_altsyncram File: /build/swbuild/SJ/nightly/18.0std/614/l64/work/modelsim/eda/sim_lib/altera_mf.v
+# ** Warning: (vsim-3016) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(50): Port type is incompatible with connection (port 'clock0').
+#    Time: 0 ps  Iteration: 0  Instance: /nios_system_tb/nios_system_inst/nios2_gen2_0/cpu/nios_system_nios2_gen2_0_cpu_register_bank_a/the_altsyncram File: /build/swbuild/SJ/nightly/18.0std/614/l64/work/modelsim/eda/sim_lib/altera_mf.v
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(50): [TFMPC] - Missing connection for port 'wren_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(50): [TFMPC] - Missing connection for port 'rden_a'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(50): [TFMPC] - Missing connection for port 'rden_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(50): [TFMPC] - Missing connection for port 'data_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(50): [TFMPC] - Missing connection for port 'clock1'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(50): [TFMPC] - Missing connection for port 'clocken0'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(50): [TFMPC] - Missing connection for port 'clocken1'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(50): [TFMPC] - Missing connection for port 'clocken2'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(50): [TFMPC] - Missing connection for port 'clocken3'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(50): [TFMPC] - Missing connection for port 'aclr0'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(50): [TFMPC] - Missing connection for port 'aclr1'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(50): [TFMPC] - Missing connection for port 'byteena_a'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(50): [TFMPC] - Missing connection for port 'byteena_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(50): [TFMPC] - Missing connection for port 'addressstall_a'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(50): [TFMPC] - Missing connection for port 'addressstall_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(50): [TFMPC] - Missing connection for port 'q_a'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(50): [TFMPC] - Missing connection for port 'eccstatus'.
+# ** Warning: (vsim-3016) /build/swbuild/SJ/nightly/18.0std/614/l64/work/modelsim/eda/sim_lib/altera_mf.v(47804): Port type is incompatible with connection (port 'clock0').
+#    Time: 0 ps  Iteration: 0  Instance: /nios_system_tb/nios_system_inst/nios2_gen2_0/cpu/nios_system_nios2_gen2_0_cpu_register_bank_a/the_altsyncram/m_default/altsyncram_inst File: /build/swbuild/SJ/nightly/18.0std/614/l64/work/modelsim/eda/sim_lib/altera_mf.v
+# ** Warning: (vsim-3017) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(116): [TFMPC] - Too few port connections. Expected 23, found 6.
+#    Time: 0 ps  Iteration: 0  Instance: /nios_system_tb/nios_system_inst/nios2_gen2_0/cpu/nios_system_nios2_gen2_0_cpu_register_bank_b/the_altsyncram File: /build/swbuild/SJ/nightly/18.0std/614/l64/work/modelsim/eda/sim_lib/altera_mf.v
+# ** Warning: (vsim-3016) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(116): Port type is incompatible with connection (port 'clock0').
+#    Time: 0 ps  Iteration: 0  Instance: /nios_system_tb/nios_system_inst/nios2_gen2_0/cpu/nios_system_nios2_gen2_0_cpu_register_bank_b/the_altsyncram File: /build/swbuild/SJ/nightly/18.0std/614/l64/work/modelsim/eda/sim_lib/altera_mf.v
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(116): [TFMPC] - Missing connection for port 'wren_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(116): [TFMPC] - Missing connection for port 'rden_a'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(116): [TFMPC] - Missing connection for port 'rden_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(116): [TFMPC] - Missing connection for port 'data_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(116): [TFMPC] - Missing connection for port 'clock1'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(116): [TFMPC] - Missing connection for port 'clocken0'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(116): [TFMPC] - Missing connection for port 'clocken1'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(116): [TFMPC] - Missing connection for port 'clocken2'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(116): [TFMPC] - Missing connection for port 'clocken3'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(116): [TFMPC] - Missing connection for port 'aclr0'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(116): [TFMPC] - Missing connection for port 'aclr1'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(116): [TFMPC] - Missing connection for port 'byteena_a'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(116): [TFMPC] - Missing connection for port 'byteena_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(116): [TFMPC] - Missing connection for port 'addressstall_a'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(116): [TFMPC] - Missing connection for port 'addressstall_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(116): [TFMPC] - Missing connection for port 'q_a'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(116): [TFMPC] - Missing connection for port 'eccstatus'.
+# ** Warning: (vsim-3016) /build/swbuild/SJ/nightly/18.0std/614/l64/work/modelsim/eda/sim_lib/altera_mf.v(47804): Port type is incompatible with connection (port 'clock0').
+#    Time: 0 ps  Iteration: 0  Instance: /nios_system_tb/nios_system_inst/nios2_gen2_0/cpu/nios_system_nios2_gen2_0_cpu_register_bank_b/the_altsyncram/m_default/altsyncram_inst File: /build/swbuild/SJ/nightly/18.0std/614/l64/work/modelsim/eda/sim_lib/altera_mf.v
+# ** Warning: (vsim-3015) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(2610): [PCDPC] - Port size (16) does not match connection size (38) for port 'jdo'. The port definition is at: C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(987).
+#    Time: 0 ps  Iteration: 0  Instance: /nios_system_tb/nios_system_inst/nios2_gen2_0/cpu/the_nios_system_nios2_gen2_0_cpu_nios2_oci/the_nios_system_nios2_gen2_0_cpu_nios2_oci_itrace File: C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v
+# ** Warning: (vsim-3017) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(2147): [TFMPC] - Too few port connections. Expected 23, found 7.
+#    Time: 0 ps  Iteration: 0  Instance: /nios_system_tb/nios_system_inst/nios2_gen2_0/cpu/the_nios_system_nios2_gen2_0_cpu_nios2_oci/the_nios_system_nios2_gen2_0_cpu_nios2_ocimem/nios_system_nios2_gen2_0_cpu_ociram_sp_ram/the_altsyncram File: /build/swbuild/SJ/nightly/18.0std/614/l64/work/modelsim/eda/sim_lib/altera_mf.v
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(2147): [TFMPC] - Missing connection for port 'wren_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(2147): [TFMPC] - Missing connection for port 'rden_a'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(2147): [TFMPC] - Missing connection for port 'rden_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(2147): [TFMPC] - Missing connection for port 'data_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(2147): [TFMPC] - Missing connection for port 'address_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(2147): [TFMPC] - Missing connection for port 'clock1'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(2147): [TFMPC] - Missing connection for port 'clocken1'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(2147): [TFMPC] - Missing connection for port 'clocken2'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(2147): [TFMPC] - Missing connection for port 'clocken3'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(2147): [TFMPC] - Missing connection for port 'aclr0'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(2147): [TFMPC] - Missing connection for port 'aclr1'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(2147): [TFMPC] - Missing connection for port 'byteena_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(2147): [TFMPC] - Missing connection for port 'addressstall_a'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(2147): [TFMPC] - Missing connection for port 'addressstall_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(2147): [TFMPC] - Missing connection for port 'q_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(2147): [TFMPC] - Missing connection for port 'eccstatus'.
+# ** Warning: (vsim-3017) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_onchip_memory2_0.v(60): [TFMPC] - Too few port connections. Expected 23, found 7.
+#    Time: 0 ps  Iteration: 0  Instance: /nios_system_tb/nios_system_inst/onchip_memory2_0/the_altsyncram File: /build/swbuild/SJ/nightly/18.0std/614/l64/work/modelsim/eda/sim_lib/altera_mf.v
+# ** Warning: (vsim-3016) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_onchip_memory2_0.v(60): Port type is incompatible with connection (port 'clock0').
+#    Time: 0 ps  Iteration: 0  Instance: /nios_system_tb/nios_system_inst/onchip_memory2_0/the_altsyncram File: /build/swbuild/SJ/nightly/18.0std/614/l64/work/modelsim/eda/sim_lib/altera_mf.v
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_onchip_memory2_0.v(60): [TFMPC] - Missing connection for port 'wren_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_onchip_memory2_0.v(60): [TFMPC] - Missing connection for port 'rden_a'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_onchip_memory2_0.v(60): [TFMPC] - Missing connection for port 'rden_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_onchip_memory2_0.v(60): [TFMPC] - Missing connection for port 'data_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_onchip_memory2_0.v(60): [TFMPC] - Missing connection for port 'address_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_onchip_memory2_0.v(60): [TFMPC] - Missing connection for port 'clock1'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_onchip_memory2_0.v(60): [TFMPC] - Missing connection for port 'clocken1'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_onchip_memory2_0.v(60): [TFMPC] - Missing connection for port 'clocken2'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_onchip_memory2_0.v(60): [TFMPC] - Missing connection for port 'clocken3'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_onchip_memory2_0.v(60): [TFMPC] - Missing connection for port 'aclr0'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_onchip_memory2_0.v(60): [TFMPC] - Missing connection for port 'aclr1'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_onchip_memory2_0.v(60): [TFMPC] - Missing connection for port 'byteena_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_onchip_memory2_0.v(60): [TFMPC] - Missing connection for port 'addressstall_a'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_onchip_memory2_0.v(60): [TFMPC] - Missing connection for port 'addressstall_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_onchip_memory2_0.v(60): [TFMPC] - Missing connection for port 'q_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_onchip_memory2_0.v(60): [TFMPC] - Missing connection for port 'eccstatus'.
+# ** Warning: (vsim-3016) /build/swbuild/SJ/nightly/18.0std/614/l64/work/modelsim/eda/sim_lib/altera_mf.v(47804): Port type is incompatible with connection (port 'clock0').
+#    Time: 0 ps  Iteration: 0  Instance: /nios_system_tb/nios_system_inst/onchip_memory2_0/the_altsyncram/m_default/altsyncram_inst File: /build/swbuild/SJ/nightly/18.0std/614/l64/work/modelsim/eda/sim_lib/altera_mf.v
+# ** Warning: Design size of 10184 statements exceeds ModelSim-Intel FPGA Starter Edition recommended capacity.
+# Expect performance to be adversely affected.
+#  
+pwd
+# C:/ECE342/lab4/part3/software/fpmult_sw/obj/default/runtime/sim/mentor
+cd ..
+# Cannot change directory while a simulation is in progress.
+# Use the "quit -sim" command to unload the design first.
+cd ..
+# Cannot change directory while a simulation is in progress.
+# Use the "quit -sim" command to unload the design first.
+quit -sim
+# End time: 00:23:40 on Mar 06,2021, Elapsed time: 0:04:39
+# Errors: 2, Warnings: 79
+cd ..
+# reading C:/intelFPGA_lite/18.0/modelsim_ase/win32aloem/../modelsim.ini
+cd ..
+cd ..
+cd ..
+cd ..
+cd ..
+pwd
+# C:/ECE342/lab4/part3/software
+cd ..
+ls
+# avalon_fp_mult.sv
+# avalon_slave.sv
+# avs_fp_mult_hw.tcl
+# db
+# de1soc.qpf
+# de1soc.sdc
+# de1soc_top.qsf
+# fp_mult.bsf
+# fp_mult.cmp
+# fp_mult.inc
+# fp_mult.qip
+# fp_mult.v
+# fp_mult_bb.v
+# fp_mult_inst.v
+# greybox_tmp
+# iplauncher_debug.log
+# nios_system
+# nios_system.qsys
+# nios_system.sopcinfo
+# nios_system_tb.csv
+# nios_system_tb.spd
+# part2.sv
+# part2.sv.bak
+# part2_marker.do
+# part2_marker.sv
+# part3_marker.do
+# software
+# vish_stacktrace.vstf
+# vsim.wlf
+# work
+do part3_marker.do
+# reading modelsim.ini
+# obj/default/runtime/sim
+# [exec] file_copy
+# List Of Command Line Aliases
+# 
+# file_copy                                         -- Copy ROM/RAM files to simulation directory
+# 
+# dev_com                                           -- Compile device library files
+# 
+# com                                               -- Compile the design files in correct order
+# 
+# elab                                              -- Elaborate top level design
+# 
+# elab_debug                                        -- Elaborate the top level design with novopt option
+# 
+# ld                                                -- Compile all the design files and elaborate the top level design
+# 
+# ld_debug                                          -- Compile all the design files and elaborate the top level design with -novopt
+# 
+# 
+# 
+# List Of Variables
+# 
+# TOP_LEVEL_NAME                                    -- Top level module name.
+#                                                      For most designs, this should be overridden
+#                                                      to enable the elab/elab_debug aliases.
+# 
+# SYSTEM_INSTANCE_NAME                              -- Instantiated system module name inside top level module.
+# 
+# QSYS_SIMDIR                                       -- Platform Designer base simulation directory.
+# 
+# QUARTUS_INSTALL_DIR                               -- Quartus installation directory.
+# 
+# USER_DEFINED_COMPILE_OPTIONS                      -- User-defined compile options, added to com/dev_com aliases.
+# 
+# USER_DEFINED_ELAB_OPTIONS                         -- User-defined elaboration options, added to elab/elab_debug aliases.
+# 
+# USER_DEFINED_VHDL_COMPILE_OPTIONS                 -- User-defined vhdl compile options, added to com/dev_com aliases.
+# 
+# USER_DEFINED_VERILOG_COMPILE_OPTIONS              -- User-defined verilog compile options, added to com/dev_com aliases.
+# [exec] dev_com
+# [exec] com
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:24:06 on Mar 06,2021
+# vlog -reportprogress 300 -sv C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/verbosity_pkg.sv -work altera_common_sv_packages 
+# -- Compiling package verbosity_pkg
+# 
+# Top level modules:
+# 	--none--
+# End time: 00:24:06 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:24:06 on Mar 06,2021
+# vlog -reportprogress 300 -sv C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_mm_interconnect_0_avalon_st_adapter_error_adapter_0.sv -L altera_common_sv_packages -work error_adapter_0 
+# -- Compiling module nios_system_mm_interconnect_0_avalon_st_adapter_error_adapter_0
+# 
+# Top level modules:
+# 	nios_system_mm_interconnect_0_avalon_st_adapter_error_adapter_0
+# End time: 00:24:06 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:24:06 on Mar 06,2021
+# vlog -reportprogress 300 C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_mm_interconnect_0_avalon_st_adapter.v -work avalon_st_adapter 
+# -- Compiling module nios_system_mm_interconnect_0_avalon_st_adapter
+# 
+# Top level modules:
+# 	nios_system_mm_interconnect_0_avalon_st_adapter
+# End time: 00:24:06 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:24:06 on Mar 06,2021
+# vlog -reportprogress 300 -sv C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_mm_interconnect_0_rsp_mux_001.sv -L altera_common_sv_packages -work rsp_mux_001 
+# -- Compiling module nios_system_mm_interconnect_0_rsp_mux_001
+# 
+# Top level modules:
+# 	nios_system_mm_interconnect_0_rsp_mux_001
+# End time: 00:24:06 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:24:06 on Mar 06,2021
+# vlog -reportprogress 300 -sv C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/altera_merlin_arbitrator.sv -L altera_common_sv_packages -work rsp_mux_001 
+# -- Compiling module altera_merlin_arbitrator
+# -- Compiling module altera_merlin_arb_adder
+# 
+# Top level modules:
+# 	altera_merlin_arbitrator
+# End time: 00:24:06 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:24:06 on Mar 06,2021
+# vlog -reportprogress 300 -sv C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_mm_interconnect_0_rsp_mux.sv -L altera_common_sv_packages -work rsp_mux 
+# -- Compiling module nios_system_mm_interconnect_0_rsp_mux
+# 
+# Top level modules:
+# 	nios_system_mm_interconnect_0_rsp_mux
+# End time: 00:24:07 on Mar 06,2021, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:24:07 on Mar 06,2021
+# vlog -reportprogress 300 -sv C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/altera_merlin_arbitrator.sv -L altera_common_sv_packages -work rsp_mux 
+# -- Compiling module altera_merlin_arbitrator
+# -- Compiling module altera_merlin_arb_adder
+# 
+# Top level modules:
+# 	altera_merlin_arbitrator
+# End time: 00:24:07 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:24:07 on Mar 06,2021
+# vlog -reportprogress 300 -sv C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_mm_interconnect_0_rsp_demux_002.sv -L altera_common_sv_packages -work rsp_demux_002 
+# -- Compiling module nios_system_mm_interconnect_0_rsp_demux_002
+# 
+# Top level modules:
+# 	nios_system_mm_interconnect_0_rsp_demux_002
+# End time: 00:24:07 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:24:07 on Mar 06,2021
+# vlog -reportprogress 300 -sv C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_mm_interconnect_0_cmd_mux_002.sv -L altera_common_sv_packages -work cmd_mux_002 
+# -- Compiling module nios_system_mm_interconnect_0_cmd_mux_002
+# 
+# Top level modules:
+# 	nios_system_mm_interconnect_0_cmd_mux_002
+# End time: 00:24:07 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:24:07 on Mar 06,2021
+# vlog -reportprogress 300 -sv C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/altera_merlin_arbitrator.sv -L altera_common_sv_packages -work cmd_mux_002 
+# -- Compiling module altera_merlin_arbitrator
+# -- Compiling module altera_merlin_arb_adder
+# 
+# Top level modules:
+# 	altera_merlin_arbitrator
+# End time: 00:24:07 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:24:07 on Mar 06,2021
+# vlog -reportprogress 300 -sv C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_mm_interconnect_0_cmd_mux.sv -L altera_common_sv_packages -work cmd_mux 
+# -- Compiling module nios_system_mm_interconnect_0_cmd_mux
+# 
+# Top level modules:
+# 	nios_system_mm_interconnect_0_cmd_mux
+# End time: 00:24:07 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:24:07 on Mar 06,2021
+# vlog -reportprogress 300 -sv C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/altera_merlin_arbitrator.sv -L altera_common_sv_packages -work cmd_mux 
+# -- Compiling module altera_merlin_arbitrator
+# -- Compiling module altera_merlin_arb_adder
+# 
+# Top level modules:
+# 	altera_merlin_arbitrator
+# End time: 00:24:07 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:24:07 on Mar 06,2021
+# vlog -reportprogress 300 -sv C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_mm_interconnect_0_cmd_demux_001.sv -L altera_common_sv_packages -work cmd_demux_001 
+# -- Compiling module nios_system_mm_interconnect_0_cmd_demux_001
+# 
+# Top level modules:
+# 	nios_system_mm_interconnect_0_cmd_demux_001
+# End time: 00:24:08 on Mar 06,2021, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:24:08 on Mar 06,2021
+# vlog -reportprogress 300 -sv C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_mm_interconnect_0_cmd_demux.sv -L altera_common_sv_packages -work cmd_demux 
+# -- Compiling module nios_system_mm_interconnect_0_cmd_demux
+# 
+# Top level modules:
+# 	nios_system_mm_interconnect_0_cmd_demux
+# End time: 00:24:08 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:24:08 on Mar 06,2021
+# vlog -reportprogress 300 -sv C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_mm_interconnect_0_router_004.sv -L altera_common_sv_packages -work router_004 
+# -- Compiling module nios_system_mm_interconnect_0_router_004_default_decode
+# -- Compiling module nios_system_mm_interconnect_0_router_004
+# 
+# Top level modules:
+# 	nios_system_mm_interconnect_0_router_004
+# End time: 00:24:08 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:24:08 on Mar 06,2021
+# vlog -reportprogress 300 -sv C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_mm_interconnect_0_router_002.sv -L altera_common_sv_packages -work router_002 
+# -- Compiling module nios_system_mm_interconnect_0_router_002_default_decode
+# -- Compiling module nios_system_mm_interconnect_0_router_002
+# 
+# Top level modules:
+# 	nios_system_mm_interconnect_0_router_002
+# End time: 00:24:08 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:24:08 on Mar 06,2021
+# vlog -reportprogress 300 -sv C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_mm_interconnect_0_router_001.sv -L altera_common_sv_packages -work router_001 
+# -- Compiling module nios_system_mm_interconnect_0_router_001_default_decode
+# -- Compiling module nios_system_mm_interconnect_0_router_001
+# 
+# Top level modules:
+# 	nios_system_mm_interconnect_0_router_001
+# End time: 00:24:08 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:24:08 on Mar 06,2021
+# vlog -reportprogress 300 -sv C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_mm_interconnect_0_router.sv -L altera_common_sv_packages -work router 
+# -- Compiling module nios_system_mm_interconnect_0_router_default_decode
+# -- Compiling module nios_system_mm_interconnect_0_router
+# 
+# Top level modules:
+# 	nios_system_mm_interconnect_0_router
+# End time: 00:24:08 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:24:08 on Mar 06,2021
+# vlog -reportprogress 300 C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/altera_avalon_sc_fifo.v -work nios2_gen2_0_debug_mem_slave_agent_rsp_fifo 
+# -- Compiling module altera_avalon_sc_fifo
+# 
+# Top level modules:
+# 	altera_avalon_sc_fifo
+# End time: 00:24:08 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:24:08 on Mar 06,2021
+# vlog -reportprogress 300 -sv C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/altera_merlin_slave_agent.sv -L altera_common_sv_packages -work nios2_gen2_0_debug_mem_slave_agent 
+# -- Compiling module altera_merlin_slave_agent
+# ** Warning: C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/altera_merlin_slave_agent.sv(618): (vlog-2186) SystemVerilog testbench feature
+# (randomization, coverage or assertion) detected in the design.
+# These features are only supported in Questasim.
+# ** Warning: C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/altera_merlin_slave_agent.sv(488): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+# ** Warning: C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/altera_merlin_slave_agent.sv(489): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+# ** Warning: C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/altera_merlin_slave_agent.sv(490): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+# ** Warning: C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/altera_merlin_slave_agent.sv(491): (vlog-2583) [SVCHK] - Some checking for conflicts with always_comb and always_latch variables not yet supported. Run vopt to provide additional design-level checks.
+# ** Warning: C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/altera_merlin_slave_agent.sv(34): (vlog-2186) SystemVerilog testbench feature
+# (randomization, coverage or assertion) detected in the design.
+# These features are only supported in Questasim.
+# 
+# Top level modules:
+# 	altera_merlin_slave_agent
+# End time: 00:24:08 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 6
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:24:09 on Mar 06,2021
+# vlog -reportprogress 300 -sv C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/altera_merlin_burst_uncompressor.sv -L altera_common_sv_packages -work nios2_gen2_0_debug_mem_slave_agent 
+# -- Compiling module altera_merlin_burst_uncompressor
+# 
+# Top level modules:
+# 	altera_merlin_burst_uncompressor
+# End time: 00:24:09 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:24:09 on Mar 06,2021
+# vlog -reportprogress 300 -sv C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/altera_merlin_master_agent.sv -L altera_common_sv_packages -work nios2_gen2_0_data_master_agent 
+# -- Compiling module altera_merlin_master_agent
+# 
+# Top level modules:
+# 	altera_merlin_master_agent
+# End time: 00:24:09 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:24:09 on Mar 06,2021
+# vlog -reportprogress 300 -sv C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/altera_merlin_slave_translator.sv -L altera_common_sv_packages -work nios2_gen2_0_debug_mem_slave_translator 
+# -- Compiling module altera_merlin_slave_translator
+# 
+# Top level modules:
+# 	altera_merlin_slave_translator
+# End time: 00:24:09 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:24:09 on Mar 06,2021
+# vlog -reportprogress 300 -sv C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/altera_merlin_master_translator.sv -L altera_common_sv_packages -work nios2_gen2_0_data_master_translator 
+# -- Compiling module altera_merlin_master_translator
+# 
+# Top level modules:
+# 	altera_merlin_master_translator
+# End time: 00:24:09 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:24:09 on Mar 06,2021
+# vlog -reportprogress 300 C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v -work cpu 
+# -- Compiling module nios_system_nios2_gen2_0_cpu_register_bank_a_module
+# -- Compiling module nios_system_nios2_gen2_0_cpu_register_bank_b_module
+# -- Compiling module nios_system_nios2_gen2_0_cpu_nios2_oci_debug
+# -- Compiling module nios_system_nios2_gen2_0_cpu_nios2_oci_break
+# -- Compiling module nios_system_nios2_gen2_0_cpu_nios2_oci_xbrk
+# -- Compiling module nios_system_nios2_gen2_0_cpu_nios2_oci_dbrk
+# -- Compiling module nios_system_nios2_gen2_0_cpu_nios2_oci_itrace
+# -- Compiling module nios_system_nios2_gen2_0_cpu_nios2_oci_td_mode
+# -- Compiling module nios_system_nios2_gen2_0_cpu_nios2_oci_dtrace
+# -- Compiling module nios_system_nios2_gen2_0_cpu_nios2_oci_compute_input_tm_cnt
+# -- Compiling module nios_system_nios2_gen2_0_cpu_nios2_oci_fifo_wrptr_inc
+# -- Compiling module nios_system_nios2_gen2_0_cpu_nios2_oci_fifo_cnt_inc
+# -- Compiling module nios_system_nios2_gen2_0_cpu_nios2_oci_fifo
+# -- Compiling module nios_system_nios2_gen2_0_cpu_nios2_oci_pib
+# -- Compiling module nios_system_nios2_gen2_0_cpu_nios2_oci_im
+# -- Compiling module nios_system_nios2_gen2_0_cpu_nios2_performance_monitors
+# -- Compiling module nios_system_nios2_gen2_0_cpu_nios2_avalon_reg
+# -- Compiling module nios_system_nios2_gen2_0_cpu_ociram_sp_ram_module
+# -- Compiling module nios_system_nios2_gen2_0_cpu_nios2_ocimem
+# -- Compiling module nios_system_nios2_gen2_0_cpu_nios2_oci
+# -- Compiling module nios_system_nios2_gen2_0_cpu
+# 
+# Top level modules:
+# 	nios_system_nios2_gen2_0_cpu_nios2_performance_monitors
+# 	nios_system_nios2_gen2_0_cpu
+# End time: 00:24:09 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:24:09 on Mar 06,2021
+# vlog -reportprogress 300 C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu_debug_slave_sysclk.v -work cpu 
+# -- Compiling module nios_system_nios2_gen2_0_cpu_debug_slave_sysclk
+# 
+# Top level modules:
+# 	nios_system_nios2_gen2_0_cpu_debug_slave_sysclk
+# End time: 00:24:09 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:24:09 on Mar 06,2021
+# vlog -reportprogress 300 C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu_debug_slave_tck.v -work cpu 
+# -- Compiling module nios_system_nios2_gen2_0_cpu_debug_slave_tck
+# 
+# Top level modules:
+# 	nios_system_nios2_gen2_0_cpu_debug_slave_tck
+# End time: 00:24:10 on Mar 06,2021, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:24:10 on Mar 06,2021
+# vlog -reportprogress 300 C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu_debug_slave_wrapper.v -work cpu 
+# -- Compiling module nios_system_nios2_gen2_0_cpu_debug_slave_wrapper
+# 
+# Top level modules:
+# 	nios_system_nios2_gen2_0_cpu_debug_slave_wrapper
+# End time: 00:24:10 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:24:10 on Mar 06,2021
+# vlog -reportprogress 300 C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu_test_bench.v -work cpu 
+# -- Compiling module nios_system_nios2_gen2_0_cpu_test_bench
+# 
+# Top level modules:
+# 	nios_system_nios2_gen2_0_cpu_test_bench
+# End time: 00:24:10 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:24:10 on Mar 06,2021
+# vlog -reportprogress 300 C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/altera_reset_controller.v -work rst_controller 
+# -- Compiling module altera_reset_controller
+# 
+# Top level modules:
+# 	altera_reset_controller
+# End time: 00:24:10 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:24:10 on Mar 06,2021
+# vlog -reportprogress 300 C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/altera_reset_synchronizer.v -work rst_controller 
+# -- Compiling module altera_reset_synchronizer
+# 
+# Top level modules:
+# 	altera_reset_synchronizer
+# End time: 00:24:10 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:24:10 on Mar 06,2021
+# vlog -reportprogress 300 -sv C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_irq_mapper.sv -L altera_common_sv_packages -work irq_mapper 
+# -- Compiling module nios_system_irq_mapper
+# 
+# Top level modules:
+# 	nios_system_irq_mapper
+# End time: 00:24:10 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:24:10 on Mar 06,2021
+# vlog -reportprogress 300 C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_mm_interconnect_0.v -work mm_interconnect_0 
+# -- Compiling module nios_system_mm_interconnect_0
+# 
+# Top level modules:
+# 	nios_system_mm_interconnect_0
+# End time: 00:24:10 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:24:10 on Mar 06,2021
+# vlog -reportprogress 300 C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_onchip_memory2_0.v -work onchip_memory2_0 
+# -- Compiling module nios_system_onchip_memory2_0
+# 
+# Top level modules:
+# 	nios_system_onchip_memory2_0
+# End time: 00:24:10 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:24:10 on Mar 06,2021
+# vlog -reportprogress 300 C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0.v -work nios2_gen2_0 
+# -- Compiling module nios_system_nios2_gen2_0
+# 
+# Top level modules:
+# 	nios_system_nios2_gen2_0
+# End time: 00:24:11 on Mar 06,2021, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:24:11 on Mar 06,2021
+# vlog -reportprogress 300 -sv C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/avalon_fp_mult.sv -L altera_common_sv_packages -work avs_fp_mult_0 
+# -- Compiling module avalon_fp_mult
+# 
+# Top level modules:
+# 	avalon_fp_mult
+# End time: 00:24:11 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:24:11 on Mar 06,2021
+# vlog -reportprogress 300 -sv C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/avalon_slave.sv -L altera_common_sv_packages -work avs_fp_mult_0 
+# -- Compiling module avalon_slave
+# -- Compiling module control_path
+# -- Compiling module datapath
+# 
+# Top level modules:
+# 	avalon_slave
+# End time: 00:24:11 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:24:11 on Mar 06,2021
+# vlog -reportprogress 300 C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/fp_mult.v -work avs_fp_mult_0 
+# -- Compiling module fp_mult_altfp_mult_her
+# -- Compiling module fp_mult
+# 
+# Top level modules:
+# 	fp_mult
+# End time: 00:24:11 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:24:11 on Mar 06,2021
+# vlog -reportprogress 300 -sv C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/altera_avalon_reset_source.sv -L altera_common_sv_packages -work nios_system_inst_reset_bfm 
+# -- Compiling module altera_avalon_reset_source
+# -- Importing package altera_common_sv_packages.verbosity_pkg
+# 
+# Top level modules:
+# 	altera_avalon_reset_source
+# End time: 00:24:11 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:24:11 on Mar 06,2021
+# vlog -reportprogress 300 -sv C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/altera_avalon_clock_source.sv -L altera_common_sv_packages -work nios_system_inst_clk_bfm 
+# -- Compiling module altera_avalon_clock_source
+# -- Importing package altera_common_sv_packages.verbosity_pkg
+# 
+# Top level modules:
+# 	altera_avalon_clock_source
+# End time: 00:24:11 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:24:11 on Mar 06,2021
+# vlog -reportprogress 300 C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system.v -work nios_system_inst 
+# -- Compiling module nios_system
+# 
+# Top level modules:
+# 	nios_system
+# End time: 00:24:11 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:24:11 on Mar 06,2021
+# vlog -reportprogress 300 C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/nios_system_tb.v 
+# -- Compiling module nios_system_tb
+# 
+# Top level modules:
+# 	nios_system_tb
+# End time: 00:24:11 on Mar 06,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 00:24:11 on Mar 06,2021
+# vlog -reportprogress 300 -work work part3_marker.sv 
+# -- Compiling module nios_system_tb
+# 
+# Top level modules:
+# 	nios_system_tb
+# End time: 00:24:12 on Mar 06,2021, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+# [exec] elab
+# vsim -t ps -L work -L work_lib -L altera_common_sv_packages -L error_adapter_0 -L avalon_st_adapter -L rsp_mux_001 -L rsp_mux -L rsp_demux_002 -L cmd_mux_002 -L cmd_mux -L cmd_demux_001 -L cmd_demux -L router_004 -L router_002 -L router_001 -L router -L nios2_gen2_0_debug_mem_slave_agent_rsp_fifo -L nios2_gen2_0_debug_mem_slave_agent -L nios2_gen2_0_data_master_agent -L nios2_gen2_0_debug_mem_slave_translator -L nios2_gen2_0_data_master_translator -L cpu -L rst_controller -L irq_mapper -L mm_interconnect_0 -L onchip_memory2_0 -L nios2_gen2_0 -L avs_fp_mult_0 -L nios_system_inst_reset_bfm -L nios_system_inst_clk_bfm -L nios_system_inst -L altera_ver -L lpm_ver -L sgate_ver -L altera_mf_ver -L altera_lnsim_ver -L cyclonev_ver -L cyclonev_hssi_ver -L cyclonev_pcie_hip_ver nios_system_tb 
+# Start time: 00:24:12 on Mar 06,2021
+# Loading sv_std.std
+# Loading work.nios_system_tb
+# Loading nios_system_inst.nios_system
+# Loading avs_fp_mult_0.avalon_fp_mult
+# Loading avs_fp_mult_0.avalon_slave
+# Loading avs_fp_mult_0.control_path
+# Loading avs_fp_mult_0.datapath
+# Loading avs_fp_mult_0.fp_mult
+# Loading avs_fp_mult_0.fp_mult_altfp_mult_her
+# Loading lpm_ver.lpm_add_sub
+# Loading lpm_ver.lpm_mult
+# Loading lpm_ver.LPM_HINT_EVALUATION
+# Loading nios2_gen2_0.nios_system_nios2_gen2_0
+# Loading cpu.nios_system_nios2_gen2_0_cpu
+# Loading cpu.nios_system_nios2_gen2_0_cpu_test_bench
+# Loading cpu.nios_system_nios2_gen2_0_cpu_register_bank_a_module
+# Loading altera_mf_ver.altsyncram
+# Loading cpu.nios_system_nios2_gen2_0_cpu_register_bank_b_module
+# Loading cpu.nios_system_nios2_gen2_0_cpu_nios2_oci
+# Loading cpu.nios_system_nios2_gen2_0_cpu_nios2_oci_debug
+# Loading altera_mf_ver.altera_std_synchronizer
+# Loading cpu.nios_system_nios2_gen2_0_cpu_nios2_oci_break
+# Loading cpu.nios_system_nios2_gen2_0_cpu_nios2_oci_xbrk
+# Loading cpu.nios_system_nios2_gen2_0_cpu_nios2_oci_dbrk
+# Loading cpu.nios_system_nios2_gen2_0_cpu_nios2_oci_itrace
+# Loading cpu.nios_system_nios2_gen2_0_cpu_nios2_oci_dtrace
+# Loading cpu.nios_system_nios2_gen2_0_cpu_nios2_oci_td_mode
+# Loading cpu.nios_system_nios2_gen2_0_cpu_nios2_oci_fifo
+# Loading cpu.nios_system_nios2_gen2_0_cpu_nios2_oci_compute_input_tm_cnt
+# Loading cpu.nios_system_nios2_gen2_0_cpu_nios2_oci_fifo_wrptr_inc
+# Loading cpu.nios_system_nios2_gen2_0_cpu_nios2_oci_fifo_cnt_inc
+# Loading cpu.nios_system_nios2_gen2_0_cpu_nios2_oci_pib
+# Loading cpu.nios_system_nios2_gen2_0_cpu_nios2_oci_im
+# Loading cpu.nios_system_nios2_gen2_0_cpu_nios2_avalon_reg
+# Loading cpu.nios_system_nios2_gen2_0_cpu_nios2_ocimem
+# Loading cpu.nios_system_nios2_gen2_0_cpu_ociram_sp_ram_module
+# Loading cpu.nios_system_nios2_gen2_0_cpu_debug_slave_wrapper
+# Loading cpu.nios_system_nios2_gen2_0_cpu_debug_slave_tck
+# Loading cpu.nios_system_nios2_gen2_0_cpu_debug_slave_sysclk
+# Loading onchip_memory2_0.nios_system_onchip_memory2_0
+# Loading mm_interconnect_0.nios_system_mm_interconnect_0
+# Loading nios2_gen2_0_data_master_translator.altera_merlin_master_translator
+# Loading nios2_gen2_0_debug_mem_slave_translator.altera_merlin_slave_translator
+# Loading nios2_gen2_0_data_master_agent.altera_merlin_master_agent
+# Loading nios2_gen2_0_debug_mem_slave_agent.altera_merlin_slave_agent
+# Loading nios2_gen2_0_debug_mem_slave_agent.altera_merlin_burst_uncompressor
+# Loading nios2_gen2_0_debug_mem_slave_agent_rsp_fifo.altera_avalon_sc_fifo
+# Loading router.nios_system_mm_interconnect_0_router
+# Loading router.nios_system_mm_interconnect_0_router_default_decode
+# Loading router_001.nios_system_mm_interconnect_0_router_001
+# Loading router_001.nios_system_mm_interconnect_0_router_001_default_decode
+# Loading router_002.nios_system_mm_interconnect_0_router_002
+# Loading router_002.nios_system_mm_interconnect_0_router_002_default_decode
+# Loading router_004.nios_system_mm_interconnect_0_router_004
+# Loading router_004.nios_system_mm_interconnect_0_router_004_default_decode
+# Loading cmd_demux.nios_system_mm_interconnect_0_cmd_demux
+# Loading cmd_demux_001.nios_system_mm_interconnect_0_cmd_demux_001
+# Loading cmd_mux.nios_system_mm_interconnect_0_cmd_mux
+# Loading cmd_mux.altera_merlin_arbitrator
+# Loading cmd_mux.altera_merlin_arb_adder
+# Loading cmd_mux_002.nios_system_mm_interconnect_0_cmd_mux_002
+# Loading rsp_demux_002.nios_system_mm_interconnect_0_rsp_demux_002
+# Loading rsp_mux.nios_system_mm_interconnect_0_rsp_mux
+# Loading rsp_mux.altera_merlin_arbitrator
+# Loading rsp_mux.altera_merlin_arb_adder
+# Loading rsp_mux_001.nios_system_mm_interconnect_0_rsp_mux_001
+# Loading rsp_mux_001.altera_merlin_arbitrator
+# Loading rsp_mux_001.altera_merlin_arb_adder
+# Loading avalon_st_adapter.nios_system_mm_interconnect_0_avalon_st_adapter
+# Loading error_adapter_0.nios_system_mm_interconnect_0_avalon_st_adapter_error_adapter_0
+# Loading irq_mapper.nios_system_irq_mapper
+# Loading rst_controller.altera_reset_controller
+# Loading altera_mf_ver.altsyncram_body
+# Loading altera_mf_ver.ALTERA_DEVICE_FAMILIES
+# Loading altera_mf_ver.ALTERA_MF_MEMORY_INITIALIZATION
+# Loading rst_controller.altera_reset_synchronizer
+# ** Warning: (vsim-8311) System Verilog assertions are supported only in Questasim.
+# ** Warning: (vsim-3017) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(50): [TFMPC] - Too few port connections. Expected 23, found 6.
+#    Time: 0 ps  Iteration: 0  Instance: /nios_system_tb/DUT/nios2_gen2_0/cpu/nios_system_nios2_gen2_0_cpu_register_bank_a/the_altsyncram File: /build/swbuild/SJ/nightly/18.0std/614/l64/work/modelsim/eda/sim_lib/altera_mf.v
+# ** Warning: (vsim-3016) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(50): Port type is incompatible with connection (port 'clock0').
+#    Time: 0 ps  Iteration: 0  Instance: /nios_system_tb/DUT/nios2_gen2_0/cpu/nios_system_nios2_gen2_0_cpu_register_bank_a/the_altsyncram File: /build/swbuild/SJ/nightly/18.0std/614/l64/work/modelsim/eda/sim_lib/altera_mf.v
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(50): [TFMPC] - Missing connection for port 'wren_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(50): [TFMPC] - Missing connection for port 'rden_a'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(50): [TFMPC] - Missing connection for port 'rden_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(50): [TFMPC] - Missing connection for port 'data_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(50): [TFMPC] - Missing connection for port 'clock1'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(50): [TFMPC] - Missing connection for port 'clocken0'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(50): [TFMPC] - Missing connection for port 'clocken1'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(50): [TFMPC] - Missing connection for port 'clocken2'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(50): [TFMPC] - Missing connection for port 'clocken3'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(50): [TFMPC] - Missing connection for port 'aclr0'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(50): [TFMPC] - Missing connection for port 'aclr1'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(50): [TFMPC] - Missing connection for port 'byteena_a'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(50): [TFMPC] - Missing connection for port 'byteena_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(50): [TFMPC] - Missing connection for port 'addressstall_a'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(50): [TFMPC] - Missing connection for port 'addressstall_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(50): [TFMPC] - Missing connection for port 'q_a'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(50): [TFMPC] - Missing connection for port 'eccstatus'.
+# ** Warning: (vsim-3016) /build/swbuild/SJ/nightly/18.0std/614/l64/work/modelsim/eda/sim_lib/altera_mf.v(47804): Port type is incompatible with connection (port 'clock0').
+#    Time: 0 ps  Iteration: 0  Instance: /nios_system_tb/DUT/nios2_gen2_0/cpu/nios_system_nios2_gen2_0_cpu_register_bank_a/the_altsyncram/m_default/altsyncram_inst File: /build/swbuild/SJ/nightly/18.0std/614/l64/work/modelsim/eda/sim_lib/altera_mf.v
+# ** Warning: (vsim-3017) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(116): [TFMPC] - Too few port connections. Expected 23, found 6.
+#    Time: 0 ps  Iteration: 0  Instance: /nios_system_tb/DUT/nios2_gen2_0/cpu/nios_system_nios2_gen2_0_cpu_register_bank_b/the_altsyncram File: /build/swbuild/SJ/nightly/18.0std/614/l64/work/modelsim/eda/sim_lib/altera_mf.v
+# ** Warning: (vsim-3016) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(116): Port type is incompatible with connection (port 'clock0').
+#    Time: 0 ps  Iteration: 0  Instance: /nios_system_tb/DUT/nios2_gen2_0/cpu/nios_system_nios2_gen2_0_cpu_register_bank_b/the_altsyncram File: /build/swbuild/SJ/nightly/18.0std/614/l64/work/modelsim/eda/sim_lib/altera_mf.v
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(116): [TFMPC] - Missing connection for port 'wren_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(116): [TFMPC] - Missing connection for port 'rden_a'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(116): [TFMPC] - Missing connection for port 'rden_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(116): [TFMPC] - Missing connection for port 'data_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(116): [TFMPC] - Missing connection for port 'clock1'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(116): [TFMPC] - Missing connection for port 'clocken0'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(116): [TFMPC] - Missing connection for port 'clocken1'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(116): [TFMPC] - Missing connection for port 'clocken2'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(116): [TFMPC] - Missing connection for port 'clocken3'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(116): [TFMPC] - Missing connection for port 'aclr0'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(116): [TFMPC] - Missing connection for port 'aclr1'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(116): [TFMPC] - Missing connection for port 'byteena_a'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(116): [TFMPC] - Missing connection for port 'byteena_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(116): [TFMPC] - Missing connection for port 'addressstall_a'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(116): [TFMPC] - Missing connection for port 'addressstall_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(116): [TFMPC] - Missing connection for port 'q_a'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(116): [TFMPC] - Missing connection for port 'eccstatus'.
+# ** Warning: (vsim-3016) /build/swbuild/SJ/nightly/18.0std/614/l64/work/modelsim/eda/sim_lib/altera_mf.v(47804): Port type is incompatible with connection (port 'clock0').
+#    Time: 0 ps  Iteration: 0  Instance: /nios_system_tb/DUT/nios2_gen2_0/cpu/nios_system_nios2_gen2_0_cpu_register_bank_b/the_altsyncram/m_default/altsyncram_inst File: /build/swbuild/SJ/nightly/18.0std/614/l64/work/modelsim/eda/sim_lib/altera_mf.v
+# ** Warning: (vsim-3015) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(2610): [PCDPC] - Port size (16) does not match connection size (38) for port 'jdo'. The port definition is at: C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(987).
+#    Time: 0 ps  Iteration: 0  Instance: /nios_system_tb/DUT/nios2_gen2_0/cpu/the_nios_system_nios2_gen2_0_cpu_nios2_oci/the_nios_system_nios2_gen2_0_cpu_nios2_oci_itrace File: C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v
+# ** Warning: (vsim-3017) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(2147): [TFMPC] - Too few port connections. Expected 23, found 7.
+#    Time: 0 ps  Iteration: 0  Instance: /nios_system_tb/DUT/nios2_gen2_0/cpu/the_nios_system_nios2_gen2_0_cpu_nios2_oci/the_nios_system_nios2_gen2_0_cpu_nios2_ocimem/nios_system_nios2_gen2_0_cpu_ociram_sp_ram/the_altsyncram File: /build/swbuild/SJ/nightly/18.0std/614/l64/work/modelsim/eda/sim_lib/altera_mf.v
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(2147): [TFMPC] - Missing connection for port 'wren_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(2147): [TFMPC] - Missing connection for port 'rden_a'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(2147): [TFMPC] - Missing connection for port 'rden_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(2147): [TFMPC] - Missing connection for port 'data_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(2147): [TFMPC] - Missing connection for port 'address_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(2147): [TFMPC] - Missing connection for port 'clock1'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(2147): [TFMPC] - Missing connection for port 'clocken1'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(2147): [TFMPC] - Missing connection for port 'clocken2'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(2147): [TFMPC] - Missing connection for port 'clocken3'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(2147): [TFMPC] - Missing connection for port 'aclr0'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(2147): [TFMPC] - Missing connection for port 'aclr1'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(2147): [TFMPC] - Missing connection for port 'byteena_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(2147): [TFMPC] - Missing connection for port 'addressstall_a'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(2147): [TFMPC] - Missing connection for port 'addressstall_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(2147): [TFMPC] - Missing connection for port 'q_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(2147): [TFMPC] - Missing connection for port 'eccstatus'.
+# ** Warning: (vsim-3017) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_onchip_memory2_0.v(60): [TFMPC] - Too few port connections. Expected 23, found 7.
+#    Time: 0 ps  Iteration: 0  Instance: /nios_system_tb/DUT/onchip_memory2_0/the_altsyncram File: /build/swbuild/SJ/nightly/18.0std/614/l64/work/modelsim/eda/sim_lib/altera_mf.v
+# ** Warning: (vsim-3016) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_onchip_memory2_0.v(60): Port type is incompatible with connection (port 'clock0').
+#    Time: 0 ps  Iteration: 0  Instance: /nios_system_tb/DUT/onchip_memory2_0/the_altsyncram File: /build/swbuild/SJ/nightly/18.0std/614/l64/work/modelsim/eda/sim_lib/altera_mf.v
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_onchip_memory2_0.v(60): [TFMPC] - Missing connection for port 'wren_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_onchip_memory2_0.v(60): [TFMPC] - Missing connection for port 'rden_a'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_onchip_memory2_0.v(60): [TFMPC] - Missing connection for port 'rden_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_onchip_memory2_0.v(60): [TFMPC] - Missing connection for port 'data_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_onchip_memory2_0.v(60): [TFMPC] - Missing connection for port 'address_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_onchip_memory2_0.v(60): [TFMPC] - Missing connection for port 'clock1'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_onchip_memory2_0.v(60): [TFMPC] - Missing connection for port 'clocken1'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_onchip_memory2_0.v(60): [TFMPC] - Missing connection for port 'clocken2'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_onchip_memory2_0.v(60): [TFMPC] - Missing connection for port 'clocken3'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_onchip_memory2_0.v(60): [TFMPC] - Missing connection for port 'aclr0'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_onchip_memory2_0.v(60): [TFMPC] - Missing connection for port 'aclr1'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_onchip_memory2_0.v(60): [TFMPC] - Missing connection for port 'byteena_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_onchip_memory2_0.v(60): [TFMPC] - Missing connection for port 'addressstall_a'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_onchip_memory2_0.v(60): [TFMPC] - Missing connection for port 'addressstall_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_onchip_memory2_0.v(60): [TFMPC] - Missing connection for port 'q_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_onchip_memory2_0.v(60): [TFMPC] - Missing connection for port 'eccstatus'.
+# ** Warning: (vsim-3016) /build/swbuild/SJ/nightly/18.0std/614/l64/work/modelsim/eda/sim_lib/altera_mf.v(47804): Port type is incompatible with connection (port 'clock0').
+#    Time: 0 ps  Iteration: 0  Instance: /nios_system_tb/DUT/onchip_memory2_0/the_altsyncram/m_default/altsyncram_inst File: /build/swbuild/SJ/nightly/18.0std/614/l64/work/modelsim/eda/sim_lib/altera_mf.v
+# ** Warning: Design size of 10016 statements exceeds ModelSim-Intel FPGA Starter Edition recommended capacity.
+# Expect performance to be adversely affected.
+add wave -position insertpoint sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/*
+add wave -position 0  sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/ctrl/OP1
+add wave -position 0  sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/ctrl/OP2
+add wave -position 0  sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/ctrl/S
+add wave -position 0  sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/ctrl/RESULT
+add wave -position 0  sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/ctrl/STATUS
+add wave -position 0  sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/ctrl/clk
+add wave -position 0  sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/ctrl/reset
+add wave -position 0  sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/ctrl/read
+add wave -position 0  sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/ctrl/write
+add wave -position 0  sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/ctrl/address
+add wave -position 0  sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/ctrl/waitrequest
+add wave -position 0  sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/ctrl/done
+add wave -position 0  sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/ctrl/count_reset
+add wave -position 0  sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/ctrl/ld_op1
+add wave -position 0  sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/ctrl/ld_op2
+add wave -position 0  sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/ctrl/ld_start
+add wave -position 0  sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/ctrl/ld_result
+add wave -position 0  sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/ctrl/ld_status
+add wave -position 0  sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/ctrl/ld_count
+add wave -position 0  sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/ctrl/mmreg
+add wave -position 0  sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/ctrl/enable
+add wave -position 0  sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/ctrl/state
+add wave -position 0  sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/ctrl/nextstate
+add wave -position 0  sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/ctrl/mm_reg
+add wave -position 1  sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/dp/clk
+add wave -position 1  sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/dp/reset
+add wave -position 1  sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/dp/readdata
+add wave -position 1  sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/dp/writedata
+add wave -position 1  sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/dp/fpm_result
+add wave -position 1  sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/dp/fpm_status
+add wave -position 1  sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/dp/ld_op1
+add wave -position 1  sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/dp/ld_op2
+add wave -position 1  sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/dp/ld_start
+add wave -position 1  sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/dp/ld_result
+add wave -position 1  sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/dp/ld_status
+add wave -position 1  sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/dp/ld_count
+add wave -position 1  sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/dp/count_reset
+add wave -position 1  sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/dp/mm_reg
+add wave -position 1  sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/dp/done
+add wave -position 1  sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/dp/op1
+add wave -position 1  sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/dp/op2
+add wave -position 1  sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/dp/s
+add wave -position 1  sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/dp/result
+add wave -position 1  sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/dp/status
+add wave -position 1  sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/dp/mm
+add wave -position 1  sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/dp/count
+add wave -position 2  sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/clk
+add wave -position 2  sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/reset
+add wave -position 2  sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/avs_s1_address
+add wave -position 2  sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/avs_s1_read
+add wave -position 2  sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/avs_s1_write
+add wave -position 2  sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/avs_s1_writedata
+add wave -position 2  sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/avs_s1_readdata
+add wave -position 2  sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/avs_s1_waitrequest
+add wave -position 2  sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/input_1
+add wave -position 2  sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/input_2
+add wave -position 2  sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/clk_en
+add wave -position 2  sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/result
+add wave -position 2  sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/flags
+add wave -position 2  sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/mul_op_1
+add wave -position 2  sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/mul_op_2
+add wave -position 2  sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/mul_start
+add wave -position 2  sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/mul_result
+add wave -position 2  sim:/nios_system_tb/DUT/avs_fp_mult_0/avs/mul_status
+run 600ns
+# Warning: DONT_CARE value for read_during_write_mode_port_a is not supported in Stratix device family, it might cause incorrect behavioural simulation result
+# Time: 0  Instance: nios_system_tb.DUT.nios2_gen2_0.cpu.the_nios_system_nios2_gen2_0_cpu_nios2_oci.the_nios_system_nios2_gen2_0_cpu_nios2_ocimem.nios_system_nios2_gen2_0_cpu_ociram_sp_ram.the_altsyncram.m_default.altsyncram_inst
+# Warning: DONT_CARE value for read_during_write_mode_port_a is not supported in Stratix device family, it might cause incorrect behavioural simulation result
+# Time: 0  Instance: nios_system_tb.DUT.onchip_memory2_0.the_altsyncram.m_default.altsyncram_inst
+restart -f
+# ** Warning: (vsim-3017) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(50): [TFMPC] - Too few port connections. Expected 23, found 6.
+#    Time: 0 ps  Iteration: 0  Instance: /nios_system_tb/DUT/nios2_gen2_0/cpu/nios_system_nios2_gen2_0_cpu_register_bank_a/the_altsyncram File: /build/swbuild/SJ/nightly/18.0std/614/l64/work/modelsim/eda/sim_lib/altera_mf.v
+# ** Warning: (vsim-3016) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(50): Port type is incompatible with connection (port 'clock0').
+#    Time: 0 ps  Iteration: 0  Instance: /nios_system_tb/DUT/nios2_gen2_0/cpu/nios_system_nios2_gen2_0_cpu_register_bank_a/the_altsyncram File: /build/swbuild/SJ/nightly/18.0std/614/l64/work/modelsim/eda/sim_lib/altera_mf.v
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(50): [TFMPC] - Missing connection for port 'wren_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(50): [TFMPC] - Missing connection for port 'rden_a'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(50): [TFMPC] - Missing connection for port 'rden_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(50): [TFMPC] - Missing connection for port 'data_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(50): [TFMPC] - Missing connection for port 'clock1'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(50): [TFMPC] - Missing connection for port 'clocken0'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(50): [TFMPC] - Missing connection for port 'clocken1'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(50): [TFMPC] - Missing connection for port 'clocken2'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(50): [TFMPC] - Missing connection for port 'clocken3'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(50): [TFMPC] - Missing connection for port 'aclr0'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(50): [TFMPC] - Missing connection for port 'aclr1'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(50): [TFMPC] - Missing connection for port 'byteena_a'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(50): [TFMPC] - Missing connection for port 'byteena_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(50): [TFMPC] - Missing connection for port 'addressstall_a'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(50): [TFMPC] - Missing connection for port 'addressstall_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(50): [TFMPC] - Missing connection for port 'q_a'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(50): [TFMPC] - Missing connection for port 'eccstatus'.
+# ** Warning: (vsim-3016) /build/swbuild/SJ/nightly/18.0std/614/l64/work/modelsim/eda/sim_lib/altera_mf.v(47804): Port type is incompatible with connection (port 'clock0').
+#    Time: 0 ps  Iteration: 0  Instance: /nios_system_tb/DUT/nios2_gen2_0/cpu/nios_system_nios2_gen2_0_cpu_register_bank_a/the_altsyncram/m_default/altsyncram_inst File: /build/swbuild/SJ/nightly/18.0std/614/l64/work/modelsim/eda/sim_lib/altera_mf.v
+# ** Warning: (vsim-3017) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(116): [TFMPC] - Too few port connections. Expected 23, found 6.
+#    Time: 0 ps  Iteration: 0  Instance: /nios_system_tb/DUT/nios2_gen2_0/cpu/nios_system_nios2_gen2_0_cpu_register_bank_b/the_altsyncram File: /build/swbuild/SJ/nightly/18.0std/614/l64/work/modelsim/eda/sim_lib/altera_mf.v
+# ** Warning: (vsim-3016) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(116): Port type is incompatible with connection (port 'clock0').
+#    Time: 0 ps  Iteration: 0  Instance: /nios_system_tb/DUT/nios2_gen2_0/cpu/nios_system_nios2_gen2_0_cpu_register_bank_b/the_altsyncram File: /build/swbuild/SJ/nightly/18.0std/614/l64/work/modelsim/eda/sim_lib/altera_mf.v
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(116): [TFMPC] - Missing connection for port 'wren_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(116): [TFMPC] - Missing connection for port 'rden_a'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(116): [TFMPC] - Missing connection for port 'rden_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(116): [TFMPC] - Missing connection for port 'data_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(116): [TFMPC] - Missing connection for port 'clock1'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(116): [TFMPC] - Missing connection for port 'clocken0'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(116): [TFMPC] - Missing connection for port 'clocken1'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(116): [TFMPC] - Missing connection for port 'clocken2'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(116): [TFMPC] - Missing connection for port 'clocken3'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(116): [TFMPC] - Missing connection for port 'aclr0'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(116): [TFMPC] - Missing connection for port 'aclr1'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(116): [TFMPC] - Missing connection for port 'byteena_a'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(116): [TFMPC] - Missing connection for port 'byteena_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(116): [TFMPC] - Missing connection for port 'addressstall_a'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(116): [TFMPC] - Missing connection for port 'addressstall_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(116): [TFMPC] - Missing connection for port 'q_a'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(116): [TFMPC] - Missing connection for port 'eccstatus'.
+# ** Warning: (vsim-3016) /build/swbuild/SJ/nightly/18.0std/614/l64/work/modelsim/eda/sim_lib/altera_mf.v(47804): Port type is incompatible with connection (port 'clock0').
+#    Time: 0 ps  Iteration: 0  Instance: /nios_system_tb/DUT/nios2_gen2_0/cpu/nios_system_nios2_gen2_0_cpu_register_bank_b/the_altsyncram/m_default/altsyncram_inst File: /build/swbuild/SJ/nightly/18.0std/614/l64/work/modelsim/eda/sim_lib/altera_mf.v
+# ** Warning: (vsim-3015) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(2610): [PCDPC] - Port size (16) does not match connection size (38) for port 'jdo'. The port definition is at: C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(987).
+#    Time: 0 ps  Iteration: 0  Instance: /nios_system_tb/DUT/nios2_gen2_0/cpu/the_nios_system_nios2_gen2_0_cpu_nios2_oci/the_nios_system_nios2_gen2_0_cpu_nios2_oci_itrace File: C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v
+# ** Warning: (vsim-3017) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(2147): [TFMPC] - Too few port connections. Expected 23, found 7.
+#    Time: 0 ps  Iteration: 0  Instance: /nios_system_tb/DUT/nios2_gen2_0/cpu/the_nios_system_nios2_gen2_0_cpu_nios2_oci/the_nios_system_nios2_gen2_0_cpu_nios2_ocimem/nios_system_nios2_gen2_0_cpu_ociram_sp_ram/the_altsyncram File: /build/swbuild/SJ/nightly/18.0std/614/l64/work/modelsim/eda/sim_lib/altera_mf.v
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(2147): [TFMPC] - Missing connection for port 'wren_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(2147): [TFMPC] - Missing connection for port 'rden_a'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(2147): [TFMPC] - Missing connection for port 'rden_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(2147): [TFMPC] - Missing connection for port 'data_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(2147): [TFMPC] - Missing connection for port 'address_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(2147): [TFMPC] - Missing connection for port 'clock1'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(2147): [TFMPC] - Missing connection for port 'clocken1'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(2147): [TFMPC] - Missing connection for port 'clocken2'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(2147): [TFMPC] - Missing connection for port 'clocken3'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(2147): [TFMPC] - Missing connection for port 'aclr0'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(2147): [TFMPC] - Missing connection for port 'aclr1'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(2147): [TFMPC] - Missing connection for port 'byteena_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(2147): [TFMPC] - Missing connection for port 'addressstall_a'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(2147): [TFMPC] - Missing connection for port 'addressstall_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(2147): [TFMPC] - Missing connection for port 'q_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_nios2_gen2_0_cpu.v(2147): [TFMPC] - Missing connection for port 'eccstatus'.
+# ** Warning: (vsim-3017) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_onchip_memory2_0.v(60): [TFMPC] - Too few port connections. Expected 23, found 7.
+#    Time: 0 ps  Iteration: 0  Instance: /nios_system_tb/DUT/onchip_memory2_0/the_altsyncram File: /build/swbuild/SJ/nightly/18.0std/614/l64/work/modelsim/eda/sim_lib/altera_mf.v
+# ** Warning: (vsim-3016) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_onchip_memory2_0.v(60): Port type is incompatible with connection (port 'clock0').
+#    Time: 0 ps  Iteration: 0  Instance: /nios_system_tb/DUT/onchip_memory2_0/the_altsyncram File: /build/swbuild/SJ/nightly/18.0std/614/l64/work/modelsim/eda/sim_lib/altera_mf.v
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_onchip_memory2_0.v(60): [TFMPC] - Missing connection for port 'wren_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_onchip_memory2_0.v(60): [TFMPC] - Missing connection for port 'rden_a'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_onchip_memory2_0.v(60): [TFMPC] - Missing connection for port 'rden_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_onchip_memory2_0.v(60): [TFMPC] - Missing connection for port 'data_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_onchip_memory2_0.v(60): [TFMPC] - Missing connection for port 'address_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_onchip_memory2_0.v(60): [TFMPC] - Missing connection for port 'clock1'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_onchip_memory2_0.v(60): [TFMPC] - Missing connection for port 'clocken1'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_onchip_memory2_0.v(60): [TFMPC] - Missing connection for port 'clocken2'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_onchip_memory2_0.v(60): [TFMPC] - Missing connection for port 'clocken3'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_onchip_memory2_0.v(60): [TFMPC] - Missing connection for port 'aclr0'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_onchip_memory2_0.v(60): [TFMPC] - Missing connection for port 'aclr1'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_onchip_memory2_0.v(60): [TFMPC] - Missing connection for port 'byteena_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_onchip_memory2_0.v(60): [TFMPC] - Missing connection for port 'addressstall_a'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_onchip_memory2_0.v(60): [TFMPC] - Missing connection for port 'addressstall_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_onchip_memory2_0.v(60): [TFMPC] - Missing connection for port 'q_b'.
+# ** Warning: (vsim-3722) C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_onchip_memory2_0.v(60): [TFMPC] - Missing connection for port 'eccstatus'.
+# ** Warning: (vsim-3016) /build/swbuild/SJ/nightly/18.0std/614/l64/work/modelsim/eda/sim_lib/altera_mf.v(47804): Port type is incompatible with connection (port 'clock0').
+#    Time: 0 ps  Iteration: 0  Instance: /nios_system_tb/DUT/onchip_memory2_0/the_altsyncram/m_default/altsyncram_inst File: /build/swbuild/SJ/nightly/18.0std/614/l64/work/modelsim/eda/sim_lib/altera_mf.v
+run 600ns
+# Warning: DONT_CARE value for read_during_write_mode_port_a is not supported in Stratix device family, it might cause incorrect behavioural simulation result
+# Time: 0  Instance: nios_system_tb.DUT.nios2_gen2_0.cpu.the_nios_system_nios2_gen2_0_cpu_nios2_oci.the_nios_system_nios2_gen2_0_cpu_nios2_ocimem.nios_system_nios2_gen2_0_cpu_ociram_sp_ram.the_altsyncram.m_default.altsyncram_inst
+# Warning: DONT_CARE value for read_during_write_mode_port_a is not supported in Stratix device family, it might cause incorrect behavioural simulation result
+# Time: 0  Instance: nios_system_tb.DUT.onchip_memory2_0.the_altsyncram.m_default.altsyncram_inst
+run 3ms
+# Software multiplication successful, PASS.
+# Software multiplication took        3789 cycles
+# 862010 ns: WARNING: nios_system_nios2_gen2_0_cpu_test_bench/av_ld_data_aligned_unfiltered is 'x'
+# 942310 ns: WARNING: nios_system_nios2_gen2_0_cpu_test_bench/av_ld_data_aligned_unfiltered is 'x'
+# 1022610 ns: WARNING: nios_system_nios2_gen2_0_cpu_test_bench/av_ld_data_aligned_unfiltered is 'x'
+# 1102910 ns: WARNING: nios_system_nios2_gen2_0_cpu_test_bench/av_ld_data_aligned_unfiltered is 'x'
+# 1183210 ns: WARNING: nios_system_nios2_gen2_0_cpu_test_bench/av_ld_data_aligned_unfiltered is 'x'
+# 1263510 ns: WARNING: nios_system_nios2_gen2_0_cpu_test_bench/av_ld_data_aligned_unfiltered is 'x'
+# 1343810 ns: WARNING: nios_system_nios2_gen2_0_cpu_test_bench/av_ld_data_aligned_unfiltered is 'x'
+# 1424110 ns: WARNING: nios_system_nios2_gen2_0_cpu_test_bench/av_ld_data_aligned_unfiltered is 'x'
+# 1504410 ns: WARNING: nios_system_nios2_gen2_0_cpu_test_bench/av_ld_data_aligned_unfiltered is 'x'
+# 1584710 ns: WARNING: nios_system_nios2_gen2_0_cpu_test_bench/av_ld_data_aligned_unfiltered is 'x'
+# 1665010 ns: WARNING: nios_system_nios2_gen2_0_cpu_test_bench/av_ld_data_aligned_unfiltered is 'x'
+# 1745310 ns: WARNING: nios_system_nios2_gen2_0_cpu_test_bench/av_ld_data_aligned_unfiltered is 'x'
+# 1825610 ns: WARNING: nios_system_nios2_gen2_0_cpu_test_bench/av_ld_data_aligned_unfiltered is 'x'
+# 1905910 ns: WARNING: nios_system_nios2_gen2_0_cpu_test_bench/av_ld_data_aligned_unfiltered is 'x'
+# 1986210 ns: WARNING: nios_system_nios2_gen2_0_cpu_test_bench/av_ld_data_aligned_unfiltered is 'x'
+# Software multiplication did not finish or incorrect, FAIL.
+# Hardware multiplication did not finish or incorrect, FAIL.
+# ** Note: $stop    : part3_marker.sv(99)
+#    Time: 2 ms  Iteration: 0  Instance: /nios_system_tb
+# Break in Module nios_system_tb at part3_marker.sv line 99
+# End time: 00:48:31 on Mar 06,2021, Elapsed time: 0:24:19
+# Errors: 0, Warnings: 156

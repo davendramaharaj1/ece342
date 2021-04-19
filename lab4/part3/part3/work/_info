@@ -1,0 +1,172 @@
+m255
+K4
+z2
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+dC:/Users/seunari1/lab4/part3
+vavalon_fp_mult
+Z0 DXx6 sv_std 3 std 0 22 AD7iAPLo6nTIKk<N0eo=D3
+Z1 !s110 1615592547
+!i10b 1
+!s100 RCe>I`jOkUE36C8OCjgDf1
+IX8WS4a25X9Di31LdPU1Jn1
+Z2 VDg1SIo80bB@j0V0VzS_@n1
+Z3 !s105 part2_sv_unit
+S1
+Z4 dC:/ECE342/lab4/part3
+Z5 w1615014773
+Z6 8part2.sv
+Z7 Fpart2.sv
+L0 1
+Z8 OV;L;10.5b;63
+r1
+!s85 0
+31
+Z9 !s108 1615592547.000000
+Z10 !s107 part2.sv|
+Z11 !s90 -reportprogress|300|-work|work|part2.sv|
+!i113 1
+Z12 o-work work
+Z13 tCvgOpt 0
+vavalon_slave
+R0
+R1
+!i10b 1
+!s100 icn2YRX6KI]OGUR?Sac^W0
+IAb4hfVeB<KYMYW8=oJWC@0
+R2
+R3
+S1
+R4
+R5
+R6
+R7
+L0 61
+R8
+r1
+!s85 0
+31
+R9
+R10
+R11
+!i113 1
+R12
+R13
+vcontrol_path
+R0
+R1
+!i10b 1
+!s100 F4Ein8o20S:1:?T:U5O9X3
+I39h[WaCAIi4MGWelhBC;H1
+R2
+R3
+S1
+R4
+R5
+R6
+R7
+L0 159
+R8
+r1
+!s85 0
+31
+R9
+R10
+R11
+!i113 1
+R12
+R13
+vdatapath
+R0
+R1
+!i10b 1
+!s100 2Q[<dF2g4nHc]GbR9YA3n2
+IoPReid>mT@RC6gJKC08zV0
+R2
+R3
+S1
+R4
+R5
+R6
+R7
+L0 295
+R8
+r1
+!s85 0
+31
+R9
+R10
+R11
+!i113 1
+R12
+R13
+vfp_mult
+R1
+!i10b 1
+!s100 c]h_G@MnkB?BM?=_T:HE02
+I7Toc30D[Q<mU:HcP_YT^e2
+R2
+R4
+Z14 w1614988782
+Z15 8fp_mult.v
+Z16 Ffp_mult.v
+L0 857
+R8
+r1
+!s85 0
+31
+R9
+Z17 !s107 fp_mult.v|
+Z18 !s90 -reportprogress|300|-work|work|fp_mult.v|
+!i113 1
+R12
+R13
+vfp_mult_altfp_mult_her
+R1
+!i10b 1
+!s100 @_IA1<HVSc>B@MfLX>XdG1
+Ih:[ES:aXSjbJeI3oN5_?P1
+R2
+R4
+R14
+R15
+R16
+L0 46
+R8
+r1
+!s85 0
+31
+R9
+R17
+R18
+!i113 1
+R12
+R13
+vpart2_marker
+R0
+R1
+!i10b 1
+!s100 WYC8d;KOeX8OQzQ_ckLJS3
+IGjJnY<N1];HzMMUW:9lfV1
+R2
+!s105 part2_marker_sv_unit
+S1
+R4
+w1614988975
+8part2_marker.sv
+Fpart2_marker.sv
+L0 4
+R8
+r1
+!s85 0
+31
+R9
+!s107 part2_marker.sv|
+!s90 -reportprogress|300|-work|work|part2_marker.sv|
+!i113 1
+R12
+R13

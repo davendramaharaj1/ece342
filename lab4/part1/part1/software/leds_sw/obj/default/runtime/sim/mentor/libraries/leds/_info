@@ -1,0 +1,31 @@
+m255
+K4
+z2
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 dC:/ECE342/lab4/part1/software/leds_sw/obj/default/runtime/sim/mentor
+vnios_system_leds
+!s110 1615592488
+!i10b 1
+!s100 <OK1NblUgm[NmHSlcG8X03
+I_aQ`LY=A6lZ4GHg?c0U:M2
+VDg1SIo80bB@j0V0VzS_@n1
+R0
+w1615015863
+8C:/ECE342/lab4/part1/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_leds.v
+FC:/ECE342/lab4/part1/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_leds.v
+L0 21
+OV;L;10.5b;63
+r1
+!s85 0
+31
+!s108 1615592488.000000
+!s107 C:/ECE342/lab4/part1/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_leds.v|
+!s90 -reportprogress|300|C:/ECE342/lab4/part1/nios_system/testbench/nios_system_tb/simulation/submodules/nios_system_leds.v|-work|leds|
+!i113 1
+o-work leds
+tCvgOpt 0

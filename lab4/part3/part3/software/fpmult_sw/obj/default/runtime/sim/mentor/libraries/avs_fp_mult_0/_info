@@ -1,0 +1,148 @@
+m255
+K4
+z2
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 dC:/ECE342/lab4/part3/software/fpmult_sw/obj/default/runtime/sim/mentor
+vavalon_fp_mult
+Z1 DXx6 sv_std 3 std 0 22 AD7iAPLo6nTIKk<N0eo=D3
+Z2 !s110 1615592595
+!i10b 1
+!s100 RCe>I`jOkUE36C8OCjgDf1
+I2T:2cjI=faeCU@T5dkmF00
+Z3 VDg1SIo80bB@j0V0VzS_@n1
+!s105 avalon_fp_mult_sv_unit
+S1
+R0
+Z4 w1615014191
+8C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/avalon_fp_mult.sv
+FC:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/avalon_fp_mult.sv
+L0 1
+Z5 OV;L;10.5b;63
+r1
+!s85 0
+31
+Z6 !s108 1615592595.000000
+!s107 C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/avalon_fp_mult.sv|
+!s90 -reportprogress|300|-sv|C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/avalon_fp_mult.sv|-L|altera_common_sv_packages|-work|avs_fp_mult_0|
+!i113 1
+Z7 o-sv -L altera_common_sv_packages -work avs_fp_mult_0
+Z8 tCvgOpt 0
+vavalon_slave
+R1
+R2
+!i10b 1
+!s100 _dgI2ZIR@U;66e7^KbTi?2
+IicFZjfCkDg9K1l_E2gKVG0
+R3
+Z9 !s105 avalon_slave_sv_unit
+S1
+R0
+R4
+Z10 8C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/avalon_slave.sv
+Z11 FC:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/avalon_slave.sv
+L0 1
+R5
+r1
+!s85 0
+31
+R6
+Z12 !s107 C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/avalon_slave.sv|
+Z13 !s90 -reportprogress|300|-sv|C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/avalon_slave.sv|-L|altera_common_sv_packages|-work|avs_fp_mult_0|
+!i113 1
+R7
+R8
+vcontrol_path
+R1
+R2
+!i10b 1
+!s100 00C4<f:[L>DG^OzeSjN4A0
+IF53jSf=@U2N;1YHC8TR:92
+R3
+R9
+S1
+R0
+R4
+R10
+R11
+L0 99
+R5
+r1
+!s85 0
+31
+R6
+R12
+R13
+!i113 1
+R7
+R8
+vdatapath
+R1
+R2
+!i10b 1
+!s100 [20WUdmODH^>JmobUPQG:0
+IoVRC7_EBcPG1PD=gWKEST0
+R3
+R9
+S1
+R0
+R4
+R10
+R11
+L0 235
+R5
+r1
+!s85 0
+31
+R6
+R12
+R13
+!i113 1
+R7
+R8
+vfp_mult
+R2
+!i10b 1
+!s100 c]h_G@MnkB?BM?=_T:HE02
+IY`[H:8i3H60K@Zk<O0j311
+R3
+R0
+R4
+Z14 8C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/fp_mult.v
+Z15 FC:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/fp_mult.v
+L0 857
+R5
+r1
+!s85 0
+31
+R6
+Z16 !s107 C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/fp_mult.v|
+Z17 !s90 -reportprogress|300|C:/ECE342/lab4/part3/nios_system/testbench/nios_system_tb/simulation/submodules/fp_mult.v|-work|avs_fp_mult_0|
+!i113 1
+Z18 o-work avs_fp_mult_0
+R8
+vfp_mult_altfp_mult_her
+R2
+!i10b 1
+!s100 @_IA1<HVSc>B@MfLX>XdG1
+I_P[OmJI8QHC^:FMARB0D_1
+R3
+R0
+R4
+R14
+R15
+L0 46
+R5
+r1
+!s85 0
+31
+R6
+R16
+R17
+!i113 1
+R18
+R8

@@ -1,0 +1,52 @@
+m255
+K4
+z2
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 dC:/ECE342/lab4/part1/software/leds_sw/obj/default/runtime/sim/mentor
+valtera_reset_controller
+!s110 1615592486
+!i10b 1
+!s100 z[H_hRO9gO=:^2E3_jWH03
+I@oFWNz_mDBB8z4MiP=nC`0
+Z1 VDg1SIo80bB@j0V0VzS_@n1
+R0
+Z2 w1615015868
+8C:/ECE342/lab4/part1/nios_system/testbench/nios_system_tb/simulation/submodules/altera_reset_controller.v
+FC:/ECE342/lab4/part1/nios_system/testbench/nios_system_tb/simulation/submodules/altera_reset_controller.v
+L0 42
+Z3 OV;L;10.5b;63
+r1
+!s85 0
+31
+!s108 1615592486.000000
+!s107 C:/ECE342/lab4/part1/nios_system/testbench/nios_system_tb/simulation/submodules/altera_reset_controller.v|
+!s90 -reportprogress|300|C:/ECE342/lab4/part1/nios_system/testbench/nios_system_tb/simulation/submodules/altera_reset_controller.v|-work|rst_controller|
+!i113 1
+Z4 o-work rst_controller
+Z5 tCvgOpt 0
+valtera_reset_synchronizer
+!s110 1615592487
+!i10b 1
+!s100 oWLYmSO[EOX[G0PgQhZ2=0
+IAR8f1bn]F`<3`?XSeoD3C3
+R1
+R0
+R2
+8C:/ECE342/lab4/part1/nios_system/testbench/nios_system_tb/simulation/submodules/altera_reset_synchronizer.v
+FC:/ECE342/lab4/part1/nios_system/testbench/nios_system_tb/simulation/submodules/altera_reset_synchronizer.v
+L0 24
+R3
+r1
+!s85 0
+31
+!s108 1615592487.000000
+!s107 C:/ECE342/lab4/part1/nios_system/testbench/nios_system_tb/simulation/submodules/altera_reset_synchronizer.v|
+!s90 -reportprogress|300|C:/ECE342/lab4/part1/nios_system/testbench/nios_system_tb/simulation/submodules/altera_reset_synchronizer.v|-work|rst_controller|
+!i113 1
+R4
+R5

@@ -1,0 +1,333 @@
+module avalon_slave
+(
+	input clk,
+	input reset,
+	
+	// Avalon Slave
+	input [2:0] avs_s1_address,
+	input avs_s1_read,
+	input avs_s1_write,
+	input [31:0] avs_s1_writedata,
+	output logic [31:0] avs_s1_readdata,
+	output logic avs_s1_waitrequest,
+
+	// FP_MULT connections
+    output [31:0] input_1,
+	output [31:0] input_2,
+	output logic clk_en,
+	input [31:0] result,
+	input [3:0] flags
+);
+
+// Mem-mapped regs
+// Reg0-32:			A
+// Reg1-32:			B
+// Reg2-04:			Start/Busy
+// Reg3-32:			Result
+// Reg4-04:			Status (Flags)
+reg [31:0] mul_op_1;
+reg [31:0] mul_op_2;
+reg [31:0] mul_start;
+reg [31:0] mul_result;
+reg [31:0] mul_status;
+
+// control-dp connectors
+logic done, ld_op1, ld_op2, ld_start, ld_status, ld_count, ld_result, reset_count;
+logic [2:0] mmreg;
+logic [31:0] op1, op2, s, d_result, status;
+
+// STUDENTS TO ADD THESE
+control_path ctrl
+(
+	.clk(clk),
+	.reset(reset),
+	.read(avs_s1_read),
+	.write(avs_s1_write),
+	.address(avs_s1_address),
+	.waitrequest(avs_s1_waitrequest),
+	.done(done),
+	.ld_op1(ld_op1),
+	.ld_op2(ld_op2),
+	.ld_start(ld_start),
+	.ld_result(ld_result),
+	.ld_status(ld_status),
+	.ld_count(ld_count),
+	.mmreg(mmreg),
+	.count_reset(reset_count),
+	.enable(enable)
+);
+
+datapath dp
+(
+	.clk(clk),
+	.reset(reset),
+	.readdata(avs_s1_readdata),
+	.writedata(avs_s1_writedata),
+	.fpm_result(result),
+	.fpm_status(flags),
+	.ld_op1(ld_op1),
+	.ld_op2(ld_op2),
+	.ld_start(ld_start),
+	.ld_result(ld_result),
+	.ld_status(ld_status),
+	.ld_count(ld_count),
+	.count_reset(reset_count),
+	.mm_reg(mmreg),
+	.done(done),
+	.op1(op1),
+	.op2(op2),
+	.s(s),
+	.result(d_result),
+	.status(status)
+);
+
+always_comb begin : MM_REGS
+	mul_op_1 = op1;
+	mul_op_2 = op2;
+	mul_start = s;
+	mul_result = d_result;
+	mul_status = status;
+end
+
+// assign inputs from datatype to go to FPM
+assign input_1 = op1;
+assign input_2 = op2;
+assign clk_en = enable;
+
+endmodule
+
+module control_path
+(
+	// from master controller 
+	input clk,
+	input reset,
+	input read,
+	input write, 
+	input [2:0] address,
+	output logic waitrequest,
+
+	// from datapath
+	input done,
+	// to datapath
+	output logic count_reset,
+
+	// control signals to datapath
+	output logic ld_op1,
+	output logic ld_op2,
+	output logic ld_start,
+	output logic ld_result,
+	output logic ld_status,
+	output logic ld_count,
+	output logic [2:0] mmreg,
+	//output logic reset_count,
+
+	// control signal to FPM to begin multiplication, stop when done 
+	output logic enable
+);
+
+	// define the states
+	enum int unsigned{
+		S_INIT,
+		S_RUN,
+		S_WAIT
+	} state, nextstate;
+
+	// internal logic bus
+	logic [2:0] mm_reg;
+
+	// define the memory-mapped registers
+	localparam [2:0] OP1 = 3'd0;
+	localparam [2:0] OP2 = 3'd1;
+	localparam [2:0] S = 3'd2;
+	localparam [2:0] RESULT = 3'd3;
+	localparam [2:0] STATUS = 3'd4;
+
+	// states
+	always_ff @(posedge clk or posedge reset) begin : flip_flops 
+		if(reset) begin
+			state <= S_INIT;
+		end
+		else begin
+			state <= nextstate;
+		end
+	end
+
+	// state transition table
+	always_comb begin : state_table 
+
+		// prevent latches
+		waitrequest = 1'b0;
+		ld_start = 1'b0;
+		ld_status = 1'b0;
+		ld_count = 1'b0;
+		ld_result = 1'b0;
+		ld_op1 = 1'b0;
+		ld_op2 = 1'b0;
+		count_reset = 1'b0;
+		nextstate = state;
+		enable = 1'b0;
+
+		case(state)
+			S_INIT: begin
+				if(write) begin
+					case(mm_reg)
+						// if master wants to write to OP1
+						OP1: 	ld_op1 = 1'b1;
+						// master wants to write to OP2
+						OP2: 	ld_op2 = 1'b1;
+						// if the master wants to start multiplcation
+						S:begin
+							ld_start = 1'b1;
+							enable = 1'b1;
+							waitrequest = 1'b1;
+							nextstate = S_RUN;
+						end
+						//default: // do nothing		
+					endcase
+				end
+			end
+
+			S_RUN: begin
+				// if not done, keep counting
+				if(!done) begin
+					ld_count = 1;
+					ld_start = 1;
+					enable = 1;
+					waitrequest = 1;
+				end
+				// if done, waitrequest is zero, load the result registers and status
+				else begin
+					waitrequest = 0;
+					ld_result = 1;
+					ld_status = 1;
+					count_reset = 1;
+					nextstate = S_WAIT;
+				end
+			end
+
+			S_WAIT:begin
+				nextstate = S_INIT;
+			end
+		endcase 
+	end
+
+	// always block assigning memory mapped addresses
+	always_comb begin : control_signals
+		// address decoder
+		case(address)
+			3'd0: mm_reg = OP1;
+			3'd1: mm_reg = OP2;
+			3'd2: mm_reg = S;
+			3'd3: mm_reg = RESULT;
+			3'd4: mm_reg = STATUS;
+			//default: // do nothing
+		endcase
+
+		// if master reads, get the MM register to be read from
+		if(read) begin
+			mmreg = mm_reg;
+		end
+	end
+
+
+endmodule
+
+module datapath
+(
+	input clk,
+	input reset,
+
+	// to avs
+	output logic [31:0] readdata,
+	//from avs
+	input [31:0] writedata,
+
+	// from multipler
+	input [31:0] fpm_result,
+	input [3:0] fpm_status,
+
+	// control signals from controller
+	input ld_op1,
+	input ld_op2,
+	input ld_start,
+	input ld_result,
+	input ld_status,
+	input ld_count,
+	input count_reset,
+	input [2:0] mm_reg,
+
+	//output to control path
+	output  done,
+
+	// output to Master Avalon
+	output   [31:0] op1,
+	output   [31:0] op2,
+	output   [31:0] s,
+	output   [31:0] result,
+	output   [31:0] status
+);
+	// create memory mapped IO
+	logic [4:0][31:0] mm;
+	
+	// create count variable
+	logic [3:0] count;
+
+	assign op1 	= mm[0];
+	assign op2 	= mm[1];
+	assign s   	= mm[2];
+	assign result	= mm[3];
+	assign status	= mm[4];
+	
+	//always_comb begin: mm_reg_allocation
+		//case(mm_reg) 
+		//	3'd0:  readdata = mm[0];
+		//	3'd1:  readdata = mm[1];
+		//	3'd2:  readdata = mm[2];
+		//	3'd3:  readdata = mm[3];
+		//	3'd4:  readdata = mm[4];
+	//	endcase
+	//end
+	always_comb begin
+		if(mm_reg == 3'd0) readdata = mm[0];
+		if(mm_reg == 3'd1) readdata = mm[1];
+		if(mm_reg == 3'd2) readdata = mm[2];
+		if(mm_reg == 3'd3) readdata = mm[3];
+		if(mm_reg == 3'd4) readdata = mm[4];
+	end
+
+	// writing in op1, op2, assigning result and status sequential logic
+	always_ff @(posedge clk or posedge reset ) begin : assign_mm
+		if(reset) begin
+			mm[0] = 32'b0;
+			mm[1] = 32'b0;
+			mm[2] = 32'b0;
+			mm[3] = 32'b0;
+			mm[4] = 32'b0;
+		end
+		else begin
+			if(ld_op1) mm[0] <= writedata;
+			if(ld_op2) mm[1] <= writedata;
+			if(ld_result) mm[3] <= fpm_result;
+			if(ld_status) mm[4] <= fpm_status;
+
+			if(ld_start) mm[2] <= {31'b0, 1'b1};
+			if(!ld_start) mm[2] <= {32'b0};
+		end
+	end
+
+	// initiate counting
+	always_ff @( posedge clk or posedge reset  ) begin : counting
+		if(reset) begin
+			count <= 11;
+		end
+		else if (count_reset) begin
+			count <= 11;
+		end
+		else if (ld_count)begin
+			count <= count - 1;
+		end
+	end
+
+	assign done = count == 0 ? 1 : 0;
+endmodule
+
