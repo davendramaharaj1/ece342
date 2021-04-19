@@ -21,7 +21,7 @@ logic sel_data;
 logic [3:0] pc_byte_enable;
 logic pc_read;
 logic [31:0] instruction, pc_address;
-logic [12:0] memory_addr;
+logic [12:0] memory_address;
 
 /* Logic wires for read/write port */
 logic read, write, write_led, write_mem;
@@ -30,16 +30,20 @@ logic [12:0] data_address;
 logic [31:0] mem_ldst_address, i_readdata, mem_readdata, write_data;
 
 /* decoder for processor to memory (accessing instructions) */
-assign memory_address = (pc_address >> 2)[12:0];
+assign memory_address = pc_address[12:0] >> 2;
 
 /* decoder for inputing memory data or switch data into cpu */
-assign data_address = mem_ldst_address[15:12] != 4'hA ? (mem_ldst_address >> 2)[12:0] : 13'b0;
+assign data_address = mem_ldst_address[15:12] != 4'hA ? (mem_ldst_address[12:0] >> 2) : 13'b0;
 assign sel_data = (read && mem_ldst_address[15:12] != 4'hA);    // if last byte is not A and read = 1, load data from memory
 assign i_readdata = sel_data ? mem_readdata : switch;           // 2:1 mux to select data from memory or switches
 
 /* decoder for writing data to ledr reg or memory */
 assign write_mem = (write && mem_ldst_address[15:12] != 4'hA);
 assign write_led = (write && mem_ldst_address[15:0] == 16'hA000);
+
+logic mem_pc_read;
+
+assign mem_pc_read = pc_read | (instruction != 32'b0);
 
 /* instantiate RISC-V CPU from Lab 5 */
 cpu#(.IW(32), .REGS(32)) cpu(
@@ -73,7 +77,7 @@ mem#(.WIDTH(32), .DEPTH(8192), .HEX_FILE("part1.hex")) memory(
 
      /* Read only port */
     .p2_addr(memory_address),
-    .p2_read(pc_read),
+    .p2_read(mem_pc_read),
     .p2_byteenable(pc_byte_enable),
     .p2_readdata(instruction),
 
