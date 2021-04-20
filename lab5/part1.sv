@@ -76,7 +76,7 @@ module cpu # (
 	localparam [3:0] J_TYPE	= 4'd8;
 
 	/* store PC instruction into IR */ 
-	assign IR = i_pc_rddata;
+	//assign IR = i_pc_rddata;
 	assign ldst_rddata = i_ldst_rddata;
 
 	/* define the different opcodes */
@@ -130,12 +130,13 @@ module cpu # (
 				/* get the entire word for PC */
 				pc_byte_en = 4'b1111;
 				/* increment the PC */
-				pc_increment = 1'b1;
+				//pc_increment = 1'b1;
 				/* next state transition */
 				nextstate = DECODE;
 			end
 
 			DECODE:begin
+				IR = i_pc_rddata;
 				/* signal to decode instruction and load appropriate registers */ 
 				decode = 1'b1;
 				nextstate = EXECUTE;
@@ -152,6 +153,7 @@ module cpu # (
 					end
 					B_TYPE: begin
 						/* fetch another instruction from the branched PC */
+						//pc_increment = 1'b1;
 						nextstate = FETCH;
 					end
 					I_LD, S_TYPE: begin
@@ -221,7 +223,13 @@ module cpu # (
 			DEST_REG: begin
 				case (Alu_op)
 					// write result to corresponsding register_file[rd] for R-type, U-type, J-type, I_imm/jump-type
-					R_TYPE, I_IMM, I_JUMP, U_LD, U_PC, J_TYPE: begin
+					R_TYPE, I_IMM, U_LD, U_PC: begin
+						pc_increment = 1'b1;
+						resultIn = 1'b1;
+						/* non memory instructions so store result into reg file */
+						nextstate = FETCH;
+					end
+					I_JUMP, J_TYPE: begin
 						resultIn = 1'b1;
 						/* non memory instructions so store result into reg file */
 						nextstate = FETCH;
@@ -229,10 +237,12 @@ module cpu # (
 					I_LD: begin
 						/* copy value loaded from memory into register file*/
 						loadIn = 1'b1;
+						pc_increment = 1'b1;
 						/* wait to get the memory accessed target */
 						nextstate = FETCH;
 					end
 					S_TYPE:begin
+						pc_increment = 1'b1;
 						nextstate = FETCH;
 					end
 				endcase 
@@ -408,7 +418,7 @@ module cpu # (
 			/* arithmetic I type with register and PC */
 			else if(Alu_op == I_JUMP)begin
 				if(funct3 == 4'h0)begin
-					result <= PC;
+					result <= PC + 4;
 					PC <= REG_FILE[rs1] + immediate;
 				end
 			end
@@ -417,27 +427,27 @@ module cpu # (
 			else if(Alu_op == B_TYPE)begin
 				// beq
 				if(funct3 == 4'h0)begin
-					PC <= $signed(REG_FILE[rs1]) == $signed(REG_FILE[rs2]) ? PC - 4 + immediate : PC;
+					PC <= $signed(REG_FILE[rs1]) == $signed(REG_FILE[rs2]) ? PC + immediate : PC + 4;
 				end
 				// bne
 				else if(funct3 == 4'h1)begin
-					PC <= $signed(REG_FILE[rs1]) != $signed(REG_FILE[rs2]) ? PC - 4 + immediate : PC;
+					PC <= $signed(REG_FILE[rs1]) != $signed(REG_FILE[rs2]) ? PC + immediate : PC + 4;
 				end
 				//blt
 				else if(funct3 == 4'h4)begin
-					PC <= $signed(REG_FILE[rs1]) < $signed(REG_FILE[rs2]) ? PC - 4 + immediate : PC;
+					PC <= $signed(REG_FILE[rs1]) < $signed(REG_FILE[rs2]) ? PC + immediate : PC + 4;
 				end
 				//bge
 				else if(funct3 == 4'h5)begin
-					PC <= $signed(REG_FILE[rs1]) >= $signed(REG_FILE[rs2]) ? PC - 4 + immediate : PC;
+					PC <= $signed(REG_FILE[rs1]) >= $signed(REG_FILE[rs2]) ? PC + immediate : PC + 4;
 				end
 				//bltu
 				else if(funct3 == 4'h6)begin
-					PC <= REG_FILE[rs1] < REG_FILE[rs2] ? PC - 4 + immediate : PC;
+					PC <= REG_FILE[rs1] < REG_FILE[rs2] ? PC + immediate : PC + 4;
 				end
 				//bgeu
 				else if(funct3 == 4'h7)begin
-					PC <= REG_FILE[rs1] >= REG_FILE[rs2] ? PC - 4 + immediate : PC;
+					PC <= REG_FILE[rs1] >= REG_FILE[rs2] ? PC + immediate : PC + 4;
 				end
 			end
 
@@ -449,14 +459,14 @@ module cpu # (
 			
 			/* auipc */
 			else if(Alu_op == U_PC)begin
-				result <= PC - 4 + (immediate);
+				result <= PC + (immediate);
 			end
 			/************* u type ****************/
 
 			/* jump type */
 			else if(Alu_op == J_TYPE)begin
-				result <= PC;
-				PC <= PC - 4 + immediate;
+				result <= PC + 4;
+				PC <= PC + immediate;
 			end
 
 			/* loading instructions */
