@@ -6,8 +6,6 @@ module part3
 
 endmodule
 
-
-/* module for RISC-V CPU */
 module cpu # (
 	parameter IW = 32, // instr width
 	parameter REGS = 32 // number of registers
@@ -28,10 +26,9 @@ module cpu # (
 	input [IW-1:0] i_ldst_rddata,
 	output [IW-1:0] o_ldst_wrdata,
 	output [3:0] o_ldst_byte_en,
+	input i_ldst_waitrequest,
 	
-	output [IW-1:0] o_tb_regs [0:REGS-1],
-
-    input i_ldst_waitrequest
+	output [IW-1:0] o_tb_regs [0:REGS-1]
 );
 
 	/* Process Memory Interface Registers */ 
@@ -65,14 +62,11 @@ module cpu # (
 	logic ldst_rd;
 	logic ldst_wr;
 	logic loadIn;
-
-    /* logic wire for wait request */
-	logic waitrequest;
-
-    assign waitrequest = i_ldst_waitrequest;
+	
 
 	/* define states to represent stages in processing instructions */
 	enum int unsigned {
+		// INIT,
 		FETCH,
 		DECODE,
 		EXECUTE,
@@ -92,7 +86,7 @@ module cpu # (
 	localparam [3:0] J_TYPE	= 4'd8;
 
 	/* store PC instruction into IR */ 
-	assign IR = i_pc_rddata;
+	//assign IR = i_pc_rddata;
 	assign ldst_rddata = i_ldst_rddata;
 
 	/* define the different opcodes */
@@ -140,18 +134,22 @@ module cpu # (
 		nextstate = state;
 
 		case(state)
+			// INIT:begin
+			// 	nextstate = FETCH;
+			// end
 			FETCH: begin
 				/* send signal to processor interface to read the pc address */
 				fetch = 1'b1;
 				/* get the entire word for PC */
 				pc_byte_en = 4'b1111;
 				/* increment the PC */
-				pc_increment = 1'b1;
+				//pc_increment = 1'b1;
 				/* next state transition */
 				nextstate = DECODE;
 			end
 
 			DECODE:begin
+				IR = i_pc_rddata;
 				/* signal to decode instruction and load appropriate registers */ 
 				decode = 1'b1;
 				nextstate = EXECUTE;
@@ -168,6 +166,7 @@ module cpu # (
 					end
 					B_TYPE: begin
 						/* fetch another instruction from the branched PC */
+						//pc_increment = 1'b1;
 						nextstate = FETCH;
 					end
 					I_LD, S_TYPE: begin
@@ -184,26 +183,31 @@ module cpu # (
 					if(funct3 == 4'h0)begin
 						ldst_rd = 1'b1;
 						ldst_byte_en = 4'b0001;
+						nextstate = DEST_REG;
 					end
 					// load half word
 					else if(funct3 == 4'h1)begin
 						ldst_rd = 1'b1;
 						ldst_byte_en = 4'b0011;
+						nextstate = DEST_REG;
 					end
 					// load word
 					else if(funct3 == 4'h2)begin
 						ldst_rd = 1'b1;
 						ldst_byte_en = 4'b1111;
+						nextstate = DEST_REG;
 					end
 					// load byte unsigned
 					else if(funct3 == 4'h4)begin
 						ldst_rd = 1'b1;
 						ldst_byte_en = 4'b0001;
+						nextstate = DEST_REG;
 					end		
 					//load half unsigned
 					else if(funct3 == 4'h5)begin
 						ldst_rd = 1'b1;
 						ldst_byte_en = 4'b0011;
+						nextstate = DEST_REG;
 					end		
 				end
 				//store instruction
@@ -212,31 +216,33 @@ module cpu # (
 					if(funct3 == 4'h0) begin
 						ldst_wr = 1'b1;
 						ldst_byte_en = 4'b0001;
+						nextstate = DEST_REG;
 					end
 					// store half
 					else if(funct3 == 4'h1) begin
 						ldst_wr = 1'b1;
 						ldst_byte_en = 4'b0011;
+						nextstate = DEST_REG;
 					end
 					// store word
 					if(funct3 == 4'h2) begin
 						ldst_wr = 1'b1;
 						ldst_byte_en = 4'b1111;
+						nextstate = DEST_REG;
 					end
 				end
-                /* check wait request to determine next state transition */
-                if(waitrequest)begin
-                    nextstate = MEM_ACCESS;
-                end
-                else begin
-                    nextstate = DEST_REG;
-                end
 			end
 
 			DEST_REG: begin
 				case (Alu_op)
 					// write result to corresponsding register_file[rd] for R-type, U-type, J-type, I_imm/jump-type
-					R_TYPE, I_IMM, I_JUMP, U_LD, U_PC, J_TYPE: begin
+					R_TYPE, I_IMM, U_LD, U_PC: begin
+						pc_increment = 1'b1;
+						resultIn = 1'b1;
+						/* non memory instructions so store result into reg file */
+						nextstate = FETCH;
+					end
+					I_JUMP, J_TYPE: begin
 						resultIn = 1'b1;
 						/* non memory instructions so store result into reg file */
 						nextstate = FETCH;
@@ -244,10 +250,12 @@ module cpu # (
 					I_LD: begin
 						/* copy value loaded from memory into register file*/
 						loadIn = 1'b1;
+						pc_increment = 1'b1;
 						/* wait to get the memory accessed target */
 						nextstate = FETCH;
 					end
 					S_TYPE:begin
+						pc_increment = 1'b1;
 						nextstate = FETCH;
 					end
 				endcase 
@@ -312,6 +320,9 @@ module cpu # (
 	always_ff @(posedge clk or posedge reset) begin : PC_Increment
 		if(reset)begin
 			PC <= 32'b0;
+		end
+		else if(i_ldst_waitrequest) begin
+			PC <= PC;
 		end
 		else if(pc_increment) begin
 			PC <= PC + 4;
@@ -423,7 +434,7 @@ module cpu # (
 			/* arithmetic I type with register and PC */
 			else if(Alu_op == I_JUMP)begin
 				if(funct3 == 4'h0)begin
-					result <= PC;
+					result <= PC + 4;
 					PC <= REG_FILE[rs1] + immediate;
 				end
 			end
@@ -432,27 +443,27 @@ module cpu # (
 			else if(Alu_op == B_TYPE)begin
 				// beq
 				if(funct3 == 4'h0)begin
-					PC <= $signed(REG_FILE[rs1]) == $signed(REG_FILE[rs2]) ? PC - 4 + immediate : PC;
+					PC <= $signed(REG_FILE[rs1]) == $signed(REG_FILE[rs2]) ? PC + immediate : PC + 4;
 				end
 				// bne
 				else if(funct3 == 4'h1)begin
-					PC <= $signed(REG_FILE[rs1]) != $signed(REG_FILE[rs2]) ? PC - 4 + immediate : PC;
+					PC <= $signed(REG_FILE[rs1]) != $signed(REG_FILE[rs2]) ? PC + immediate : PC + 4;
 				end
 				//blt
 				else if(funct3 == 4'h4)begin
-					PC <= $signed(REG_FILE[rs1]) < $signed(REG_FILE[rs2]) ? PC - 4 + immediate : PC;
+					PC <= $signed(REG_FILE[rs1]) < $signed(REG_FILE[rs2]) ? PC + immediate : PC + 4;
 				end
 				//bge
 				else if(funct3 == 4'h5)begin
-					PC <= $signed(REG_FILE[rs1]) >= $signed(REG_FILE[rs2]) ? PC - 4 + immediate : PC;
+					PC <= $signed(REG_FILE[rs1]) >= $signed(REG_FILE[rs2]) ? PC + immediate : PC + 4;
 				end
 				//bltu
 				else if(funct3 == 4'h6)begin
-					PC <= REG_FILE[rs1] < REG_FILE[rs2] ? PC - 4 + immediate : PC;
+					PC <= REG_FILE[rs1] < REG_FILE[rs2] ? PC + immediate : PC + 4;
 				end
 				//bgeu
 				else if(funct3 == 4'h7)begin
-					PC <= REG_FILE[rs1] >= REG_FILE[rs2] ? PC - 4 + immediate : PC;
+					PC <= REG_FILE[rs1] >= REG_FILE[rs2] ? PC + immediate : PC + 4;
 				end
 			end
 
@@ -464,14 +475,14 @@ module cpu # (
 			
 			/* auipc */
 			else if(Alu_op == U_PC)begin
-				result <= PC - 4 + (immediate);
+				result <= PC + (immediate);
 			end
 			/************* u type ****************/
 
 			/* jump type */
 			else if(Alu_op == J_TYPE)begin
-				result <= PC;
-				PC <= PC - 4 + immediate;
+				result <= PC + 4;
+				PC <= PC + immediate;
 			end
 
 			/* loading instructions */
