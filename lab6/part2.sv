@@ -208,7 +208,8 @@ module cpu # (
 						ldst_rd = 1'b1;
 						ldst_byte_en = 4'b0011;
 						//nextstate = DEST_REG;
-					end		
+					end	
+					loadIn = 1'b1;	
 				end
 				//store instruction
 				else if(Alu_op == S_TYPE)begin
@@ -234,7 +235,7 @@ module cpu # (
 				if(i_ldst_waitrequest == 1'b1)begin
 					nextstate = MEM_ACCESS;
 				end
-				else if(i_ldst_waitrequest == 1'b0)begin
+				if(i_ldst_waitrequest == 1'b0)begin
 					nextstate = DEST_REG;
 				end
 			end
@@ -255,9 +256,7 @@ module cpu # (
 					end
 					I_LD: begin
 						/* copy value loaded from memory into register file*/
-						loadIn = 1'b1;
 						pc_increment = 1'b1;
-						/* wait to get the memory accessed target */
 						nextstate = FETCH;
 					end
 					S_TYPE:begin
