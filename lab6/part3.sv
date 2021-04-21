@@ -7,10 +7,64 @@ module part3
 	
 	logic wait_request;							/* logic connect for waitrequest */
 	logic [31:0] REGISTER_FILE [0:31]; 			/* logic connect to avoid a floating reg file output from cpu */
-	logic pc_byte_en;
-	logic [31:0] pc_instruction, pc_byte_address, pc_word_address;
+	logic [3:0] pc_byte_en, ldst_byte_en;
+	logic pc_memory_read, pc_read, mem_read, avs_read, cpu_read, cpu_write;
+	logic mem_write, avs_write;
+	logic [2:0] avs_address;
+	logic [31:0] pc_instruction, pc_byte_address, pc_word_address, ldst_address, memory_address, cpu_writedata, avs_writedata, mem_writedata;
+	logic [31:0] cpu_readdata, mem_readdata, avs_readdata;
+	
+	localparam OP1 = 3'd0, OP2 = 3'd1, S = 3'd2, RESULT = 3'd3, STATUS = 3'd4;
+	localparam OP1_addr = 16'hA000, OP2_addr = 16'hA004, S_addr = 16'hA008, RESULT_addr = 16'hA00C, STATUS_addr = 16'hA010;
 
 	assign pc_word_address = pc_byte_address[12:0] >> 2;
+	assign pc_memory_read = pc_read | pc_instruction != 32'b0;
+
+	/* read signal to memory */
+	assign mem_read = cpu_read && ldst_address[15:12] != 4'hA;
+	/* read signal to avs */
+	assign avs_read = cpu_read && ldst_address[15:12] == 4'hA;
+	/* write signal to memory */
+	assign mem_write = cpu_write && ldst_address[15:12] != 4'hA;
+	/* write signal to avs */
+	assign avs_write = cpu_write && ldst_address[15:12] == 4'hA;
+
+	/* decoder for addressing to memory */
+	assign memory_address = ldst_address[15:12] != 4'hA ? (ldst_addr[12:0] >> 2) : 13'b0;
+
+	/* decoder for addressing to avs */
+	always_comb begin : decoder_avs_address
+		if(avs_read || avs_write) begin
+			case (ldst_address[15:0])
+				OP1_addr	: avs_address = OP1;
+				OP2_addr	: avs_address = OP2;
+				S_addr		: avs_address = S;
+				RESULT_addr : avs_address = RESULT;
+				STATUS_addr : avs_address = STATUS;
+				//default: 
+			endcase
+		end
+	end
+
+	/* write_data to avs or memory */
+	always_comb begin : WriteData
+		if(avs_write)begin
+			avs_writedata = cpu_writedata;
+		end
+		else if (mem_write) begin
+			mem_writedata = cpu_writedata;
+		end
+	end
+
+	/* readdata to avs or memory */
+	always_comb begin : ReadData
+		if(avs_read) begin
+			cpu_readdata = avs_readdata;
+		end
+		else if(mem_read) begin
+			cpu_readdata = mem_readdata;
+		end
+	end
 
 	/* instantiation of avalon fp_mult to interaface with the fp peripheral */
 	avalon_fp_mult fp_peripheral(
@@ -18,11 +72,11 @@ module part3
 		.reset(reset),
 		
 		// Avalon Slave
-		.avs_s1_address(),
-		.avs_s1_read(),
-		.avs_s1_write(),
-		.avs_s1_writedata(),
-		.avs_s1_readdata(),
+		.avs_s1_address(avs_address),
+		.avs_s1_read(avs_read),
+		.avs_s1_write(avs_write),
+		.avs_s1_writedata(avs_writedata),
+		.avs_s1_readdata(avs_readdata),
 		.avs_s1_waitrequest(wait_request)
 	);
 
@@ -34,17 +88,17 @@ module part3
 
 		//Read only port 
 		.o_pc_addr(pc_byte_address),
-		.o_pc_rd(),
+		.o_pc_rd(pc_read),
 		.o_pc_byte_en(pc_byte_en),
 		.i_pc_rddata(pc_instruction),
 
 		// read/write port connecting to read/write port on 32KB RAM or LED
-		.o_ldst_addr(),
-		.o_ldst_rd(),
-		.o_ldst_wr(),
-		.i_ldst_rddata(),
-		.o_ldst_wrdata(),
-		.o_ldst_byte_en(),
+		.o_ldst_addr(ldst_address),
+		.o_ldst_rd(cpu_read),
+		.o_ldst_wr(cpu_write),
+		.i_ldst_rddata(cpu_readdata),
+		.o_ldst_wrdata(cpu_writedata),
+		.o_ldst_byte_en(ldst_byte_en),
 		.i_ldst_waitrequest(wait_request),
 
 		// testbench reg file --> not used in lab 6 so can safely ignore 
@@ -59,17 +113,17 @@ module part3
 
 		/* Read only port */
 		.p2_addr(pc_word_address),
-		.p2_read(),
+		.p2_read(pc_memory_read),
 		.p2_byteenable(pc_byte_en),
 		.p2_readdata(pc_instruction),
 
 		/* Read/Write Port */
-		.p1_addr(),
-		.p1_read(),
-		.p1_write(),
-		.p1_readdata(),
-		.p1_writedata(),
-		.p1_byteenable()
+		.p1_addr(memory_address),
+		.p1_read(mem_read),
+		.p1_write(mem_write),
+		.p1_readdata(mem_readdata),
+		.p1_writedata(mem_writedata),
+		.p1_byteenable(ldst_byte_en)
 	);
 
 endmodule
