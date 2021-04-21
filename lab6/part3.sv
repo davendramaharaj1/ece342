@@ -17,7 +17,7 @@ module part3
 	localparam OP1 = 3'd0, OP2 = 3'd1, S = 3'd2, RESULT = 3'd3, STATUS = 3'd4;
 	localparam OP1_addr = 16'hA000, OP2_addr = 16'hA004, S_addr = 16'hA008, RESULT_addr = 16'hA00C, STATUS_addr = 16'hA010;
 
-	assign pc_word_address = pc_byte_address[12:0] >> 2;
+	assign pc_word_address = pc_byte_address >> 2;
 	assign pc_memory_read = pc_read | pc_instruction != 32'b0;
 
 	/* read signal to memory */
@@ -30,7 +30,8 @@ module part3
 	assign avs_write = cpu_write && ldst_address[15:12] == 4'hA;
 
 	/* decoder for addressing to memory */
-	assign memory_address = ldst_address[15:12] != 4'hA ? (ldst_address[12:0] >> 2) : 13'b0;
+	//assign memory_address = ldst_address[15:12] != 4'hA ? (ldst_address[12:0] >> 2) : 13'b0;
+	assign memory_address = ldst_address >> 2;
 
 	/* decoder for addressing to avs */
 	always_comb begin : decoder_avs_address
@@ -47,7 +48,7 @@ module part3
 	end
 
 	/* write_data to avs or memory */
-	always_ff @(posedge clk) begin : WriteData
+	always_comb begin : WriteData
 		if(avs_write)begin
 			avs_writedata <= cpu_writedata;
 		end
@@ -57,7 +58,7 @@ module part3
 	end
 
 	/* readdata to avs or memory */
-	always_ff @(posedge clk) begin : ReadData
+	always_comb begin : ReadData
 		if(avs_read) begin
 			cpu_readdata <= avs_readdata;
 		end
@@ -112,13 +113,13 @@ module part3
 		.reset(reset),
 
 		/* Read only port */
-		.p2_addr(pc_word_address),
+		.p2_addr(pc_word_address[12:0]),
 		.p2_read(pc_memory_read),
 		.p2_byteenable(pc_byte_en),
 		.p2_readdata(pc_instruction),
 
 		/* Read/Write Port */
-		.p1_addr(memory_address),
+		.p1_addr(memory_address[12:0]),
 		.p1_read(mem_read),
 		.p1_write(mem_write),
 		.p1_readdata(mem_readdata),
