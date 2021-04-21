@@ -30,7 +30,7 @@ module part3
 	assign avs_write = cpu_write && ldst_address[15:12] == 4'hA;
 
 	/* decoder for addressing to memory */
-	assign memory_address = ldst_address[15:12] != 4'hA ? (ldst_addr[12:0] >> 2) : 13'b0;
+	assign memory_address = ldst_address[15:12] != 4'hA ? (ldst_address[12:0] >> 2) : 13'b0;
 
 	/* decoder for addressing to avs */
 	always_comb begin : decoder_avs_address
