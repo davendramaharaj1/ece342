@@ -1,0 +1,30 @@
+@00000000
+
+// main:
+//s2 <- 0x00007ff4 (mem_inst base)
+37 49 ff 07 	// 0x00000000: lui s2, 0x7ff4
+13 59 c9 00 	// 0x00000004: srli s2, s2, 0xC
+
+//s5 <- 0x0000A000 (avs memory_mapped base)
+b7 aa 00 00 	// 0x00000008: lui s5, 0xA
+
+//s11 <- 0x00000001 (has constant value 1)
+93 0d 10 00 	// 0x0000000c: addi s11, zero, 0x1
+
+// loop:
+// load word op1 from memory op1
+83 29 09 00 	// 0x00000010: lw s3, s2, 0x0
+// load word op2 from memory op2
+03 2a 49 00 	// 0x00000014: lw s4, s2, 0x4
+// store word op1 into avs op1
+23 a0 3a 01 	// 0x00000018: sw s5, s3, 0x0
+// store word op2 into avs op2
+23 a2 4a 01 	// 0x0000001c: sw s5, s4, 0x4
+// write 1 to avs S register to begin multiplication
+23 84 ba 01 	// 0x00000020: sb s5, s11, 0x8
+// try to load result from the fp multiplier
+03 ab ca 00 	// 0x00000024: lw s6, s5, 0xC
+// write result in s6 to memory result register
+23 24 69 01 	// 0x00000028: sw s2, s6, 0x8
+// loop to begin another multiplcation
+6f f0 5f fe 	// 0x0000002c: jal zero, loop, 0x
