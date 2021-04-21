@@ -47,22 +47,22 @@ module part3
 	end
 
 	/* write_data to avs or memory */
-	always_comb begin : WriteData
+	always_ff @(posedge clk) begin : WriteData
 		if(avs_write)begin
-			avs_writedata = cpu_writedata;
+			avs_writedata <= cpu_writedata;
 		end
 		else if (mem_write) begin
-			mem_writedata = cpu_writedata;
+			mem_writedata <= cpu_writedata;
 		end
 	end
 
 	/* readdata to avs or memory */
-	always_comb begin : ReadData
+	always_ff @(posedge clk) begin : ReadData
 		if(avs_read) begin
-			cpu_readdata = avs_readdata;
+			cpu_readdata <= avs_readdata;
 		end
 		else if(mem_read) begin
-			cpu_readdata = mem_readdata;
+			cpu_readdata <= mem_readdata;
 		end
 	end
 
