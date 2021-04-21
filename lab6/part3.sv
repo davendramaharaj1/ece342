@@ -306,31 +306,31 @@ module cpu # (
 					if(funct3 == 4'h0)begin
 						ldst_rd = 1'b1;
 						ldst_byte_en = 4'b0001;
-						nextstate = DEST_REG;
+						//nextstate = DEST_REG;
 					end
 					// load half word
 					else if(funct3 == 4'h1)begin
 						ldst_rd = 1'b1;
 						ldst_byte_en = 4'b0011;
-						nextstate = DEST_REG;
+						//nextstate = DEST_REG;
 					end
 					// load word
 					else if(funct3 == 4'h2)begin
 						ldst_rd = 1'b1;
 						ldst_byte_en = 4'b1111;
-						nextstate = DEST_REG;
+						//nextstate = DEST_REG;
 					end
 					// load byte unsigned
 					else if(funct3 == 4'h4)begin
 						ldst_rd = 1'b1;
 						ldst_byte_en = 4'b0001;
-						nextstate = DEST_REG;
+						//nextstate = DEST_REG;
 					end		
 					//load half unsigned
 					else if(funct3 == 4'h5)begin
 						ldst_rd = 1'b1;
 						ldst_byte_en = 4'b0011;
-						nextstate = DEST_REG;
+						//nextstate = DEST_REG;
 					end		
 				end
 				//store instruction
@@ -339,20 +339,26 @@ module cpu # (
 					if(funct3 == 4'h0) begin
 						ldst_wr = 1'b1;
 						ldst_byte_en = 4'b0001;
-						nextstate = DEST_REG;
+						//nextstate = DEST_REG;
 					end
 					// store half
 					else if(funct3 == 4'h1) begin
 						ldst_wr = 1'b1;
 						ldst_byte_en = 4'b0011;
-						nextstate = DEST_REG;
+						//nextstate = DEST_REG;
 					end
 					// store word
 					if(funct3 == 4'h2) begin
 						ldst_wr = 1'b1;
 						ldst_byte_en = 4'b1111;
-						nextstate = DEST_REG;
+						//nextstate = DEST_REG;
 					end
+				end
+				if(i_ldst_waitrequest == 1'b1)begin
+					nextstate = MEM_ACCESS;
+				end
+				else if(i_ldst_waitrequest == 1'b0)begin
+					nextstate = DEST_REG;
 				end
 			end
 
@@ -443,9 +449,6 @@ module cpu # (
 	always_ff @(posedge clk or posedge reset) begin : PC_Increment
 		if(reset)begin
 			PC <= 32'b0;
-		end
-		else if(i_ldst_waitrequest) begin
-			PC <= PC;
 		end
 		else if(pc_increment) begin
 			PC <= PC + 4;
