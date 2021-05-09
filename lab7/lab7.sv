@@ -86,12 +86,12 @@ module cpu # (
 
 	/***************************************########## RISC V CONTROL PATH #########***************************************/
 	/* Control path for pipelined stages */
-	always_ff @( posedge clk ) begin : PipelinedStages
-
+	always_comb begin : PipelinedStages
 		/* default to eliminate latches */
 		fetch = 1'b0;
 		decode = 1'b0;
 		Alu_en = 1'b0;
+		resultIn = 1'b0;
 		pc_byte_en = 4'b111;
 		pc_increment = 1'b0;
 
@@ -127,7 +127,8 @@ module cpu # (
 
 		/* STAGE 4: WRITE_BACK */
 		if(stage4) begin
-			
+			/* put value in result register into REG_FILE[rd_stage4] */
+			resultIn = 1'b1;
 		end
 	end
 	/***************************************########## RISC V CONTROL PATH #########***************************************/
@@ -430,11 +431,11 @@ module cpu # (
 	/* load result into reg file */
 	always_ff @(posedge clk) begin : Reg_file_load
 		if(resultIn) begin
-			if(rd == 5'b0)begin
-				REG_FILE[rd] <= 32'b0;
+			if(rd_stage4 == 5'b0)begin
+				REG_FILE[rd_stage4] <= 32'b0;
 			end
 			else begin
-				REG_FILE[rd] <= result;
+				REG_FILE[rd_stage4] <= result;
 			end
 		end
 	end
