@@ -35,8 +35,8 @@ module cpu # (
 	logic pc_increment;		// control signal to increment pc 
 
 	/* Register File Registers and breakdown logic from IR */
-	logic [4:0] rs1, rs2, rd;
-	logic [2:0] funct3;
+	logic [4:0] rs1, rs2, rd, rd_stage4;
+	logic [2:0] funct3, funct3_stage4;
 	logic [6:0] funct7;
 	logic [IW-1:0] REG_FILE [0:REGS-1];
 
@@ -90,22 +90,34 @@ module cpu # (
 
 		/* default to eliminate latches */
 		fetch = 1'b0;
+		decode = 1'b0;
 		pc_increment = 1'b0;
 
 		/* STAGE 1: FETCH */
 		if(stage1) begin
+			/* read from pc memory port */
 			fetch = 1'b1;
+			/* increment pc */
 			pc_increment = 1'b1;
+			/* move to decode stage */
 			stage2 = 1'b1;
 		end
+
 		/* STAGE 2: DECODE */
 		if(stage2) begin
-			
+			/* place instruction from memory into IR*/
+			IR = i_pc_rddata;
+			/* implement decoding of instructions */
+			decode = 1'b1;
+			/* move to execute stage */
+			stage3 = 1'b1;
 		end
+
 		/* STAGE 3: EXECUTE */
 		if(stage3) begin
 			
 		end
+
 		/* STAGE 4: WRITE_BACK */
 		if(stage4) begin
 			
