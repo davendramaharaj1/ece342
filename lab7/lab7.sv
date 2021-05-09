@@ -92,12 +92,15 @@ module cpu # (
 		fetch = 1'b0;
 		decode = 1'b0;
 		Alu_en = 1'b0;
+		pc_byte_en = 4'b111;
 		pc_increment = 1'b0;
 
 		/* STAGE 1: FETCH */
 		if(stage1) begin
 			/* read from pc memory port */
 			fetch = 1'b1;
+			/* get the entire word for pc instruction */
+			pc_byte_en = 4'b1111;
 			/* increment pc */
 			pc_increment = 1'b1;
 			/* move to decode stage */
@@ -118,6 +121,8 @@ module cpu # (
 		if(stage3) begin
 			/* Enable ALU to perform appropriate operation */
 			Alu_en = 1'b1;
+			/* move to stage 4 */
+			stage4 = 1'b1;
 		end
 
 		/* STAGE 4: WRITE_BACK */
@@ -315,11 +320,12 @@ module cpu # (
 				end
 			end
 
-			/* arithmetic I type with register and PC */
+			/* arithmetic I type with register and PC (jalr) */
 			else if(Alu_op == I_JUMP)begin
 				if(funct3 == 4'h0)begin
-					result <= PC + 4;
-					PC <= REG_FILE[rs1] + immediate;
+					result <= PC_2 + 4;
+					PC_1 <= REG_FILE[rs1] + immediate;
+					PC_2 <= (REG_FILE[rs1] + immediate) - 4;
 				end
 			end
 
@@ -327,27 +333,27 @@ module cpu # (
 			else if(Alu_op == B_TYPE)begin
 				// beq
 				if(funct3 == 4'h0)begin
-					PC <= $signed(REG_FILE[rs1]) == $signed(REG_FILE[rs2]) ? PC + immediate : PC + 4;
+					PC_1 <= $signed(REG_FILE[rs1]) == $signed(REG_FILE[rs2]) ? PC_2 - 4 + immediate : PC_1 + 4;
 				end
 				// bne
 				else if(funct3 == 4'h1)begin
-					PC <= $signed(REG_FILE[rs1]) != $signed(REG_FILE[rs2]) ? PC + immediate : PC + 4;
+					PC_1 <= $signed(REG_FILE[rs1]) != $signed(REG_FILE[rs2]) ? PC_2 - 4 + immediate : PC_1 + 4;
 				end
 				//blt
 				else if(funct3 == 4'h4)begin
-					PC <= $signed(REG_FILE[rs1]) < $signed(REG_FILE[rs2]) ? PC + immediate : PC + 4;
+					PC_1 <= $signed(REG_FILE[rs1]) < $signed(REG_FILE[rs2]) ? PC_2 - 4 + immediate : PC_1 + 4;
 				end
 				//bge
 				else if(funct3 == 4'h5)begin
-					PC <= $signed(REG_FILE[rs1]) >= $signed(REG_FILE[rs2]) ? PC + immediate : PC + 4;
+					PC_1 <= $signed(REG_FILE[rs1]) >= $signed(REG_FILE[rs2]) ? PC_2 - 4 + immediate : PC_1 + 4;
 				end
 				//bltu
 				else if(funct3 == 4'h6)begin
-					PC <= REG_FILE[rs1] < REG_FILE[rs2] ? PC + immediate : PC + 4;
+					PC_1 <= REG_FILE[rs1] < REG_FILE[rs2] ? PC_2 - 4 + immediate : PC_1 + 4;
 				end
 				//bgeu
 				else if(funct3 == 4'h7)begin
-					PC <= REG_FILE[rs1] >= REG_FILE[rs2] ? PC + immediate : PC + 4;
+					PC_1 <= REG_FILE[rs1] >= REG_FILE[rs2] ? PC_2 - 4 + immediate : PC_1 + 4;
 				end
 			end
 
@@ -359,14 +365,15 @@ module cpu # (
 			
 			/* auipc */
 			else if(Alu_op == U_PC)begin
-				result <= PC + (immediate);
+				result <= (PC_2 - 4) + (immediate);
 			end
 			/************* u type ****************/
 
 			/* jump type */
 			else if(Alu_op == J_TYPE)begin
-				result <= PC + 4;
-				PC <= PC + immediate;
+				result <= PC_2 + 4;
+				PC_1 <= PC_1 - 4 + immediate;
+				PC_2 <= PC_2 - 4 + immediate - 4;
 			end
 
 			/* loading instructions */
@@ -464,7 +471,7 @@ module cpu # (
 	/* outputs to the Processor Signal Interface */
 	assign o_pc_rd = fetch;
 	assign o_tb_regs = REG_FILE;
-	assign o_pc_addr = PC;
+	assign o_pc_addr = PC_1;
 	assign o_pc_byte_en = pc_byte_en;
 	assign o_ldst_addr = ldst_addr;
 	assign o_ldst_rd = ldst_rd;
