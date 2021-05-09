@@ -28,7 +28,7 @@ module cpu # (
 	logic [IW-1:0] immediate; // holds immediate value --> extended to 32 bits (if arithemtic-op then signed else zero-padded)
 
 	/* Address Generator Registers and signals  */
-	logic [IW-1:0] PC, PC_next;	// holds address to the next instruction
+	logic [IW-1:0] PC_1, PC_2;	// holds address to the next instruction
 	logic [3:0] pc_byte_en;	// size of pc to read : word/half-word/byte
 	logic decode;		// decode the IR instruction
 	logic fetch;		// control signal to fetch instruction from memory
@@ -41,7 +41,7 @@ module cpu # (
 	logic [IW-1:0] REG_FILE [0:REGS-1];
 
 	/* ALU Registers and signals */
-	logic [3:0] Alu_op;
+	logic [3:0] Alu_op, opcode;
 	logic [IW-1:0] result;
 	logic resultIn;
 	logic Alu_en;
@@ -131,7 +131,7 @@ module cpu # (
 	/***************************************######### RISC V DATAPATH #############***************************************/
 	/* Control Reset */
 	integer i;
-	always_ff @(posedge clk or posedge reset) begin : FSMTransition
+	always_ff @(posedge clk or posedge reset) begin : ControlReset
 		if(reset) begin
 			/* reset all valid registers */
 			stage1 <= 1'b1;
@@ -139,8 +139,8 @@ module cpu # (
 			stage3 <= 1'b0;
 			stage4 <= 1'b0;
 			/* set the PC and PC_next to point to the first instruction */
-			PC <= 32'b0;
-			PC_next <= 32'b0;
+			PC_1 <= 32'b0;
+			PC_2 <= 32'b0;
 			/* Ensure the register file is zeroed */
 			for(i = 0; i < IW; i=i+1)begin
 				REG_FILE[i] <= 32'b0;
@@ -151,12 +151,12 @@ module cpu # (
 	/* increment PC by 4 from the control signal */
 	always_ff @(posedge clk or posedge reset) begin : PC_Increment
 		if(reset)begin
-			PC <= 32'b0;
-			PC_next <= 32'b0;
+			PC_1 <= 32'b0;
+			PC_2 <= 32'b0;
 		end
 		else if(pc_increment) begin
-			PC_next <= PC_next + 4;
-			PC <= PC_next;
+			PC_1 <= PC_1 + 4;
+			PC_2 <= PC_1;
 		end
 	end
 
@@ -225,6 +225,12 @@ module cpu # (
 	/* ALU logic */
 	always_ff @(posedge clk) begin : ALU_logic
 		if(Alu_en) begin
+
+			/* save the destination register, function and opcodes for stage 4 */
+			rd_stage4 <= rd;
+			opcode <= Alu_op;
+			funct3_stage4 <= funct3;
+
 			/* registers as operands for arithmetic */
 			if(Alu_op == R_TYPE) begin
 				// add
