@@ -28,7 +28,7 @@ module cpu # (
 	logic [IW-1:0] immediate; // holds immediate value --> extended to 32 bits (if arithemtic-op then signed else zero-padded)
 
 	/* Address Generator Registers and signals  */
-	logic [IW-1:0] PC;	// holds address to the next instruction
+	logic [IW-1:0] PC, PC_next;	// holds address to the next instruction
 	logic [3:0] pc_byte_en;	// size of pc to read : word/half-word/byte
 	logic decode;		// decode the IR instruction
 	logic fetch;		// control signal to fetch instruction from memory
@@ -90,6 +90,25 @@ module cpu # (
 
 
 	/***************************************######### RISC V DATAPATH #############***************************************/
+	/* Control FSM Flip Flops */
+	integer i;
+	always_ff @(posedge clk or posedge reset) begin : FSMTransition
+		if(reset) begin
+			/* reset all valid registers */
+			stage1 <= 1'b1;
+			stage2 <= 1'b0;
+			stage3 <= 1'b0;
+			stage4 <= 1'b0;
+			/* set the PC and PC_next to point to the first instruction */
+			PC <= 32'b0;
+			PC_next <= 32'b0;
+			/* Ensure the register file is zeroed */
+			for(i = 0; i < IW; i=i+1)begin
+				REG_FILE[i] <= 32'b0;
+			end
+		end
+	end
+
 	/* increment PC by 4 from the control signal */
 	always_ff @(posedge clk or posedge reset) begin : PC_Increment
 		if(reset)begin
