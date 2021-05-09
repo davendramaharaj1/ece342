@@ -85,12 +85,30 @@ module cpu # (
 	localparam [6:0] J 		= 7'b1101111;
 
 	/***************************************########## RISC V CONTROL PATH #########***************************************/
-	
+	/* Control path for pipelined stages */
+	always_ff @( posedge clk ) begin : PipelinedStages
+		/* STAGE 1: FETCH */
+		if(stage1) begin
+			
+		end
+		/* STAGE 2: DECODE */
+		if(stage2) begin
+			
+		end
+		/* STAGE 1: EXECUTE */
+		if(stage3) begin
+			
+		end
+		/* STAGE 1: WRITE_BACK */
+		if(stage4) begin
+			
+		end
+	end
 	/***************************************########## RISC V CONTROL PATH #########***************************************/
 
 
 	/***************************************######### RISC V DATAPATH #############***************************************/
-	/* Control FSM Flip Flops */
+	/* Control Reset */
 	integer i;
 	always_ff @(posedge clk or posedge reset) begin : FSMTransition
 		if(reset) begin
