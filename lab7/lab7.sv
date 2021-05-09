@@ -91,6 +91,7 @@ module cpu # (
 		/* default to eliminate latches */
 		fetch = 1'b0;
 		decode = 1'b0;
+		Alu_en = 1'b0;
 		pc_increment = 1'b0;
 
 		/* STAGE 1: FETCH */
@@ -115,7 +116,8 @@ module cpu # (
 
 		/* STAGE 3: EXECUTE */
 		if(stage3) begin
-			
+			/* Enable ALU to perform appropriate operation */
+			Alu_en = 1'b1;
 		end
 
 		/* STAGE 4: WRITE_BACK */
@@ -206,17 +208,17 @@ module cpu # (
 	end
 
 	/* Get the ALU Op code to know which ALU Operation to perform */
-	always_comb begin : ALUOP
+	always_ff@(posedge clk) begin : ALUOP
 		case (IR[6:0])
-			R: 		Alu_op = R_TYPE;
-			I_imm:	Alu_op = I_IMM;
-			I_ld: 	Alu_op = I_LD;
-			I_jump: Alu_op = I_JUMP;
-			S: 		Alu_op = S_TYPE;
-			B:		Alu_op = B_TYPE;
-			U_ld:	Alu_op = U_LD;
-			U_pc:	Alu_op = U_PC;
-			J:		Alu_op = J_TYPE; 
+			R: 		Alu_op <= R_TYPE;
+			I_imm:	Alu_op <= I_IMM;
+			I_ld: 	Alu_op <= I_LD;
+			I_jump: Alu_op <= I_JUMP;
+			S: 		Alu_op <= S_TYPE;
+			B:		Alu_op <= B_TYPE;
+			U_ld:	Alu_op <= U_LD;
+			U_pc:	Alu_op <= U_PC;
+			J:		Alu_op <= J_TYPE; 
 		endcase
 	end
 
