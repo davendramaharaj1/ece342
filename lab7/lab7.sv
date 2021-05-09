@@ -56,6 +56,7 @@ module cpu # (
 	logic loadIn;
 
 	/* valid registers for each state */
+	logic stage1, stage2, stage3, stage4;
 
 	/* ALU operation types */
 	localparam [3:0] R_TYPE	= 4'd0;
@@ -89,6 +90,15 @@ module cpu # (
 
 
 	/***************************************######### RISC V DATAPATH #############***************************************/
+	/* increment PC by 4 from the control signal */
+	always_ff @(posedge clk or posedge reset) begin : PC_Increment
+		if(reset)begin
+			PC <= 32'b0;
+		end
+		else if(pc_increment) begin
+			PC <= PC + 4;
+		end
+	end
 
 	/* decoder to load the appropriate registers after receiving instruction on IR*/
 	always_ff@(posedge clk) begin : Decoder
@@ -134,16 +144,6 @@ module cpu # (
 					immediate <= {{12{IR[31]}},IR[19:12],IR[20],IR[30:21],1'b0};
 				end
 			endcase
-		end
-	end
-
-	/* increment PC by 4 from the control signal */
-	always_ff @(posedge clk or posedge reset) begin : PC_Increment
-		if(reset)begin
-			PC <= 32'b0;
-		end
-		else if(pc_increment) begin
-			PC <= PC + 4;
 		end
 	end
 
@@ -393,7 +393,7 @@ module cpu # (
 			endcase 
 		end
 	end
-	/***************************************########## RISC V DATAPATH ############***************************************/
+	/***************************************######### RISC V DATAPATH ############***************************************/
 
 	/* outputs to the Processor Signal Interface */
 	assign o_pc_rd = fetch;
