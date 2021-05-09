@@ -54,17 +54,8 @@ module cpu # (
 	logic ldst_rd;
 	logic ldst_wr;
 	logic loadIn;
-	
 
-	/* define states to represent stages in processing instructions */
-	enum int unsigned {
-		// INIT,
-		FETCH,
-		DECODE,
-		EXECUTE,
-		MEM_ACCESS,
-		DEST_REG
-	} state, nextstate;
+	/* valid registers for each state */
 
 	/* ALU operation types */
 	localparam [3:0] R_TYPE	= 4'd0;
@@ -91,177 +82,10 @@ module cpu # (
 	localparam [6:0] U_ld 	= 7'b0110111; 
 	localparam [6:0] U_pc 	= 7'b0010111;
 	localparam [6:0] J 		= 7'b1101111;
+
+	/***************************************########## RISC V CONTROL PATH #########***************************************/
 	
-	/***************************************########### RISC V FSM ###############***************************************/
-
-	/* Control FSM Flip Flops */
-	integer i;
-	always_ff @(posedge clk or posedge reset) begin : FSMTransition
-		if(reset) begin
-			/* set the PC to point to the first instruction */
-			PC <= 32'b0;
-			/* Ensure the register file is zeroed */
-			for(i = 0; i < IW; i=i+1)begin
-				REG_FILE[i] <= 32'b0;
-			end
-			state <= FETCH;
-		end
-		else state <= nextstate;
-	end
-
-	/* Control FSM Outputs */
-	always_comb begin : State_Machine
-
-		/* default control signals to prevent latches */
-		decode = 1'b0;
-		fetch = 1'b0;
-		pc_increment = 1'b0;
-		pc_byte_en = 4'b1111;
-		Alu_en = 1'b0;
-		resultIn = 1'b0;
-		ldst_rd = 1'b0;
-		ldst_wr = 1'b0;
-		ldst_byte_en = 4'b1111;
-		loadIn = 1'b0;
-		nextstate = state;
-
-		case(state)
-			// INIT:begin
-			// 	nextstate = FETCH;
-			// end
-			FETCH: begin
-				/* send signal to processor interface to read the pc address */
-				fetch = 1'b1;
-				/* get the entire word for PC */
-				pc_byte_en = 4'b1111;
-				/* increment the PC */
-				//pc_increment = 1'b1;
-				/* next state transition */
-				nextstate = DECODE;
-			end
-
-			DECODE:begin
-				IR = i_pc_rddata;
-				/* signal to decode instruction and load appropriate registers */ 
-				decode = 1'b1;
-				nextstate = EXECUTE;
-			end
-
-			EXECUTE: begin
-				/* enable alu to perform appropriate operation */
-				Alu_en = 1'b1;
-				/* next state depends on the ALU operation */
-				case (Alu_op)
-					R_TYPE, I_IMM, I_JUMP, U_LD, U_PC, J_TYPE: begin
-						/* non memory instructions so store result into reg file */
-						nextstate = DEST_REG;
-					end
-					B_TYPE: begin
-						/* fetch another instruction from the branched PC */
-						//pc_increment = 1'b1;
-						nextstate = FETCH;
-					end
-					I_LD, S_TYPE: begin
-						/* wait to get the memory accessed target */
-						nextstate = MEM_ACCESS;
-					end
-				endcase
-			end
-
-			MEM_ACCESS: begin
-				// load instruction
-				if(Alu_op == I_LD)begin
-					//load byte
-					if(funct3 == 4'h0)begin
-						ldst_rd = 1'b1;
-						ldst_byte_en = 4'b0001;
-						//nextstate = DEST_REG;
-					end
-					// load half word
-					else if(funct3 == 4'h1)begin
-						ldst_rd = 1'b1;
-						ldst_byte_en = 4'b0011;
-						//nextstate = DEST_REG;
-					end
-					// load word
-					else if(funct3 == 4'h2)begin
-						ldst_rd = 1'b1;
-						ldst_byte_en = 4'b1111;
-						//nextstate = DEST_REG;
-					end
-					// load byte unsigned
-					else if(funct3 == 4'h4)begin
-						ldst_rd = 1'b1;
-						ldst_byte_en = 4'b0001;
-						//nextstate = DEST_REG;
-					end		
-					//load half unsigned
-					else if(funct3 == 4'h5)begin
-						ldst_rd = 1'b1;
-						ldst_byte_en = 4'b0011;
-						//nextstate = DEST_REG;
-					end	
-					loadIn = 1'b1;	
-				end
-				//store instruction
-				else if(Alu_op == S_TYPE)begin
-					// store byte
-					if(funct3 == 4'h0) begin
-						ldst_wr = 1'b1;
-						ldst_byte_en = 4'b0001;
-						//nextstate = DEST_REG;
-					end
-					// store half
-					else if(funct3 == 4'h1) begin
-						ldst_wr = 1'b1;
-						ldst_byte_en = 4'b0011;
-						//nextstate = DEST_REG;
-					end
-					// store word
-					if(funct3 == 4'h2) begin
-						ldst_wr = 1'b1;
-						ldst_byte_en = 4'b1111;
-						//nextstate = DEST_REG;
-					end
-				end
-				if(i_ldst_waitrequest == 1'b1)begin
-					nextstate = MEM_ACCESS;
-				end
-				if(i_ldst_waitrequest == 1'b0)begin
-					nextstate = DEST_REG;
-				end
-			end
-
-			DEST_REG: begin
-				case (Alu_op)
-					// write result to corresponsding register_file[rd] for R-type, U-type, J-type, I_imm/jump-type
-					R_TYPE, I_IMM, U_LD, U_PC: begin
-						pc_increment = 1'b1;
-						resultIn = 1'b1;
-						/* non memory instructions so store result into reg file */
-						nextstate = FETCH;
-					end
-					I_JUMP, J_TYPE: begin
-						resultIn = 1'b1;
-						/* non memory instructions so store result into reg file */
-						nextstate = FETCH;
-					end
-					I_LD: begin
-						/* copy value loaded from memory into register file*/
-						pc_increment = 1'b1;
-						nextstate = FETCH;
-					end
-					S_TYPE:begin
-						pc_increment = 1'b1;
-						nextstate = FETCH;
-					end
-				endcase 
-			end
-		endcase
-
-	end
-
-	/***************************************########## RISC V FSM ################***************************************/
+	/***************************************########## RISC V CONTROL PATH #########***************************************/
 
 
 	/***************************************######### RISC V DATAPATH #############***************************************/
