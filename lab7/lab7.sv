@@ -87,19 +87,26 @@ module cpu # (
 	/***************************************########## RISC V CONTROL PATH #########***************************************/
 	/* Control path for pipelined stages */
 	always_ff @( posedge clk ) begin : PipelinedStages
+
+		/* default to eliminate latches */
+		fetch = 1'b0;
+		pc_increment = 1'b0;
+
 		/* STAGE 1: FETCH */
 		if(stage1) begin
-			
+			fetch = 1'b1;
+			pc_increment = 1'b1;
+			stage2 = 1'b1;
 		end
 		/* STAGE 2: DECODE */
 		if(stage2) begin
 			
 		end
-		/* STAGE 1: EXECUTE */
+		/* STAGE 3: EXECUTE */
 		if(stage3) begin
 			
 		end
-		/* STAGE 1: WRITE_BACK */
+		/* STAGE 4: WRITE_BACK */
 		if(stage4) begin
 			
 		end
@@ -131,9 +138,11 @@ module cpu # (
 	always_ff @(posedge clk or posedge reset) begin : PC_Increment
 		if(reset)begin
 			PC <= 32'b0;
+			PC_next <= 32'b0;
 		end
 		else if(pc_increment) begin
-			PC <= PC + 4;
+			PC_next <= PC_next + 4;
+			PC <= PC_next;
 		end
 	end
 
