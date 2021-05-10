@@ -18,7 +18,6 @@ module cpu # (
 	input [IW-1:0] i_ldst_rddata,
 	output [IW-1:0] o_ldst_wrdata,
 	output [3:0] o_ldst_byte_en,
-	input i_ldst_waitrequest,
 	
 	output [IW-1:0] o_tb_regs [0:REGS-1]
 );
@@ -83,6 +82,8 @@ module cpu # (
 	localparam [6:0] U_ld 	= 7'b0110111; 
 	localparam [6:0] U_pc 	= 7'b0010111;
 	localparam [6:0] J 		= 7'b1101111;
+	
+	integer i;
 
 	/***************************************########## RISC V CONTROL PATH #########***************************************/
 	/* Control path for pipelined stages */
@@ -134,6 +135,7 @@ module cpu # (
 
 
 	/***************************************######### RISC V DATAPATH #############***************************************/
+	
 		/************ Control Reset ***********/
 		if(reset) begin
 			/* reset all valid registers */
@@ -141,11 +143,11 @@ module cpu # (
 			stage2 <= 1'b0;
 			stage3 <= 1'b0;
 			stage4 <= 1'b0;
+			
 			/* set the PC and PC_next to point to the first instruction */
 			PC_1 <= 32'b0;
 			PC_2 <= 32'b0;
 			
-			integer i;
 			/* Ensure the register file is zeroed */
 			for(i = 0; i < IW; i=i+1)begin
 				REG_FILE[i] <= 32'b0;
@@ -415,23 +417,23 @@ module cpu # (
 			case(funct3)
 				//load byte
 				4'h0: begin
-					REG_FILE[rd_stage4] <= $signed(ldst_rddata[7:0]);
+					REG_FILE[rd] <= $signed(ldst_rddata[7:0]);
 				end
 				//load half
 				4'h1: begin
-					REG_FILE[rd_stage4] <= $signed(ldst_rddata[15:0]);
+					REG_FILE[rd] <= $signed(ldst_rddata[15:0]);
 				end
 				// load word
 				4'h2: begin
-					REG_FILE[rd_stage4] <= $signed(ldst_rddata);
+					REG_FILE[rd] <= $signed(ldst_rddata);
 				end
 				// load byte (U)
 				4'h4: begin
-					REG_FILE[rd_stage4] <= ldst_rddata[7:0];
+					REG_FILE[rd] <= ldst_rddata[7:0];
 				end
 				//load half (U)
 				4'h5: begin
-					REG_FILE[rd_stage4] <= ldst_rddata[15:0];
+					REG_FILE[rd] <= ldst_rddata[15:0];
 				end
 			endcase 
 		end	
