@@ -86,58 +86,59 @@ module cpu # (
 
 	/***************************************########## RISC V CONTROL PATH #########***************************************/
 	/* Control path for pipelined stages */
-	always_comb begin : PipelinedStages
+	always_ff @(posedge clk) begin : PipelinedStages
 		/* default to eliminate latches */
-		fetch = 1'b0;
-		decode = 1'b0;
-		Alu_en = 1'b0;
-		resultIn = 1'b0;
-		pc_byte_en = 4'b111;
-		pc_increment = 1'b0;
+		fetch <= 1'b0;
+		decode <= 1'b0;
+		Alu_en <= 1'b0;
+		resultIn <= 1'b0;
+		pc_byte_en <= 4'b1111;
+		pc_increment <= 1'b0;
 
 		/* STAGE 1: FETCH */
 		if(stage1) begin
 			/* read from pc memory port */
-			fetch = 1'b1;
+			fetch <= 1'b1;
 			/* get the entire word for pc instruction */
-			pc_byte_en = 4'b1111;
+			pc_byte_en <= 4'b1111;
 			/* increment pc */
-			pc_increment = 1'b1;
+			pc_increment <= 1'b1;
 			/* move to decode stage */
-			stage2 = 1'b1;
+			stage2 <= 1'b1;
 		end
 
 		/* STAGE 2: DECODE */
 		if(stage2) begin
 			/* place instruction from memory into IR*/
-			IR = i_pc_rddata;
+			IR <= i_pc_rddata;
 			/* implement decoding of instructions */
-			decode = 1'b1;
+			decode <= 1'b1;
 			/* move to execute stage */
-			stage3 = 1'b1;
+			stage3 <= 1'b1;
 		end
 
 		/* STAGE 3: EXECUTE */
 		if(stage3) begin
 			/* Enable ALU to perform appropriate operation */
-			Alu_en = 1'b1;
+			Alu_en <= 1'b1;
 			/* move to stage 4 */
-			stage4 = 1'b1;
+			stage4 <= 1'b1;
 		end
 
 		/* STAGE 4: WRITE_BACK */
 		if(stage4) begin
 			/* put value in result register into REG_FILE[rd_stage4] */
-			resultIn = 1'b1;
+			resultIn <= 1'b1;
 		end
-	end
+	//end
 	/***************************************########## RISC V CONTROL PATH #########***************************************/
 
 
 	/***************************************######### RISC V DATAPATH #############***************************************/
-	/* Control Reset */
-	integer i;
-	always_ff @(posedge clk or posedge reset) begin : ControlReset
+		
+	//always_ff @(posedge clk) begin : datapath_logic
+	
+		/************ Control Reset ***********/
 		if(reset) begin
 			/* reset all valid registers */
 			stage1 <= 1'b1;
@@ -147,27 +148,21 @@ module cpu # (
 			/* set the PC and PC_next to point to the first instruction */
 			PC_1 <= 32'b0;
 			PC_2 <= 32'b0;
+			
+			integer i;
 			/* Ensure the register file is zeroed */
 			for(i = 0; i < IW; i=i+1)begin
 				REG_FILE[i] <= 32'b0;
 			end
 		end
-	end
-
-	/* increment PC by 4 from the control signal */
-	always_ff @(posedge clk or posedge reset) begin : PC_Increment
-		if(reset)begin
-			PC_1 <= 32'b0;
-			PC_2 <= 32'b0;
-		end
+		
+		/********* increment pc ************/
 		else if(pc_increment) begin
 			PC_1 <= PC_1 + 4;
 			PC_2 <= PC_1;
 		end
-	end
-
-	/* decoder to load the appropriate registers after receiving instruction on IR*/
-	always_ff@(posedge clk) begin : Decoder
+		
+		/******* decoder to load the appropriate registers after receiving instruction on IR ******/
 		if(decode) begin
 			case (IR[6:0])
 				/* R Type instruction */
@@ -206,32 +201,14 @@ module cpu # (
 				end
 				/* J Type instruction */
 				J: begin
-					rd = IR[11:7];
+					rd <= IR[11:7];
 					immediate <= {{12{IR[31]}},IR[19:12],IR[20],IR[30:21],1'b0};
 				end
 			endcase
 		end
-	end
-
-	/* Get the ALU Op code to know which ALU Operation to perform */
-	always_ff@(posedge clk) begin : ALUOP
-		case (IR[6:0])
-			R: 		Alu_op <= R_TYPE;
-			I_imm:	Alu_op <= I_IMM;
-			I_ld: 	Alu_op <= I_LD;
-			I_jump: Alu_op <= I_JUMP;
-			S: 		Alu_op <= S_TYPE;
-			B:		Alu_op <= B_TYPE;
-			U_ld:	Alu_op <= U_LD;
-			U_pc:	Alu_op <= U_PC;
-			J:		Alu_op <= J_TYPE; 
-		endcase
-	end
-
-	/* ALU logic */
-	always_ff @(posedge clk) begin : ALU_logic
+		
+		/***************ALU Logic *******************/
 		if(Alu_en) begin
-
 			/* save the destination register, function and opcodes for stage 4 */
 			rd_stage4 <= rd;
 			opcode <= Alu_op;
@@ -321,42 +298,42 @@ module cpu # (
 				end
 			end
 
-			/* arithmetic I type with register and PC (jalr) */
-			else if(Alu_op == I_JUMP)begin
-				if(funct3 == 4'h0)begin
-					result <= PC_2 + 4;
-					PC_1 <= REG_FILE[rs1] + immediate;
-					PC_2 <= (REG_FILE[rs1] + immediate) - 4;
-				end
-			end
+//			/* arithmetic I type with register and PC (jalr) */
+//			else if(Alu_op == I_JUMP)begin
+//				if(funct3 == 4'h0)begin
+//					result <= PC_2;
+//					PC_1 <= REG_FILE[rs1] + immediate;
+//					PC_2 <= (REG_FILE[rs1] + immediate) - 4;
+//				end
+//			end
 
 			/* branching */
-			else if(Alu_op == B_TYPE)begin
-				// beq
-				if(funct3 == 4'h0)begin
-					PC_1 <= $signed(REG_FILE[rs1]) == $signed(REG_FILE[rs2]) ? PC_2 - 4 + immediate : PC_1 + 4;
-				end
-				// bne
-				else if(funct3 == 4'h1)begin
-					PC_1 <= $signed(REG_FILE[rs1]) != $signed(REG_FILE[rs2]) ? PC_2 - 4 + immediate : PC_1 + 4;
-				end
-				//blt
-				else if(funct3 == 4'h4)begin
-					PC_1 <= $signed(REG_FILE[rs1]) < $signed(REG_FILE[rs2]) ? PC_2 - 4 + immediate : PC_1 + 4;
-				end
-				//bge
-				else if(funct3 == 4'h5)begin
-					PC_1 <= $signed(REG_FILE[rs1]) >= $signed(REG_FILE[rs2]) ? PC_2 - 4 + immediate : PC_1 + 4;
-				end
-				//bltu
-				else if(funct3 == 4'h6)begin
-					PC_1 <= REG_FILE[rs1] < REG_FILE[rs2] ? PC_2 - 4 + immediate : PC_1 + 4;
-				end
-				//bgeu
-				else if(funct3 == 4'h7)begin
-					PC_1 <= REG_FILE[rs1] >= REG_FILE[rs2] ? PC_2 - 4 + immediate : PC_1 + 4;
-				end
-			end
+//			else if(Alu_op == B_TYPE)begin
+//				// beq
+//				if(funct3 == 4'h0)begin
+//					PC_1 <= $signed(REG_FILE[rs1]) == $signed(REG_FILE[rs2]) ? PC_2 - 4 + immediate : PC_1 + 4;
+//				end
+//				// bne
+//				else if(funct3 == 4'h1)begin
+//					PC_1 <= $signed(REG_FILE[rs1]) != $signed(REG_FILE[rs2]) ? PC_2 - 4 + immediate : PC_1 + 4;
+//				end
+//				//blt
+//				else if(funct3 == 4'h4)begin
+//					PC_1 <= $signed(REG_FILE[rs1]) < $signed(REG_FILE[rs2]) ? PC_2 - 4 + immediate : PC_1 + 4;
+//				end
+//				//bge
+//				else if(funct3 == 4'h5)begin
+//					PC_1 <= $signed(REG_FILE[rs1]) >= $signed(REG_FILE[rs2]) ? PC_2 - 4 + immediate : PC_1 + 4;
+//				end
+//				//bltu
+//				else if(funct3 == 4'h6)begin
+//					PC_1 <= REG_FILE[rs1] < REG_FILE[rs2] ? PC_2 - 4 + immediate : PC_1 + 4;
+//				end
+//				//bgeu
+//				else if(funct3 == 4'h7)begin
+//					PC_1 <= REG_FILE[rs1] >= REG_FILE[rs2] ? PC_2 - 4 + immediate : PC_1 + 4;
+//				end
+//			end
 
 			/************* u type ****************/
 			/* lui */
@@ -370,12 +347,12 @@ module cpu # (
 			end
 			/************* u type ****************/
 
-			/* jump type */
-			else if(Alu_op == J_TYPE)begin
-				result <= PC_2 + 4;
-				PC_1 <= PC_1 - 4 + immediate;
-				PC_2 <= PC_2 - 4 + immediate - 4;
-			end
+//			/* jump type */
+//			else if(Alu_op == J_TYPE)begin
+//				result <= PC_2 + 4;
+//				PC_1 <= PC_1 - 4 + immediate;
+//				PC_2 <= PC_2 - 4 + immediate - 4;
+//			end
 
 			/* loading instructions */
 			else if(Alu_op == I_LD) begin
@@ -426,10 +403,8 @@ module cpu # (
 				end
 			end
 		end
-	end
-
-	/* load result into reg file */
-	always_ff @(posedge clk) begin : Reg_file_load
+		
+		/************* load result into reg file ***************/
 		if(resultIn) begin
 			if(rd_stage4 == 5'b0)begin
 				REG_FILE[rd_stage4] <= 32'b0;
@@ -438,10 +413,8 @@ module cpu # (
 				REG_FILE[rd_stage4] <= result;
 			end
 		end
-	end
-
-	/* load value from memory into reg file */
-	always_ff @(posedge clk) begin : Load
+		
+		/************ load value from memory into reg file **************/
 		if(loadIn) begin
 			case(funct3)
 				//load byte
@@ -465,7 +438,22 @@ module cpu # (
 					REG_FILE[rd] <= ldst_rddata[15:0];
 				end
 			endcase 
-		end
+		end	
+	end
+
+	/* Get the ALU Op code to know which ALU Operation to perform */
+	always_ff@(posedge clk) begin : ALUOP
+		case (IR[6:0])
+			R: 		Alu_op <= R_TYPE;
+			I_imm:	Alu_op <= I_IMM;
+			I_ld: 	Alu_op <= I_LD;
+			I_jump: Alu_op <= I_JUMP;
+			S: 		Alu_op <= S_TYPE;
+			B:		Alu_op <= B_TYPE;
+			U_ld:	Alu_op <= U_LD;
+			U_pc:	Alu_op <= U_PC;
+			J:		Alu_op <= J_TYPE; 
+		endcase
 	end
 	/***************************************######### RISC V DATAPATH ############***************************************/
 
