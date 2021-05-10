@@ -216,43 +216,123 @@ module cpu # (
 			if(Alu_op == R_TYPE) begin
 				// add
 				if(funct3 == 4'h0 && funct7 == 8'h00) begin
-					result <= REG_FILE[rs1] + REG_FILE[rs2];
+					if(rs1 == rd_stage4)begin
+						result <= REG_FILE[rd_stage4] + REG_FILE[rs2];
+					end
+					else if(rs2 == rd_stage4)begin
+						result <= REG_FILE[rd_stage4] + REG_FILE[rs1];
+					end
+					else begin
+						result <= REG_FILE[rs1] + REG_FILE[rs2];
+					end
 				end
 				// sub
 				else if (funct3 == 4'h0 && funct7 == 8'h20) begin
-					result <= REG_FILE[rs1] - REG_FILE[rs2];
+					if(rs1 == rd_stage4)begin
+						result <= REG_FILE[rd_stage4] - REG_FILE[rs2];
+					end
+					else if(rs2 == rd_stage4)begin
+						result <= REG_FILE[rs1] - REG_FILE[rd_stage4];
+					end
+					else begin
+						result <= REG_FILE[rs1] - REG_FILE[rs2];
+					end
 				end
 				// xor
 				else if(funct3 == 4'h4 && funct7 == 8'h00)begin
-					result <= REG_FILE[rs1] ^ REG_FILE[rs2];
+					if(rs1 == rd_stage4)begin
+						result <= REG_FILE[rd_stage4] ^ REG_FILE[rs2];
+					end
+					else if(rs2 == rd_stage4)begin
+						result <= REG_FILE[rs1] ^ REG_FILE[rd_stage4];
+					end
+					else begin
+						result <= REG_FILE[rs1] ^ REG_FILE[rs2];
+					end
 				end
 				// or
 				else if(funct3 == 4'h6 && funct7 == 8'h00)begin
-					result <= REG_FILE[rs1] | REG_FILE[rs2];
+					if(rs1 == rd_stage4)begin
+						result <= REG_FILE[rd_stage4] | REG_FILE[rs2];
+					end
+					else if(rs2 == rd_stage4)begin
+						result <= REG_FILE[rs1] | REG_FILE[rd_stage4];
+					end
+					else begin
+						result <= REG_FILE[rs1] | REG_FILE[rs2];
+					end
 				end
 				// and
 				else if(funct3 == 4'h7 && funct7 == 8'h00)begin
-					result <= REG_FILE[rs1] & REG_FILE[rs2];
+					if(rs1 == rd_stage4)begin
+						result <= REG_FILE[rd_stage4] & REG_FILE[rs2];
+					end
+					else if(rs2 == rd_stage4)begin
+						result <= REG_FILE[rs1] & REG_FILE[rd_stage4];
+					end
+					else begin
+						result <= REG_FILE[rs1] & REG_FILE[rs2];
+					end
 				end
 				//sll
 				else if(funct3 == 4'h1 && funct7 == 8'h00)begin
-					result <= REG_FILE[rs1] << REG_FILE[rs2][4:0];
+					if(rs1 == rd_stage4)begin
+						result <= REG_FILE[rd_stage4] << REG_FILE[rs2];
+					end
+					else if(rs2 == rd_stage4)begin
+						result <= REG_FILE[rs1] << REG_FILE[rd_stage4];
+					end
+					else begin
+						result <= REG_FILE[rs1] << REG_FILE[rs2];
+					end
 				end
 				//srl
 				else if(funct3 == 4'h5 && funct7 == 8'h00)begin
-					result <= REG_FILE[rs1] >> REG_FILE[rs2][4:0];
+					if(rs1 == rd_stage4)begin
+						result <= REG_FILE[rd_stage4] >> REG_FILE[rs2];
+					end
+					else if(rs2 == rd_stage4)begin
+						result <= REG_FILE[rs1] >> REG_FILE[rd_stage4];
+					end
+					else begin
+						result <= REG_FILE[rs1] >> REG_FILE[rs2];
+					end
 				end
 				//sra
 				else if(funct3 == 4'h5 && funct7 == 8'h20)begin
-					result <= $signed(REG_FILE[rs1]) >>> REG_FILE[rs2][4:0];
+					if(rs1 == rd_stage4)begin
+						result <= $signed(REG_FILE[rd_stage4]) >>> REG_FILE[rs2][4:0];
+					end
+					else if(rs2 == rd_stage4)begin
+						result <= $signed(REG_FILE[rs1]) >>> REG_FILE[rd_stage4][4:0];
+					end
+					else begin
+						result <= $signed(REG_FILE[rs1]) >>> REG_FILE[rs2][4:0];
+					end
 				end
 				//slt
 				else if(funct3 == 4'h2 && funct7 == 8'h00)begin
-					result <= $signed(REG_FILE[rs1]) < $signed(REG_FILE[rs2]) ? 1 : 0;
+					if(rs1 == rd_stage4)begin
+						result <= $signed(REG_FILE[rd_stage4]) < $signed(REG_FILE[rs2]) ? 1 : 0;
+					end
+					else if(rs2 == rd_stage4)begin
+						result <= $signed(REG_FILE[rs1]) < $signed(REG_FILE[rd_stage4]) ? 1 : 0;
+					end
+					else begin
+						result <= $signed(REG_FILE[rs1]) < $signed(REG_FILE[rs2]) ? 1 : 0;
+					end
 				end
 				//sltu
 				else if(funct3 == 4'h3 && funct7 == 8'h00)begin
-					result <= REG_FILE[rs1] < REG_FILE[rs2] ? 1 : 0;
+					if(rs1 == rd_stage4)begin
+						result <= REG_FILE[rd_stage4] < REG_FILE[rs2] ? 1 : 0;
+					end
+					else if(rs2 == rd_stage4)begin
+						result <= REG_FILE[rs1] < REG_FILE[rd_stage4] ? 1 : 0;
+					end
+					else begin
+						result <= REG_FILE[rs1] < REG_FILE[rs2] ? 1 : 0;
+					end
 				end
 			end
 
@@ -260,39 +340,84 @@ module cpu # (
 			else if(Alu_op == I_IMM)begin
 				// addi
 				if(funct3 == 4'h0) begin
-					result <= REG_FILE[rs1] + immediate;
+					if(rs1 == rd_stage4)begin
+						result <= REG_FILE[rd_stage4] + immediate;
+					end
+					else begin
+						result <= REG_FILE[rs1] + immediate;
+					end
 				end
 				// xori
 				else if(funct3 == 4'h4)begin
-					result <= REG_FILE[rs1] ^ immediate;
+					if(rs1 == rd_stage4)begin
+						result <= REG_FILE[rd_stage4] ^ immediate;
+					end
+					else begin
+						result <= REG_FILE[rs1] ^ immediate;
+					end
 				end
 				// ori
 				else if(funct3 == 4'h6)begin
-					result <= REG_FILE[rs1] | immediate;
+					if(rs1 == rd_stage4)begin
+						result <= REG_FILE[rd_stage4] | immediate;
+					end
+					else begin
+						result <= REG_FILE[rs1] | immediate;
+					end
 				end
 				// andi
 				else if(funct3 == 4'h7)begin
-					result <= REG_FILE[rs1] & immediate;
+					if(rs1 == rd_stage4)begin
+						result <= REG_FILE[rd_stage4] & immediate;
+					end
+					else begin
+						result <= REG_FILE[rs1] & immediate;
+					end
 				end
 				//slli
 				else if(funct3 == 4'h1 && immediate[11:5] == 8'h00)begin
-					result <= REG_FILE[rs1] << immediate[4:0];
+					if(rs1 == rd_stage4)begin
+						result <= REG_FILE[rd_stage4] << immediate[4:0];
+					end
+					else begin
+						result <= REG_FILE[rs1] << immediate[4:0];
+					end
 				end
 				//srli
 				else if(funct3 == 4'h5 && immediate[11:5] == 8'h00)begin
-					result <= REG_FILE[rs1] >> immediate[4:0];
+					if(rs1 == rd_stage4)begin
+						result <= REG_FILE[rd_stage4] >> immediate[4:0];
+					end
+					else begin
+						result <= REG_FILE[rs1] >> immediate[4:0];
+					end
 				end
 				//srai
 				else if(funct3 == 4'h5 && immediate[11:5] == 8'h20)begin
-					result <= $signed(REG_FILE[rs1]) >>> immediate[4:0];
+					if(rs1 == rd_stage4)begin
+						result <= $signed(REG_FILE[rd_stage4]) >>> immediate[4:0];
+					end
+					else begin
+						result <= $signed(REG_FILE[rs1]) >>> immediate[4:0];
+					end
 				end
 				//slti
 				else if(funct3 == 4'h2) begin
-					result <= $signed(REG_FILE[rs1]) < $signed(immediate) ? 1 : 0;
+					if(rs1 == rd_stage4)begin
+						result <= $signed(REG_FILE[rd_stage4]) < $signed(immediate) ? 1 : 0;
+					end
+					else begin
+						result <= $signed(REG_FILE[rs1]) < $signed(immediate) ? 1 : 0;
+					end
 				end
 				//sltiu
 				else if(funct3 == 4'h3 && funct7 == 8'h00)begin
-					result <= REG_FILE[rs1] < immediate ? 1 : 0;
+					if(rs1 == rd_stage4)begin
+						result <= REG_FILE[rd_stage4] < immediate ? 1 : 0;
+					end
+					else begin
+						result <= REG_FILE[rs1] < immediate ? 1 : 0;
+					end
 				end
 			end
 
