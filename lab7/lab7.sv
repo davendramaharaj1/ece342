@@ -298,42 +298,42 @@ module cpu # (
 				end
 			end
 
-//			/* arithmetic I type with register and PC (jalr) */
-//			else if(Alu_op == I_JUMP)begin
-//				if(funct3 == 4'h0)begin
-//					result <= PC_2;
-//					PC_1 <= REG_FILE[rs1] + immediate;
-//					PC_2 <= (REG_FILE[rs1] + immediate) - 4;
-//				end
-//			end
+			/* arithmetic I type with register and PC (jalr) */
+			else if(Alu_op == I_JUMP)begin
+				if(funct3 == 4'h0)begin
+					result <= PC_2;
+					PC_1 <= REG_FILE[rs1] + immediate;
+					PC_2 <= (REG_FILE[rs1] + immediate) - 4;
+				end
+			end
 
 			/* branching */
-//			else if(Alu_op == B_TYPE)begin
-//				// beq
-//				if(funct3 == 4'h0)begin
-//					PC_1 <= $signed(REG_FILE[rs1]) == $signed(REG_FILE[rs2]) ? PC_2 - 4 + immediate : PC_1 + 4;
-//				end
-//				// bne
-//				else if(funct3 == 4'h1)begin
-//					PC_1 <= $signed(REG_FILE[rs1]) != $signed(REG_FILE[rs2]) ? PC_2 - 4 + immediate : PC_1 + 4;
-//				end
-//				//blt
-//				else if(funct3 == 4'h4)begin
-//					PC_1 <= $signed(REG_FILE[rs1]) < $signed(REG_FILE[rs2]) ? PC_2 - 4 + immediate : PC_1 + 4;
-//				end
-//				//bge
-//				else if(funct3 == 4'h5)begin
-//					PC_1 <= $signed(REG_FILE[rs1]) >= $signed(REG_FILE[rs2]) ? PC_2 - 4 + immediate : PC_1 + 4;
-//				end
-//				//bltu
-//				else if(funct3 == 4'h6)begin
-//					PC_1 <= REG_FILE[rs1] < REG_FILE[rs2] ? PC_2 - 4 + immediate : PC_1 + 4;
-//				end
-//				//bgeu
-//				else if(funct3 == 4'h7)begin
-//					PC_1 <= REG_FILE[rs1] >= REG_FILE[rs2] ? PC_2 - 4 + immediate : PC_1 + 4;
-//				end
-//			end
+			else if(Alu_op == B_TYPE)begin
+				// beq
+				if(funct3 == 4'h0)begin
+					PC_1 <= $signed(REG_FILE[rs1]) == $signed(REG_FILE[rs2]) ? PC_2 - 4 + immediate : PC_1 + 4;
+				end
+				// bne
+				else if(funct3 == 4'h1)begin
+					PC_1 <= $signed(REG_FILE[rs1]) != $signed(REG_FILE[rs2]) ? PC_2 - 4 + immediate : PC_1 + 4;
+				end
+				//blt
+				else if(funct3 == 4'h4)begin
+					PC_1 <= $signed(REG_FILE[rs1]) < $signed(REG_FILE[rs2]) ? PC_2 - 4 + immediate : PC_1 + 4;
+				end
+				//bge
+				else if(funct3 == 4'h5)begin
+					PC_1 <= $signed(REG_FILE[rs1]) >= $signed(REG_FILE[rs2]) ? PC_2 - 4 + immediate : PC_1 + 4;
+				end
+				//bltu
+				else if(funct3 == 4'h6)begin
+					PC_1 <= REG_FILE[rs1] < REG_FILE[rs2] ? PC_2 - 4 + immediate : PC_1 + 4;
+				end
+				//bgeu
+				else if(funct3 == 4'h7)begin
+					PC_1 <= REG_FILE[rs1] >= REG_FILE[rs2] ? PC_2 - 4 + immediate : PC_1 + 4;
+				end
+			end
 
 			/************* u type ****************/
 			/* lui */
