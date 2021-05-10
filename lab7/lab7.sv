@@ -130,14 +130,10 @@ module cpu # (
 			/* put value in result register into REG_FILE[rd_stage4] */
 			resultIn <= 1'b1;
 		end
-	//end
 	/***************************************########## RISC V CONTROL PATH #########***************************************/
 
 
 	/***************************************######### RISC V DATAPATH #############***************************************/
-		
-	//always_ff @(posedge clk) begin : datapath_logic
-	
 		/************ Control Reset ***********/
 		if(reset) begin
 			/* reset all valid registers */
@@ -347,12 +343,12 @@ module cpu # (
 			end
 			/************* u type ****************/
 
-//			/* jump type */
-//			else if(Alu_op == J_TYPE)begin
-//				result <= PC_2 + 4;
-//				PC_1 <= PC_1 - 4 + immediate;
-//				PC_2 <= PC_2 - 4 + immediate - 4;
-//			end
+			/* jump type */
+			else if(Alu_op == J_TYPE)begin
+				result <= PC_2 + 4;
+				PC_1 <= PC_1 - 4 + immediate;
+				PC_2 <= PC_2 - 4 + immediate - 4;
+			end
 
 			/* loading instructions */
 			else if(Alu_op == I_LD) begin
@@ -419,23 +415,23 @@ module cpu # (
 			case(funct3)
 				//load byte
 				4'h0: begin
-					REG_FILE[rd] <= $signed(ldst_rddata[7:0]);
+					REG_FILE[rd_stage4] <= $signed(ldst_rddata[7:0]);
 				end
 				//load half
 				4'h1: begin
-					REG_FILE[rd] <= $signed(ldst_rddata[15:0]);
+					REG_FILE[rd_stage4] <= $signed(ldst_rddata[15:0]);
 				end
 				// load word
 				4'h2: begin
-					REG_FILE[rd] <= $signed(ldst_rddata);
+					REG_FILE[rd_stage4] <= $signed(ldst_rddata);
 				end
 				// load byte (U)
 				4'h4: begin
-					REG_FILE[rd] <= ldst_rddata[7:0];
+					REG_FILE[rd_stage4] <= ldst_rddata[7:0];
 				end
 				//load half (U)
 				4'h5: begin
-					REG_FILE[rd] <= ldst_rddata[15:0];
+					REG_FILE[rd_stage4] <= ldst_rddata[15:0];
 				end
 			endcase 
 		end	
