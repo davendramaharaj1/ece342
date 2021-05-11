@@ -124,6 +124,7 @@ module cpu # (
 			Alu_en <= 1'b1;
 			/* move to stage 4 */
 			stage4 <= 1'b1;
+			/* write back to reg file */
 		end
 
 		/* STAGE 4: WRITE_BACK */
@@ -154,414 +155,417 @@ module cpu # (
 			end
 		end
 		
-		/********* increment pc ************/
-		else if(pc_increment) begin
-			PC_1 <= PC_1 + 4;
-			PC_2 <= PC_1;
-		end
-		
-		/******* decoder to load the appropriate registers after receiving instruction on IR ******/
-		if(decode) begin
-			case (IR[6:0])
-				/* R Type instruction */
-				R: begin
-					rs1 <= IR[19:15];
-					rs2 <= IR[24:20];
-					rd <= IR[11:7];
-					funct3 <= IR[14:12];
-					funct7 <= IR[31:25];
-				end
-				/* I Type instruction */
-				I_imm, I_ld, I_jump: begin
-					rs1 <= IR[19:15];
-					rd <= IR[11:7];
-					funct3 <= IR[14:12];
-					immediate <= {{21{IR[31]}},IR[30:20]};
-				end
-				/* S Type instruction */
-				S: begin
-					rs1 <= IR[19:15];
-					rs2 <= IR[24:20];
-					funct3 <= IR[14:12];
-					immediate <= {{21{IR[31]}},IR[30:25],IR[11:7]};
-				end
-				/* B Type instruction */
-				B: begin
-					rs1 <= IR[19:15];
-					rs2 <= IR[24:20];
-					funct3 <= IR[14:12];
-					immediate <= {{20{IR[31]}},IR[7],IR[30:25],IR[11:8],1'b0};
-				end
-				/* U Type instruction */
-				U_ld, U_pc: begin
-					rd <= IR[11:7];
-					immediate <= {IR[31:12],12'b0};
-				end
-				/* J Type instruction */
-				J: begin
-					rd <= IR[11:7];
-					immediate <= {{12{IR[31]}},IR[19:12],IR[20],IR[30:21],1'b0};
-				end
-			endcase
-		end
-		
-		/***************ALU Logic *******************/
-		if(Alu_en) begin
-			/* save the destination register, function and opcodes for stage 4 */
-			rd_stage4 <= rd;
-			opcode <= Alu_op;
-			funct3_stage4 <= funct3;
-
-			/* registers as operands for arithmetic */
-			if(Alu_op == R_TYPE) begin
-				// add
-				if(funct3 == 4'h0 && funct7 == 8'h00) begin
-					if(rs1 == rd_stage4)begin
-						result <= REG_FILE[rd_stage4] + REG_FILE[rs2];
-					end
-					else if(rs2 == rd_stage4)begin
-						result <= REG_FILE[rd_stage4] + REG_FILE[rs1];
-					end
-					else begin
-						result <= REG_FILE[rs1] + REG_FILE[rs2];
-					end
-				end
-				// sub
-				else if (funct3 == 4'h0 && funct7 == 8'h20) begin
-					if(rs1 == rd_stage4)begin
-						result <= REG_FILE[rd_stage4] - REG_FILE[rs2];
-					end
-					else if(rs2 == rd_stage4)begin
-						result <= REG_FILE[rs1] - REG_FILE[rd_stage4];
-					end
-					else begin
-						result <= REG_FILE[rs1] - REG_FILE[rs2];
-					end
-				end
-				// xor
-				else if(funct3 == 4'h4 && funct7 == 8'h00)begin
-					if(rs1 == rd_stage4)begin
-						result <= REG_FILE[rd_stage4] ^ REG_FILE[rs2];
-					end
-					else if(rs2 == rd_stage4)begin
-						result <= REG_FILE[rs1] ^ REG_FILE[rd_stage4];
-					end
-					else begin
-						result <= REG_FILE[rs1] ^ REG_FILE[rs2];
-					end
-				end
-				// or
-				else if(funct3 == 4'h6 && funct7 == 8'h00)begin
-					if(rs1 == rd_stage4)begin
-						result <= REG_FILE[rd_stage4] | REG_FILE[rs2];
-					end
-					else if(rs2 == rd_stage4)begin
-						result <= REG_FILE[rs1] | REG_FILE[rd_stage4];
-					end
-					else begin
-						result <= REG_FILE[rs1] | REG_FILE[rs2];
-					end
-				end
-				// and
-				else if(funct3 == 4'h7 && funct7 == 8'h00)begin
-					if(rs1 == rd_stage4)begin
-						result <= REG_FILE[rd_stage4] & REG_FILE[rs2];
-					end
-					else if(rs2 == rd_stage4)begin
-						result <= REG_FILE[rs1] & REG_FILE[rd_stage4];
-					end
-					else begin
-						result <= REG_FILE[rs1] & REG_FILE[rs2];
-					end
-				end
-				//sll
-				else if(funct3 == 4'h1 && funct7 == 8'h00)begin
-					if(rs1 == rd_stage4)begin
-						result <= REG_FILE[rd_stage4] << REG_FILE[rs2];
-					end
-					else if(rs2 == rd_stage4)begin
-						result <= REG_FILE[rs1] << REG_FILE[rd_stage4];
-					end
-					else begin
-						result <= REG_FILE[rs1] << REG_FILE[rs2];
-					end
-				end
-				//srl
-				else if(funct3 == 4'h5 && funct7 == 8'h00)begin
-					if(rs1 == rd_stage4)begin
-						result <= REG_FILE[rd_stage4] >> REG_FILE[rs2];
-					end
-					else if(rs2 == rd_stage4)begin
-						result <= REG_FILE[rs1] >> REG_FILE[rd_stage4];
-					end
-					else begin
-						result <= REG_FILE[rs1] >> REG_FILE[rs2];
-					end
-				end
-				//sra
-				else if(funct3 == 4'h5 && funct7 == 8'h20)begin
-					if(rs1 == rd_stage4)begin
-						result <= $signed(REG_FILE[rd_stage4]) >>> REG_FILE[rs2][4:0];
-					end
-					else if(rs2 == rd_stage4)begin
-						result <= $signed(REG_FILE[rs1]) >>> REG_FILE[rd_stage4][4:0];
-					end
-					else begin
-						result <= $signed(REG_FILE[rs1]) >>> REG_FILE[rs2][4:0];
-					end
-				end
-				//slt
-				else if(funct3 == 4'h2 && funct7 == 8'h00)begin
-					if(rs1 == rd_stage4)begin
-						result <= $signed(REG_FILE[rd_stage4]) < $signed(REG_FILE[rs2]) ? 1 : 0;
-					end
-					else if(rs2 == rd_stage4)begin
-						result <= $signed(REG_FILE[rs1]) < $signed(REG_FILE[rd_stage4]) ? 1 : 0;
-					end
-					else begin
-						result <= $signed(REG_FILE[rs1]) < $signed(REG_FILE[rs2]) ? 1 : 0;
-					end
-				end
-				//sltu
-				else if(funct3 == 4'h3 && funct7 == 8'h00)begin
-					if(rs1 == rd_stage4)begin
-						result <= REG_FILE[rd_stage4] < REG_FILE[rs2] ? 1 : 0;
-					end
-					else if(rs2 == rd_stage4)begin
-						result <= REG_FILE[rs1] < REG_FILE[rd_stage4] ? 1 : 0;
-					end
-					else begin
-						result <= REG_FILE[rs1] < REG_FILE[rs2] ? 1 : 0;
-					end
-				end
-			end
-
-			/* arithmetic I type with register and immediate value */
-			else if(Alu_op == I_IMM)begin
-				// addi
-				if(funct3 == 4'h0) begin
-					if(rs1 == rd_stage4)begin
-						result <= REG_FILE[rd_stage4] + immediate;
-					end
-					else begin
-						result <= REG_FILE[rs1] + immediate;
-					end
-				end
-				// xori
-				else if(funct3 == 4'h4)begin
-					if(rs1 == rd_stage4)begin
-						result <= REG_FILE[rd_stage4] ^ immediate;
-					end
-					else begin
-						result <= REG_FILE[rs1] ^ immediate;
-					end
-				end
-				// ori
-				else if(funct3 == 4'h6)begin
-					if(rs1 == rd_stage4)begin
-						result <= REG_FILE[rd_stage4] | immediate;
-					end
-					else begin
-						result <= REG_FILE[rs1] | immediate;
-					end
-				end
-				// andi
-				else if(funct3 == 4'h7)begin
-					if(rs1 == rd_stage4)begin
-						result <= REG_FILE[rd_stage4] & immediate;
-					end
-					else begin
-						result <= REG_FILE[rs1] & immediate;
-					end
-				end
-				//slli
-				else if(funct3 == 4'h1 && immediate[11:5] == 8'h00)begin
-					if(rs1 == rd_stage4)begin
-						result <= REG_FILE[rd_stage4] << immediate[4:0];
-					end
-					else begin
-						result <= REG_FILE[rs1] << immediate[4:0];
-					end
-				end
-				//srli
-				else if(funct3 == 4'h5 && immediate[11:5] == 8'h00)begin
-					if(rs1 == rd_stage4)begin
-						result <= REG_FILE[rd_stage4] >> immediate[4:0];
-					end
-					else begin
-						result <= REG_FILE[rs1] >> immediate[4:0];
-					end
-				end
-				//srai
-				else if(funct3 == 4'h5 && immediate[11:5] == 8'h20)begin
-					if(rs1 == rd_stage4)begin
-						result <= $signed(REG_FILE[rd_stage4]) >>> immediate[4:0];
-					end
-					else begin
-						result <= $signed(REG_FILE[rs1]) >>> immediate[4:0];
-					end
-				end
-				//slti
-				else if(funct3 == 4'h2) begin
-					if(rs1 == rd_stage4)begin
-						result <= $signed(REG_FILE[rd_stage4]) < $signed(immediate) ? 1 : 0;
-					end
-					else begin
-						result <= $signed(REG_FILE[rs1]) < $signed(immediate) ? 1 : 0;
-					end
-				end
-				//sltiu
-				else if(funct3 == 4'h3 && funct7 == 8'h00)begin
-					if(rs1 == rd_stage4)begin
-						result <= REG_FILE[rd_stage4] < immediate ? 1 : 0;
-					end
-					else begin
-						result <= REG_FILE[rs1] < immediate ? 1 : 0;
-					end
-				end
-			end
-
-			/* arithmetic I type with register and PC (jalr) */
-			else if(Alu_op == I_JUMP)begin
-				if(funct3 == 4'h0)begin
-					result <= PC_2;
-					PC_1 <= REG_FILE[rs1] + immediate;
-					PC_2 <= (REG_FILE[rs1] + immediate) - 4;
-				end
-			end
-
-			/* branching */
-			else if(Alu_op == B_TYPE)begin
-				// beq
-				if(funct3 == 4'h0)begin
-					PC_1 <= $signed(REG_FILE[rs1]) == $signed(REG_FILE[rs2]) ? PC_2 - 4 + immediate : PC_1 + 4;
-				end
-				// bne
-				else if(funct3 == 4'h1)begin
-					PC_1 <= $signed(REG_FILE[rs1]) != $signed(REG_FILE[rs2]) ? PC_2 - 4 + immediate : PC_1 + 4;
-				end
-				//blt
-				else if(funct3 == 4'h4)begin
-					PC_1 <= $signed(REG_FILE[rs1]) < $signed(REG_FILE[rs2]) ? PC_2 - 4 + immediate : PC_1 + 4;
-				end
-				//bge
-				else if(funct3 == 4'h5)begin
-					PC_1 <= $signed(REG_FILE[rs1]) >= $signed(REG_FILE[rs2]) ? PC_2 - 4 + immediate : PC_1 + 4;
-				end
-				//bltu
-				else if(funct3 == 4'h6)begin
-					PC_1 <= REG_FILE[rs1] < REG_FILE[rs2] ? PC_2 - 4 + immediate : PC_1 + 4;
-				end
-				//bgeu
-				else if(funct3 == 4'h7)begin
-					PC_1 <= REG_FILE[rs1] >= REG_FILE[rs2] ? PC_2 - 4 + immediate : PC_1 + 4;
-				end
-			end
-
-			/************* u type ****************/
-			/* lui */
-			else if(Alu_op == U_LD)begin
-				result <= immediate;
+		else begin 
+			
+			/********* increment pc ************/
+			if(pc_increment) begin
+				PC_1 <= PC_1 + 4;
+				PC_2 <= PC_1;
 			end
 			
-			/* auipc */
-			else if(Alu_op == U_PC)begin
-				result <= (PC_2 - 4) + (immediate);
+			/******* decoder to load the appropriate registers after receiving instruction on IR ******/
+			if(decode) begin
+				case (IR[6:0])
+					/* R Type instruction */
+					R: begin
+						rs1 <= IR[19:15];
+						rs2 <= IR[24:20];
+						rd <= IR[11:7];
+						funct3 <= IR[14:12];
+						funct7 <= IR[31:25];
+					end
+					/* I Type instruction */
+					I_imm, I_ld, I_jump: begin
+						rs1 <= IR[19:15];
+						rd <= IR[11:7];
+						funct3 <= IR[14:12];
+						immediate <= {{21{IR[31]}},IR[30:20]};
+					end
+					/* S Type instruction */
+					S: begin
+						rs1 <= IR[19:15];
+						rs2 <= IR[24:20];
+						funct3 <= IR[14:12];
+						immediate <= {{21{IR[31]}},IR[30:25],IR[11:7]};
+					end
+					/* B Type instruction */
+					B: begin
+						rs1 <= IR[19:15];
+						rs2 <= IR[24:20];
+						funct3 <= IR[14:12];
+						immediate <= {{20{IR[31]}},IR[7],IR[30:25],IR[11:8],1'b0};
+					end
+					/* U Type instruction */
+					U_ld, U_pc: begin
+						rd <= IR[11:7];
+						immediate <= {IR[31:12],12'b0};
+					end
+					/* J Type instruction */
+					J: begin
+						rd <= IR[11:7];
+						immediate <= {{12{IR[31]}},IR[19:12],IR[20],IR[30:21],1'b0};
+					end
+				endcase
 			end
-			/************* u type ****************/
+			
+			/***************ALU Logic *******************/
+			if(Alu_en) begin
+				/* save the destination register, function and opcodes for stage 4 */
+				rd_stage4 <= rd;
+				opcode <= Alu_op;
+				funct3_stage4 <= funct3;
 
-			/* jump type */
-			else if(Alu_op == J_TYPE)begin
-				result <= PC_2 + 4;
-				PC_1 <= PC_1 - 4 + immediate;
-				PC_2 <= PC_2 - 4 + immediate - 4;
+				/* registers as operands for arithmetic */
+				if(Alu_op == R_TYPE) begin
+					// add
+					if(funct3 == 4'h0 && funct7 == 8'h00) begin
+						if(rs1 == rd_stage4)begin
+							result <= result + REG_FILE[rs2];
+						end
+						else if(rs2 == rd_stage4)begin
+							result <= result + REG_FILE[rs1];
+						end
+						else begin
+							result <= REG_FILE[rs1] + REG_FILE[rs2];
+						end
+					end
+					// sub
+					else if (funct3 == 4'h0 && funct7 == 8'h20) begin
+						if(rs1 == rd_stage4)begin
+							result <= result - REG_FILE[rs2];
+						end
+						else if(rs2 == rd_stage4)begin
+							result <= REG_FILE[rs1] - result;
+						end
+						else begin
+							result <= REG_FILE[rs1] - REG_FILE[rs2];
+						end
+					end
+					// xor
+					else if(funct3 == 4'h4 && funct7 == 8'h00)begin
+						if(rs1 == rd_stage4)begin
+							result <= result ^ REG_FILE[rs2];
+						end
+						else if(rs2 == rd_stage4)begin
+							result <= REG_FILE[rs1] ^ result;
+						end
+						else begin
+							result <= REG_FILE[rs1] ^ REG_FILE[rs2];
+						end
+					end
+					// or
+					else if(funct3 == 4'h6 && funct7 == 8'h00)begin
+						if(rs1 == rd_stage4)begin
+							result <= result | REG_FILE[rs2];
+						end
+						else if(rs2 == rd_stage4)begin
+							result <= REG_FILE[rs1] | result;
+						end
+						else begin
+							result <= REG_FILE[rs1] | REG_FILE[rs2];
+						end
+					end
+					// and
+					else if(funct3 == 4'h7 && funct7 == 8'h00)begin
+						if(rs1 == rd_stage4)begin
+							result <= result & REG_FILE[rs2];
+						end
+						else if(rs2 == rd_stage4)begin
+							result <= REG_FILE[rs1] & result;
+						end
+						else begin
+							result <= REG_FILE[rs1] & REG_FILE[rs2];
+						end
+					end
+					//sll
+					else if(funct3 == 4'h1 && funct7 == 8'h00)begin
+						if(rs1 == rd_stage4)begin
+							result <= result << REG_FILE[rs2];
+						end
+						else if(rs2 == rd_stage4)begin
+							result <= REG_FILE[rs1] << result;
+						end
+						else begin
+							result <= REG_FILE[rs1] << REG_FILE[rs2];
+						end
+					end
+					//srl
+					else if(funct3 == 4'h5 && funct7 == 8'h00)begin
+						if(rs1 == rd_stage4)begin
+							result <= result >> REG_FILE[rs2];
+						end
+						else if(rs2 == rd_stage4)begin
+							result <= REG_FILE[rs1] >> result;
+						end
+						else begin
+							result <= REG_FILE[rs1] >> REG_FILE[rs2];
+						end
+					end
+					//sra
+					else if(funct3 == 4'h5 && funct7 == 8'h20)begin
+						if(rs1 == rd_stage4)begin
+							result <= $signed(result) >>> REG_FILE[rs2][4:0];
+						end
+						else if(rs2 == rd_stage4)begin
+							result <= $signed(REG_FILE[rs1]) >>> result[4:0];
+						end
+						else begin
+							result <= $signed(REG_FILE[rs1]) >>> REG_FILE[rs2][4:0];
+						end
+					end
+					//slt
+					else if(funct3 == 4'h2 && funct7 == 8'h00)begin
+						if(rs1 == rd_stage4)begin
+							result <= $signed(result) < $signed(REG_FILE[rs2]) ? 1 : 0;
+						end
+						else if(rs2 == rd_stage4)begin
+							result <= $signed(REG_FILE[rs1]) < $signed(result) ? 1 : 0;
+						end
+						else begin
+							result <= $signed(REG_FILE[rs1]) < $signed(REG_FILE[rs2]) ? 1 : 0;
+						end
+					end
+					//sltu
+					else if(funct3 == 4'h3 && funct7 == 8'h00)begin
+						if(rs1 == rd_stage4)begin
+							result <= result < REG_FILE[rs2] ? 1 : 0;
+						end
+						else if(rs2 == rd_stage4)begin
+							result <= REG_FILE[rs1] < result ? 1 : 0;
+						end
+						else begin
+							result <= REG_FILE[rs1] < REG_FILE[rs2] ? 1 : 0;
+						end
+					end
+				end
+
+				/* arithmetic I type with register and immediate value */
+				else if(Alu_op == I_IMM)begin
+					// addi
+					if(funct3 == 4'h0) begin
+						if(rs1 == rd_stage4)begin
+							result <= result + immediate;
+						end
+						else begin
+							result <= REG_FILE[rs1] + immediate;
+						end
+					end
+					// xori
+					else if(funct3 == 4'h4)begin
+						if(rs1 == rd_stage4)begin
+							result <= result ^ immediate;
+						end
+						else begin
+							result <= REG_FILE[rs1] ^ immediate;
+						end
+					end
+					// ori
+					else if(funct3 == 4'h6)begin
+						if(rs1 == rd_stage4)begin
+							result <= result | immediate;
+						end
+						else begin
+							result <= REG_FILE[rs1] | immediate;
+						end
+					end
+					// andi
+					else if(funct3 == 4'h7)begin
+						if(rs1 == rd_stage4)begin
+							result <= result & immediate;
+						end
+						else begin
+							result <= REG_FILE[rs1] & immediate;
+						end
+					end
+					//slli
+					else if(funct3 == 4'h1 && immediate[11:5] == 8'h00)begin
+						if(rs1 == rd_stage4)begin
+							result <= result << immediate[4:0];
+						end
+						else begin
+							result <= REG_FILE[rs1] << immediate[4:0];
+						end
+					end
+					//srli
+					else if(funct3 == 4'h5 && immediate[11:5] == 8'h00)begin
+						if(rs1 == rd_stage4)begin
+							result <= result >> immediate[4:0];
+						end
+						else begin
+							result <= REG_FILE[rs1] >> immediate[4:0];
+						end
+					end
+					//srai
+					else if(funct3 == 4'h5 && immediate[11:5] == 8'h20)begin
+						if(rs1 == rd_stage4)begin
+							result <= $signed(result) >>> immediate[4:0];
+						end
+						else begin
+							result <= $signed(REG_FILE[rs1]) >>> immediate[4:0];
+						end
+					end
+					//slti
+					else if(funct3 == 4'h2) begin
+						if(rs1 == rd_stage4)begin
+							result <= $signed(result) < $signed(immediate) ? 1 : 0;
+						end
+						else begin
+							result <= $signed(REG_FILE[rs1]) < $signed(immediate) ? 1 : 0;
+						end
+					end
+					//sltiu
+					else if(funct3 == 4'h3 && funct7 == 8'h00)begin
+						if(rs1 == rd_stage4)begin
+							result <= result < immediate ? 1 : 0;
+						end
+						else begin
+							result <= REG_FILE[rs1] < immediate ? 1 : 0;
+						end
+					end
+				end
+
+				/* arithmetic I type with register and PC (jalr) */
+				else if(Alu_op == I_JUMP)begin
+					if(funct3 == 4'h0)begin
+						result <= PC_2;
+						PC_1 <= REG_FILE[rs1] + immediate;
+						PC_2 <= (REG_FILE[rs1] + immediate) - 4;
+					end
+				end
+
+				/* branching */
+				else if(Alu_op == B_TYPE)begin
+					// beq
+					if(funct3 == 4'h0)begin
+						PC_1 <= $signed(REG_FILE[rs1]) == $signed(REG_FILE[rs2]) ? PC_2 - 4 + immediate : PC_1 + 4;
+					end
+					// bne
+					else if(funct3 == 4'h1)begin
+						PC_1 <= $signed(REG_FILE[rs1]) != $signed(REG_FILE[rs2]) ? PC_2 - 4 + immediate : PC_1 + 4;
+					end
+					//blt
+					else if(funct3 == 4'h4)begin
+						PC_1 <= $signed(REG_FILE[rs1]) < $signed(REG_FILE[rs2]) ? PC_2 - 4 + immediate : PC_1 + 4;
+					end
+					//bge
+					else if(funct3 == 4'h5)begin
+						PC_1 <= $signed(REG_FILE[rs1]) >= $signed(REG_FILE[rs2]) ? PC_2 - 4 + immediate : PC_1 + 4;
+					end
+					//bltu
+					else if(funct3 == 4'h6)begin
+						PC_1 <= REG_FILE[rs1] < REG_FILE[rs2] ? PC_2 - 4 + immediate : PC_1 + 4;
+					end
+					//bgeu
+					else if(funct3 == 4'h7)begin
+						PC_1 <= REG_FILE[rs1] >= REG_FILE[rs2] ? PC_2 - 4 + immediate : PC_1 + 4;
+					end
+				end
+
+				/************* u type ****************/
+				/* lui */
+				else if(Alu_op == U_LD)begin
+					result <= immediate;
+				end
+				
+				/* auipc */
+				else if(Alu_op == U_PC)begin
+					result <= (PC_2 - 8) + (immediate);
+				end
+				/************* u type ****************/
+
+				/* jump type */
+				else if(Alu_op == J_TYPE)begin
+					result <= PC_2 + 4;
+					PC_1 <= PC_1 - 4 + immediate;
+					PC_2 <= PC_2 - 4 + immediate - 4;
+				end
+
+				/* loading instructions */
+				else if(Alu_op == I_LD) begin
+					// load byte
+					if(funct3 == 4'h0)begin
+						ldst_addr <= ($signed(REG_FILE[rs1]) + immediate);
+					end
+
+					// load half
+					else if(funct3 == 4'h1) begin
+						ldst_addr <= ($signed(REG_FILE[rs1]) + immediate);
+					end
+
+					// load word
+					else if(funct3 == 4'h2) begin
+						ldst_addr <= ($signed(REG_FILE[rs1]) + immediate);
+					end
+
+					// load byte (U)
+					else if(funct3 == 4'h4) begin
+						ldst_addr <= (REG_FILE[rs1] + immediate);
+					end
+
+					// Load Half
+					else if(funct3 == 4'h5)begin
+						ldst_addr <= (REG_FILE[rs1] + immediate);
+					end
+				end
+
+				/* Store */
+				else if(Alu_op == S_TYPE)begin
+					// store byte
+					if(funct3 == 4'h0)begin
+						ldst_addr <= ($signed(REG_FILE[rs1]) + immediate);
+						ldst_wrdata <= $signed(REG_FILE[rs2][7:0]);
+					end
+
+					//store half
+					else if(funct3 == 4'h1)begin
+						ldst_addr <= $signed(REG_FILE[rs1]) + immediate;
+						ldst_wrdata <= $signed(REG_FILE[rs2][15:0]);
+					end
+
+					//store word
+					else if(funct3 == 4'h2)begin
+						ldst_addr <= ($signed(REG_FILE[rs1]) + immediate);
+						ldst_wrdata <= $signed(REG_FILE[rs2]);
+					end
+				end
 			end
-
-			/* loading instructions */
-			else if(Alu_op == I_LD) begin
-				// load byte
-				if(funct3 == 4'h0)begin
-					ldst_addr <= ($signed(REG_FILE[rs1]) + immediate);
+			
+			/************* load result into reg file ***************/
+			if(resultIn) begin
+				if(rd_stage4 == 5'b0)begin
+					REG_FILE[rd_stage4] <= 32'b0;
 				end
-
-				// load half
-				else if(funct3 == 4'h1) begin
-					ldst_addr <= ($signed(REG_FILE[rs1]) + immediate);
-				end
-
-				// load word
-				else if(funct3 == 4'h2) begin
-					ldst_addr <= ($signed(REG_FILE[rs1]) + immediate);
-				end
-
-				// load byte (U)
-				else if(funct3 == 4'h4) begin
-					ldst_addr <= (REG_FILE[rs1] + immediate);
-				end
-
-				// Load Half
-				else if(funct3 == 4'h5)begin
-					ldst_addr <= (REG_FILE[rs1] + immediate);
+				else begin
+					REG_FILE[rd_stage4] <= result;
 				end
 			end
-
-			/* Store */
-			else if(Alu_op == S_TYPE)begin
-				// store byte
-				if(funct3 == 4'h0)begin
-					ldst_addr <= ($signed(REG_FILE[rs1]) + immediate);
-					ldst_wrdata <= $signed(REG_FILE[rs2][7:0]);
-				end
-
-				//store half
-				else if(funct3 == 4'h1)begin
-					ldst_addr <= $signed(REG_FILE[rs1]) + immediate;
-					ldst_wrdata <= $signed(REG_FILE[rs2][15:0]);
-				end
-
-				//store word
-				else if(funct3 == 4'h2)begin
-					ldst_addr <= ($signed(REG_FILE[rs1]) + immediate);
-					ldst_wrdata <= $signed(REG_FILE[rs2]);
-				end
+			
+			/************ load value from memory into reg file **************/
+			if(loadIn) begin
+				case(funct3)
+					//load byte
+					4'h0: begin
+						REG_FILE[rd] <= $signed(ldst_rddata[7:0]);
+					end
+					//load half
+					4'h1: begin
+						REG_FILE[rd] <= $signed(ldst_rddata[15:0]);
+					end
+					// load word
+					4'h2: begin
+						REG_FILE[rd] <= $signed(ldst_rddata);
+					end
+					// load byte (U)
+					4'h4: begin
+						REG_FILE[rd] <= ldst_rddata[7:0];
+					end
+					//load half (U)
+					4'h5: begin
+						REG_FILE[rd] <= ldst_rddata[15:0];
+					end
+				endcase 
 			end
 		end
-		
-		/************* load result into reg file ***************/
-		if(resultIn) begin
-			if(rd_stage4 == 5'b0)begin
-				REG_FILE[rd_stage4] <= 32'b0;
-			end
-			else begin
-				REG_FILE[rd_stage4] <= result;
-			end
-		end
-		
-		/************ load value from memory into reg file **************/
-		if(loadIn) begin
-			case(funct3)
-				//load byte
-				4'h0: begin
-					REG_FILE[rd] <= $signed(ldst_rddata[7:0]);
-				end
-				//load half
-				4'h1: begin
-					REG_FILE[rd] <= $signed(ldst_rddata[15:0]);
-				end
-				// load word
-				4'h2: begin
-					REG_FILE[rd] <= $signed(ldst_rddata);
-				end
-				// load byte (U)
-				4'h4: begin
-					REG_FILE[rd] <= ldst_rddata[7:0];
-				end
-				//load half (U)
-				4'h5: begin
-					REG_FILE[rd] <= ldst_rddata[15:0];
-				end
-			endcase 
-		end	
 	end
 
 	/* Get the ALU Op code to know which ALU Operation to perform */
