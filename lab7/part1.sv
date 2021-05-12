@@ -219,7 +219,10 @@ module cpu # (
 				if(Alu_op == R_TYPE) begin
 					// add
 					if(funct3 == 4'h0 && funct7 == 8'h00) begin
-						if(rs1 == rd_stage4)begin
+						if(rs1 == rd_stage4 && rs2 == rd_stage4)begin
+							result <= result + result;
+						end
+						else if(rs1 == rd_stage4)begin
 							result <= result + REG_FILE[rs2];
 						end
 						else if(rs2 == rd_stage4)begin
@@ -427,9 +430,20 @@ module cpu # (
 				/* arithmetic I type with register and PC (jalr) */
 				else if(Alu_op == I_JUMP)begin
 					if(funct3 == 4'h0)begin
+						/* flush instructions at stages 2 & 3 */
+						stage2 <= 1'b0;
+						stage3 <= 1'b0;
+						/* rd = PC + 4 */
 						result <= PC_2;
-						PC_1 <= REG_FILE[rs1] + immediate;
-						PC_2 <= (REG_FILE[rs1] + immediate) - 4;
+						/* account for forwarding */
+						if(rs1 == rd_stage4)begin
+							PC_1 <= result + immediate;
+							PC_2 <= result + immediate - 4;
+						end
+						else begin
+							PC_1 <= REG_FILE[rs1] + immediate;
+							PC_2 <= (REG_FILE[rs1] + immediate) - 4;
+						end
 					end
 				end
 
@@ -437,27 +451,111 @@ module cpu # (
 				else if(Alu_op == B_TYPE)begin
 					// beq
 					if(funct3 == 4'h0)begin
-						PC_1 <= $signed(REG_FILE[rs1]) == $signed(REG_FILE[rs2]) ? PC_2 - 4 + immediate : PC_1 + 4;
+						if(rs1 == rd_stage4)begin
+							PC_1 <= $signed(result) == $signed(REG_FILE[rs2]) ? PC_2 - 4 + immediate : PC_1 + 4;
+							stage2 <= $signed(result) == $signed(REG_FILE[rs2]) ? 0 : stage2;
+							stage3 <= $signed(result) == $signed(REG_FILE[rs2]) ? 0 : stage3;
+						end
+						else if(rs2 == rd_stage4)begin
+							PC_1 <= $signed(REG_FILE[rs1]) == $signed(result) ? PC_2 - 4 + immediate : PC_1 + 4;
+							stage2 <= $signed(REG_FILE[rs1]) == $signed(result) ? 0 : stage2;
+							stage3 <= $signed(REG_FILE[rs1]) == $signed(result) ? 0 : stage3;
+						end
+						else begin
+							PC_1 <= $signed(REG_FILE[rs1]) == $signed(REG_FILE[rs2]) ? PC_2 - 4 + immediate : PC_1 + 4;
+							stage2 <= $signed(REG_FILE[rs1]) == $signed(REG_FILE[rs2]) ? 0 : stage2;
+							stage3 <= $signed(REG_FILE[rs1]) == $signed(REG_FILE[rs2]) ? 0 : stage3;
+						end
 					end
 					// bne
 					else if(funct3 == 4'h1)begin
-						PC_1 <= $signed(REG_FILE[rs1]) != $signed(REG_FILE[rs2]) ? PC_2 - 4 + immediate : PC_1 + 4;
+						if(rs1 == rd_stage4)begin
+							PC_1 <= $signed(result) != $signed(REG_FILE[rs2]) ? PC_2 - 4 + immediate : PC_1 + 4;
+							stage2 <= $signed(result) != $signed(REG_FILE[rs2]) ? 0 : stage2;
+							stage3 <= $signed(result) != $signed(REG_FILE[rs2]) ? 0 : stage3;
+						end
+						else if(rs2 == rd_stage4)begin
+							PC_1 <= $signed(REG_FILE[rs1]) != $signed(result) ? PC_2 - 4 + immediate : PC_1 + 4;
+							stage2 <= $signed(REG_FILE[rs1]) != $signed(result) ? 0 : stage2;
+							stage3 <= $signed(REG_FILE[rs1]) != $signed(result) ? 0 : stage3;
+						end
+						else begin
+							PC_1 <= $signed(REG_FILE[rs1]) != $signed(REG_FILE[rs2]) ? PC_2 - 4 + immediate : PC_1 + 4;
+							stage2 <= $signed(REG_FILE[rs1]) != $signed(REG_FILE[rs2]) ? 0 : stage2;
+							stage3 <= $signed(REG_FILE[rs1]) != $signed(REG_FILE[rs2]) ? 0 : stage3;
+						end
 					end
 					//blt
 					else if(funct3 == 4'h4)begin
-						PC_1 <= $signed(REG_FILE[rs1]) < $signed(REG_FILE[rs2]) ? PC_2 - 4 + immediate : PC_1 + 4;
+						if(rs1 == rd_stage4)begin
+							PC_1 <= $signed(result) < $signed(REG_FILE[rs2]) ? PC_2 - 4 + immediate : PC_1 + 4;
+							stage2 <= $signed(result) < $signed(REG_FILE[rs2]) ? 0 : stage2;
+							stage3 <= $signed(result) < $signed(REG_FILE[rs2]) ? 0 : stage3;
+						end
+						else if(rs2 == rd_stage4)begin
+							PC_1 <= $signed(REG_FILE[rs1]) < $signed(result) ? PC_2 - 4 + immediate : PC_1 + 4;
+							stage2 <= $signed(REG_FILE[rs1]) < $signed(result) ? 0 : stage2;
+							stage3 <= $signed(REG_FILE[rs1]) < $signed(result) ? 0 : stage3;
+						end
+						else begin
+							PC_1 <= $signed(REG_FILE[rs1]) < $signed(REG_FILE[rs2]) ? PC_2 - 4 + immediate : PC_1 + 4;
+							stage2 <= $signed(REG_FILE[rs1]) < $signed(REG_FILE[rs2]) ? 0 : stage2;
+							stage3 <= $signed(REG_FILE[rs1]) < $signed(REG_FILE[rs2]) ? 0 : stage3;
+						end
 					end
 					//bge
 					else if(funct3 == 4'h5)begin
-						PC_1 <= $signed(REG_FILE[rs1]) >= $signed(REG_FILE[rs2]) ? PC_2 - 4 + immediate : PC_1 + 4;
+						if(rs1 == rd_stage4)begin
+							PC_1 <= $signed(result) >= $signed(REG_FILE[rs2]) ? PC_2 - 4 + immediate : PC_1 + 4;
+							stage2 <= $signed(result) >= $signed(REG_FILE[rs2]) ? 0 : stage2;
+							stage3 <= $signed(result) >= $signed(REG_FILE[rs2]) ? 0 : stage3;
+						end
+						else if(rs2 == rd_stage4)begin
+							PC_1 <= $signed(REG_FILE[rs1]) >= $signed(result) ? PC_2 - 4 + immediate : PC_1 + 4;
+							stage2 <= $signed(REG_FILE[rs1]) >= $signed(result) ? 0 : stage2;
+							stage3 <= $signed(REG_FILE[rs1]) >= $signed(result) ? 0 : stage3;
+						end
+						else begin
+							PC_1 <= $signed(REG_FILE[rs1]) >= $signed(REG_FILE[rs2]) ? PC_2 - 4 + immediate : PC_1 + 4;
+							stage2 <= $signed(REG_FILE[rs1]) >= $signed(REG_FILE[rs2]) ? 0 : stage2;
+							stage3 <= $signed(REG_FILE[rs1]) >= $signed(REG_FILE[rs2]) ? 0 : stage3;
+						end
 					end
 					//bltu
 					else if(funct3 == 4'h6)begin
-						PC_1 <= REG_FILE[rs1] < REG_FILE[rs2] ? PC_2 - 4 + immediate : PC_1 + 4;
+						if(rs1 == rd_stage4)begin
+							PC_1 <= (result) < (REG_FILE[rs2]) ? PC_2 - 4 + immediate : PC_1 + 4;
+							stage2 <= (result) < (REG_FILE[rs2]) ? 0 : stage2;
+							stage3 <= (result) < (REG_FILE[rs2]) ? 0 : stage3;
+						end
+						else if(rs2 == rd_stage4)begin
+							PC_1 <= (REG_FILE[rs1]) < (result) ? PC_2 - 4 + immediate : PC_1 + 4;
+							stage2 <= (REG_FILE[rs1]) < (result) ? 0 : stage2;
+							stage3 <= (REG_FILE[rs1]) < (result) ? 0 : stage3;
+						end
+						else begin
+							PC_1 <= (REG_FILE[rs1]) < (REG_FILE[rs2]) ? PC_2 - 4 + immediate : PC_1 + 4;
+							stage2 <= (REG_FILE[rs1]) < (REG_FILE[rs2]) ? 0 : stage2;
+							stage3 <= (REG_FILE[rs1]) < (REG_FILE[rs2]) ? 0 : stage3;
+						end
 					end
 					//bgeu
 					else if(funct3 == 4'h7)begin
-						PC_1 <= REG_FILE[rs1] >= REG_FILE[rs2] ? PC_2 - 4 + immediate : PC_1 + 4;
+						if(rs1 == rd_stage4)begin
+							PC_1 <= (result) >= (REG_FILE[rs2]) ? PC_2 - 4 + immediate : PC_1 + 4;
+							stage2 <= (result) >= (REG_FILE[rs2]) ? 0 : stage2;
+							stage3 <= (result) >= (REG_FILE[rs2]) ? 0 : stage3;
+						end
+						else if(rs2 == rd_stage4)begin
+							PC_1 <= (REG_FILE[rs1]) >= (result) ? PC_2 - 4 + immediate : PC_1 + 4;
+							stage2 <= (REG_FILE[rs1]) >= (result) ? 0 : stage2;
+							stage3 <= (REG_FILE[rs1]) >= (result) ? 0 : stage3;
+						end
+						else begin
+							PC_1 <= (REG_FILE[rs1]) >= (REG_FILE[rs2]) ? PC_2 - 4 + immediate : PC_1 + 4;
+							stage2 <= (REG_FILE[rs1]) >= (REG_FILE[rs2]) ? 0 : stage2;
+							stage3 <= (REG_FILE[rs1]) >= (REG_FILE[rs2]) ? 0 : stage3;
+						end
 					end
 				end
 
@@ -473,10 +571,14 @@ module cpu # (
 				end
 				/************* u type ****************/
 
-				/* jump type */
+				/* jump type (jal) */
 				else if(Alu_op == J_TYPE)begin
-					result <= PC_2 + 4;
-					PC_1 <= PC_1 - 4 + immediate;
+					/* flush instructions at stages 2 & 3 */
+					stage2 <= 1'b0;
+					stage3 <= 1'b0;
+					/* rd = PC + 4 */
+					result <= PC_2;
+					PC_1 <= PC_2 - 4 + immediate;
 					PC_2 <= PC_2 - 4 + immediate - 4;
 				end
 
