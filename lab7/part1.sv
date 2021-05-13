@@ -29,9 +29,6 @@ module cpu # (
 	/* Address Generator Registers and signals  */
 	logic [IW-1:0] PC_1, PC_2;	// holds address to the next instruction
 	logic [3:0] pc_byte_en;	// size of pc to read : word/half-word/byte
-	logic decode;		// decode the IR instruction
-	logic fetch;		// control signal to fetch instruction from memory
-	logic pc_increment;		// control signal to increment pc 
 
 	/* Register File Registers and breakdown logic from IR */
 	logic [4:0] rs1, rs2, rd, rd_stage4;
@@ -40,19 +37,17 @@ module cpu # (
 	logic [IW-1:0] REG_FILE [0:REGS-1];
 
 	/* ALU Registers and signals */
-	logic [3:0] Alu_op, opcode;
+	logic [6:0] Alu_op, opcode;
 	logic [IW-1:0] result;
-	logic resultIn;
-	logic Alu_en;
 
 	/* Load/Store reg control signals */
 	logic [IW-1:0] ldst_addr;
 	logic [IW-1:0] ldst_rddata;
 	logic [IW-1:0] ldst_wrdata;
 	logic [3:0] ldst_byte_en;
-	logic ldst_rd;
+	logic ldst_rd, pc_read;
 	logic ldst_wr;
-	logic loadIn;
+
 
 	/* valid registers for each state */
 	logic stage1, stage2, stage3, stage4;
@@ -85,58 +80,32 @@ module cpu # (
 	
 	integer i;
 
+	assign IR = i_pc_rddata;
+
+	/* outputs to the Processor Signal Interface */
+	assign o_tb_regs = REG_FILE;
+	assign o_ldst_addr = ldst_addr;
+	assign o_ldst_rd = ldst_rd;
+	assign o_ldst_wr = ldst_wr;
+	assign o_ldst_byte_en = ldst_byte_en;
+	assign o_ldst_wrdata = ldst_wrdata;		
+
+	always_comb begin : readPC
+		if(stage1)begin
+			pc_read = 1'b1;
+		end
+		else begin
+			pc_read = 1'b0;
+		end
+	end
+
+	assign o_pc_rd = pc_read;
+	assign o_pc_addr = PC_1;
+	assign o_pc_byte_en = 4'b1111;
+
 	/***************************************########## RISC V CONTROL PATH #########***************************************/
 	/* Control path for pipelined stages */
 	always_ff @(posedge clk) begin : PipelinedStages
-		/* default to eliminate latches */
-		fetch <= 1'b0;
-		decode <= 1'b0;
-		Alu_en <= 1'b0;
-		resultIn <= 1'b0;
-		pc_byte_en <= 4'b1111;
-		pc_increment <= 1'b0;
-
-		/* STAGE 1: FETCH */
-		if(stage1) begin
-			/* read from pc memory port */
-			fetch <= 1'b1;
-			/* get the entire word for pc instruction */
-			pc_byte_en <= 4'b1111;
-			/* increment pc */
-			pc_increment <= 1'b1;
-			/* move to decode stage */
-			stage2 <= 1'b1;
-		end
-
-		/* STAGE 2: DECODE */
-		if(stage2) begin
-			/* place instruction from memory into IR*/
-			IR <= i_pc_rddata;
-			/* implement decoding of instructions */
-			decode <= 1'b1;
-			/* move to execute stage */
-			stage3 <= 1'b1;
-		end
-
-		/* STAGE 3: EXECUTE */
-		if(stage3) begin
-			/* Enable ALU to perform appropriate operation */
-			Alu_en <= 1'b1;
-			/* move to stage 4 */
-			stage4 <= 1'b1;
-			/* write back to reg file */
-		end
-
-		/* STAGE 4: WRITE_BACK */
-		if(stage4) begin
-			/* put value in result register into REG_FILE[rd_stage4] */
-			resultIn <= 1'b1;
-		end
-	/***************************************########## RISC V CONTROL PATH #########***************************************/
-
-
-	/***************************************######### RISC V DATAPATH #############***************************************/
-	
 		/************ Control Reset ***********/
 		if(reset) begin
 			/* reset all valid registers */
@@ -155,16 +124,18 @@ module cpu # (
 			end
 		end
 		
-		else begin 
-			
-			/********* increment pc ************/
-			if(pc_increment) begin
+		else begin
+			/* STAGE 1: FETCH */
+			if(stage1) begin
+				/* increment pc */
 				PC_1 <= PC_1 + 4;
 				PC_2 <= PC_1;
+				/* move to decode stage */
+				stage2 <= 1'b1;
 			end
-			
-			/******* decoder to load the appropriate registers after receiving instruction on IR ******/
-			if(decode) begin
+
+			/* STAGE 2: DECODE */
+			if(stage2) begin
 				case (IR[6:0])
 					/* R Type instruction */
 					R: begin
@@ -173,6 +144,7 @@ module cpu # (
 						rd <= IR[11:7];
 						funct3 <= IR[14:12];
 						funct7 <= IR[31:25];
+						Alu_op <= IR[6:0];
 					end
 					/* I Type instruction */
 					I_imm, I_ld, I_jump: begin
@@ -180,6 +152,7 @@ module cpu # (
 						rd <= IR[11:7];
 						funct3 <= IR[14:12];
 						immediate <= {{21{IR[31]}},IR[30:20]};
+						Alu_op <= IR[6:0];
 					end
 					/* S Type instruction */
 					S: begin
@@ -187,6 +160,7 @@ module cpu # (
 						rs2 <= IR[24:20];
 						funct3 <= IR[14:12];
 						immediate <= {{21{IR[31]}},IR[30:25],IR[11:7]};
+						Alu_op <= IR[6:0];
 					end
 					/* B Type instruction */
 					B: begin
@@ -194,35 +168,36 @@ module cpu # (
 						rs2 <= IR[24:20];
 						funct3 <= IR[14:12];
 						immediate <= {{20{IR[31]}},IR[7],IR[30:25],IR[11:8],1'b0};
+						Alu_op <= IR[6:0];
 					end
 					/* U Type instruction */
 					U_ld, U_pc: begin
 						rd <= IR[11:7];
 						immediate <= {IR[31:12],12'b0};
+						Alu_op <= IR[6:0];
 					end
 					/* J Type instruction */
 					J: begin
 						rd <= IR[11:7];
 						immediate <= {{12{IR[31]}},IR[19:12],IR[20],IR[30:21],1'b0};
+						Alu_op <= IR[6:0];
 					end
 				endcase
+
+				stage3 <= 1'b1;
 			end
-			
-			/***************ALU Logic *******************/
-			if(Alu_en) begin
-				/* save the destination register, function and opcodes for stage 4 */
+
+			/* STAGE 3: EXECUTE */
+			if(stage3) begin
 				rd_stage4 <= rd;
 				opcode <= Alu_op;
 				funct3_stage4 <= funct3;
 
 				/* registers as operands for arithmetic */
-				if(Alu_op == R_TYPE) begin
+				if(Alu_op == R) begin
 					// add
 					if(funct3 == 4'h0 && funct7 == 8'h00) begin
-						if(rs1 == rd_stage4 && rs2 == rd_stage4)begin
-							result <= result + result;
-						end
-						else if(rs1 == rd_stage4)begin
+						if(rs1 == rd_stage4)begin
 							result <= result + REG_FILE[rs2];
 						end
 						else if(rs2 == rd_stage4)begin
@@ -340,10 +315,11 @@ module cpu # (
 							result <= REG_FILE[rs1] < REG_FILE[rs2] ? 1 : 0;
 						end
 					end
+					stage4 <= 1'b1;
 				end
 
 				/* arithmetic I type with register and immediate value */
-				else if(Alu_op == I_IMM)begin
+				else if(Alu_op == I_imm)begin
 					// addi
 					if(funct3 == 4'h0) begin
 						if(rs1 == rd_stage4)begin
@@ -425,10 +401,11 @@ module cpu # (
 							result <= REG_FILE[rs1] < immediate ? 1 : 0;
 						end
 					end
+					stage4 <= 1'b1;
 				end
 
 				/* arithmetic I type with register and PC (jalr) */
-				else if(Alu_op == I_JUMP)begin
+				else if(Alu_op == I_jump)begin
 					if(funct3 == 4'h0)begin
 						/* flush instructions at stages 2 & 3 */
 						stage2 <= 1'b0;
@@ -445,10 +422,11 @@ module cpu # (
 							PC_2 <= (REG_FILE[rs1] + immediate) - 4;
 						end
 					end
+					stage4 <= 1'b1;
 				end
 
 				/* branching */
-				else if(Alu_op == B_TYPE)begin
+				else if(Alu_op == B)begin
 					// beq
 					if(funct3 == 4'h0)begin
 						if(rs1 == rd_stage4)begin
@@ -470,17 +448,17 @@ module cpu # (
 					// bne
 					else if(funct3 == 4'h1)begin
 						if(rs1 == rd_stage4)begin
-							PC_1 <= $signed(result) != $signed(REG_FILE[rs2]) ? PC_2 - 4 + immediate : PC_1 + 4;
+							PC_1 <= $signed(result) != $signed(REG_FILE[rs2]) ? PC_2 - 8 + immediate : PC_2;
 							stage2 <= $signed(result) != $signed(REG_FILE[rs2]) ? 0 : stage2;
 							stage3 <= $signed(result) != $signed(REG_FILE[rs2]) ? 0 : stage3;
 						end
 						else if(rs2 == rd_stage4)begin
-							PC_1 <= $signed(REG_FILE[rs1]) != $signed(result) ? PC_2 - 4 + immediate : PC_1 + 4;
+							PC_1 <= $signed(REG_FILE[rs1]) != $signed(result) ? PC_2 - 8 + immediate : PC_1 + 4;
 							stage2 <= $signed(REG_FILE[rs1]) != $signed(result) ? 0 : stage2;
 							stage3 <= $signed(REG_FILE[rs1]) != $signed(result) ? 0 : stage3;
 						end
 						else begin
-							PC_1 <= $signed(REG_FILE[rs1]) != $signed(REG_FILE[rs2]) ? PC_2 - 4 + immediate : PC_1 + 4;
+							PC_1 <= $signed(REG_FILE[rs1]) != $signed(REG_FILE[rs2]) ? PC_2 - 8 + immediate : PC_1 + 4;
 							stage2 <= $signed(REG_FILE[rs1]) != $signed(REG_FILE[rs2]) ? 0 : stage2;
 							stage3 <= $signed(REG_FILE[rs1]) != $signed(REG_FILE[rs2]) ? 0 : stage3;
 						end
@@ -488,17 +466,17 @@ module cpu # (
 					//blt
 					else if(funct3 == 4'h4)begin
 						if(rs1 == rd_stage4)begin
-							PC_1 <= $signed(result) < $signed(REG_FILE[rs2]) ? PC_2 - 4 + immediate : PC_1 + 4;
+							PC_1 <= $signed(result) < $signed(REG_FILE[rs2]) ? PC_2 - 8 + immediate : PC_1 + 4;
 							stage2 <= $signed(result) < $signed(REG_FILE[rs2]) ? 0 : stage2;
 							stage3 <= $signed(result) < $signed(REG_FILE[rs2]) ? 0 : stage3;
 						end
 						else if(rs2 == rd_stage4)begin
-							PC_1 <= $signed(REG_FILE[rs1]) < $signed(result) ? PC_2 - 4 + immediate : PC_1 + 4;
+							PC_1 <= $signed(REG_FILE[rs1]) < $signed(result) ? PC_2 - 8 + immediate : PC_1 + 4;
 							stage2 <= $signed(REG_FILE[rs1]) < $signed(result) ? 0 : stage2;
 							stage3 <= $signed(REG_FILE[rs1]) < $signed(result) ? 0 : stage3;
 						end
 						else begin
-							PC_1 <= $signed(REG_FILE[rs1]) < $signed(REG_FILE[rs2]) ? PC_2 - 4 + immediate : PC_1 + 4;
+							PC_1 <= $signed(REG_FILE[rs1]) < $signed(REG_FILE[rs2]) ? PC_2 - 8 + immediate : PC_1 + 4;
 							stage2 <= $signed(REG_FILE[rs1]) < $signed(REG_FILE[rs2]) ? 0 : stage2;
 							stage3 <= $signed(REG_FILE[rs1]) < $signed(REG_FILE[rs2]) ? 0 : stage3;
 						end
@@ -506,17 +484,17 @@ module cpu # (
 					//bge
 					else if(funct3 == 4'h5)begin
 						if(rs1 == rd_stage4)begin
-							PC_1 <= $signed(result) >= $signed(REG_FILE[rs2]) ? PC_2 - 4 + immediate : PC_1 + 4;
+							PC_1 <= $signed(result) >= $signed(REG_FILE[rs2]) ? PC_2 - 8 + immediate : PC_1 + 4;
 							stage2 <= $signed(result) >= $signed(REG_FILE[rs2]) ? 0 : stage2;
 							stage3 <= $signed(result) >= $signed(REG_FILE[rs2]) ? 0 : stage3;
 						end
 						else if(rs2 == rd_stage4)begin
-							PC_1 <= $signed(REG_FILE[rs1]) >= $signed(result) ? PC_2 - 4 + immediate : PC_1 + 4;
+							PC_1 <= $signed(REG_FILE[rs1]) >= $signed(result) ? PC_2 - 8 + immediate : PC_1 + 4;
 							stage2 <= $signed(REG_FILE[rs1]) >= $signed(result) ? 0 : stage2;
 							stage3 <= $signed(REG_FILE[rs1]) >= $signed(result) ? 0 : stage3;
 						end
 						else begin
-							PC_1 <= $signed(REG_FILE[rs1]) >= $signed(REG_FILE[rs2]) ? PC_2 - 4 + immediate : PC_1 + 4;
+							PC_1 <= $signed(REG_FILE[rs1]) >= $signed(REG_FILE[rs2]) ? PC_2 - 8 + immediate : PC_1 + 4;
 							stage2 <= $signed(REG_FILE[rs1]) >= $signed(REG_FILE[rs2]) ? 0 : stage2;
 							stage3 <= $signed(REG_FILE[rs1]) >= $signed(REG_FILE[rs2]) ? 0 : stage3;
 						end
@@ -524,17 +502,17 @@ module cpu # (
 					//bltu
 					else if(funct3 == 4'h6)begin
 						if(rs1 == rd_stage4)begin
-							PC_1 <= (result) < (REG_FILE[rs2]) ? PC_2 - 4 + immediate : PC_1 + 4;
+							PC_1 <= (result) < (REG_FILE[rs2]) ? PC_2 - 8 + immediate : PC_1 + 4;
 							stage2 <= (result) < (REG_FILE[rs2]) ? 0 : stage2;
 							stage3 <= (result) < (REG_FILE[rs2]) ? 0 : stage3;
 						end
 						else if(rs2 == rd_stage4)begin
-							PC_1 <= (REG_FILE[rs1]) < (result) ? PC_2 - 4 + immediate : PC_1 + 4;
+							PC_1 <= (REG_FILE[rs1]) < (result) ? PC_2 - 8 + immediate : PC_1 + 4;
 							stage2 <= (REG_FILE[rs1]) < (result) ? 0 : stage2;
 							stage3 <= (REG_FILE[rs1]) < (result) ? 0 : stage3;
 						end
 						else begin
-							PC_1 <= (REG_FILE[rs1]) < (REG_FILE[rs2]) ? PC_2 - 4 + immediate : PC_1 + 4;
+							PC_1 <= (REG_FILE[rs1]) < (REG_FILE[rs2]) ? PC_2 - 8 + immediate : PC_1 + 4;
 							stage2 <= (REG_FILE[rs1]) < (REG_FILE[rs2]) ? 0 : stage2;
 							stage3 <= (REG_FILE[rs1]) < (REG_FILE[rs2]) ? 0 : stage3;
 						end
@@ -542,48 +520,52 @@ module cpu # (
 					//bgeu
 					else if(funct3 == 4'h7)begin
 						if(rs1 == rd_stage4)begin
-							PC_1 <= (result) >= (REG_FILE[rs2]) ? PC_2 - 4 + immediate : PC_1 + 4;
+							PC_1 <= (result) >= (REG_FILE[rs2]) ? PC_2 - 8 + immediate : PC_1 + 4;
 							stage2 <= (result) >= (REG_FILE[rs2]) ? 0 : stage2;
 							stage3 <= (result) >= (REG_FILE[rs2]) ? 0 : stage3;
 						end
 						else if(rs2 == rd_stage4)begin
-							PC_1 <= (REG_FILE[rs1]) >= (result) ? PC_2 - 4 + immediate : PC_1 + 4;
+							PC_1 <= (REG_FILE[rs1]) >= (result) ? PC_2 - 8 + immediate : PC_1 + 4;
 							stage2 <= (REG_FILE[rs1]) >= (result) ? 0 : stage2;
 							stage3 <= (REG_FILE[rs1]) >= (result) ? 0 : stage3;
 						end
 						else begin
-							PC_1 <= (REG_FILE[rs1]) >= (REG_FILE[rs2]) ? PC_2 - 4 + immediate : PC_1 + 4;
+							PC_1 <= (REG_FILE[rs1]) >= (REG_FILE[rs2]) ? PC_2 - 8 + immediate : PC_1 + 4;
 							stage2 <= (REG_FILE[rs1]) >= (REG_FILE[rs2]) ? 0 : stage2;
 							stage3 <= (REG_FILE[rs1]) >= (REG_FILE[rs2]) ? 0 : stage3;
 						end
 					end
+					stage4 <= 1'b0;
 				end
 
 				/************* u type ****************/
 				/* lui */
-				else if(Alu_op == U_LD)begin
+				else if(Alu_op == U_ld)begin
 					result <= immediate;
+					stage4 <= 1'b1;
 				end
 				
 				/* auipc */
-				else if(Alu_op == U_PC)begin
-					result <= (PC_2 - 8) + (immediate);
+				else if(Alu_op == U_pc)begin
+					result <= (PC_2 - 4) + (immediate);
+					stage4 <= 1'b1;
 				end
 				/************* u type ****************/
 
 				/* jump type (jal) */
-				else if(Alu_op == J_TYPE)begin
+				else if(Alu_op == J)begin
 					/* flush instructions at stages 2 & 3 */
 					stage2 <= 1'b0;
 					stage3 <= 1'b0;
 					/* rd = PC + 4 */
 					result <= PC_2;
-					PC_1 <= PC_2 - 4 + immediate;
-					PC_2 <= PC_2 - 4 + immediate - 4;
+					PC_1 <= PC_1 + immediate - 12;
+					PC_2 <= PC_1 - 16 + immediate;
+					stage4 <= 1'b1;
 				end
 
 				/* loading instructions */
-				else if(Alu_op == I_LD) begin
+				else if(Alu_op == I_ld) begin
 					// load byte
 					if(funct3 == 4'h0)begin
 						ldst_addr <= ($signed(REG_FILE[rs1]) + immediate);
@@ -608,10 +590,11 @@ module cpu # (
 					else if(funct3 == 4'h5)begin
 						ldst_addr <= (REG_FILE[rs1] + immediate);
 					end
+					stage4 <= 1'b0;
 				end
 
 				/* Store */
-				else if(Alu_op == S_TYPE)begin
+				else if(Alu_op == S)begin
 					// store byte
 					if(funct3 == 4'h0)begin
 						ldst_addr <= ($signed(REG_FILE[rs1]) + immediate);
@@ -629,11 +612,12 @@ module cpu # (
 						ldst_addr <= ($signed(REG_FILE[rs1]) + immediate);
 						ldst_wrdata <= $signed(REG_FILE[rs2]);
 					end
+					stage4 <= 1'b0;
 				end
 			end
-			
-			/************* load result into reg file ***************/
-			if(resultIn) begin
+
+			/* STAGE 4: WRITE_BACK */
+			if(stage4) begin
 				if(rd_stage4 == 5'b0)begin
 					REG_FILE[rd_stage4] <= 32'b0;
 				end
@@ -641,59 +625,6 @@ module cpu # (
 					REG_FILE[rd_stage4] <= result;
 				end
 			end
-			
-			/************ load value from memory into reg file **************/
-			if(loadIn) begin
-				case(funct3)
-					//load byte
-					4'h0: begin
-						REG_FILE[rd] <= $signed(ldst_rddata[7:0]);
-					end
-					//load half
-					4'h1: begin
-						REG_FILE[rd] <= $signed(ldst_rddata[15:0]);
-					end
-					// load word
-					4'h2: begin
-						REG_FILE[rd] <= $signed(ldst_rddata);
-					end
-					// load byte (U)
-					4'h4: begin
-						REG_FILE[rd] <= ldst_rddata[7:0];
-					end
-					//load half (U)
-					4'h5: begin
-						REG_FILE[rd] <= ldst_rddata[15:0];
-					end
-				endcase 
-			end
 		end
 	end
-
-	/* Get the ALU Op code to know which ALU Operation to perform */
-	always_ff@(posedge clk) begin : ALUOP
-		case (IR[6:0])
-			R: 		Alu_op <= R_TYPE;
-			I_imm:	Alu_op <= I_IMM;
-			I_ld: 	Alu_op <= I_LD;
-			I_jump: Alu_op <= I_JUMP;
-			S: 		Alu_op <= S_TYPE;
-			B:		Alu_op <= B_TYPE;
-			U_ld:	Alu_op <= U_LD;
-			U_pc:	Alu_op <= U_PC;
-			J:		Alu_op <= J_TYPE; 
-		endcase
-	end
-	/***************************************######### RISC V DATAPATH ############***************************************/
-
-	/* outputs to the Processor Signal Interface */
-	assign o_pc_rd = fetch;
-	assign o_tb_regs = REG_FILE;
-	assign o_pc_addr = PC_1;
-	assign o_pc_byte_en = pc_byte_en;
-	assign o_ldst_addr = ldst_addr;
-	assign o_ldst_rd = ldst_rd;
-	assign o_ldst_wr = ldst_wr;
-	assign o_ldst_byte_en = ldst_byte_en;
-	assign o_ldst_wrdata = ldst_wrdata;
 endmodule
