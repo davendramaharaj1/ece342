@@ -91,7 +91,7 @@ module cpu # (
 	assign o_ldst_wrdata = ldst_wrdata;		
 
 	always_comb begin : readPC
-		if(stage1)begin
+		if(stage1 & !reset)begin
 			pc_read = 1'b1;
 		end
 		else begin
@@ -122,6 +122,8 @@ module cpu # (
 			for(i = 0; i < IW; i=i+1)begin
 				REG_FILE[i] <= 32'b0;
 			end
+
+			result <= 0;
 		end
 		
 		else begin
@@ -197,10 +199,10 @@ module cpu # (
 				if(Alu_op == R) begin
 					// add
 					if(funct3 == 4'h0 && funct7 == 8'h00) begin
-						if(rs1 == rd_stage4)begin
+						if(rs1 == rd_stage4 && rd_stage4 != 0)begin
 							result <= result + REG_FILE[rs2];
 						end
-						else if(rs2 == rd_stage4)begin
+						else if(rs2 == rd_stage4 && rd_stage4 != 0)begin
 							result <= result + REG_FILE[rs1];
 						end
 						else begin
@@ -209,10 +211,10 @@ module cpu # (
 					end
 					// sub
 					else if (funct3 == 4'h0 && funct7 == 8'h20) begin
-						if(rs1 == rd_stage4)begin
+						if(rs1 == rd_stage4 && rd_stage4 != 0)begin
 							result <= result - REG_FILE[rs2];
 						end
-						else if(rs2 == rd_stage4)begin
+						else if(rs2 == rd_stage4 && rd_stage4 != 0)begin
 							result <= REG_FILE[rs1] - result;
 						end
 						else begin
@@ -221,10 +223,10 @@ module cpu # (
 					end
 					// xor
 					else if(funct3 == 4'h4 && funct7 == 8'h00)begin
-						if(rs1 == rd_stage4)begin
+						if(rs1 == rd_stage4 && rd_stage4 != 0)begin
 							result <= result ^ REG_FILE[rs2];
 						end
-						else if(rs2 == rd_stage4)begin
+						else if(rs2 == rd_stage4 && rd_stage4 != 0)begin
 							result <= REG_FILE[rs1] ^ result;
 						end
 						else begin
@@ -233,10 +235,10 @@ module cpu # (
 					end
 					// or
 					else if(funct3 == 4'h6 && funct7 == 8'h00)begin
-						if(rs1 == rd_stage4)begin
+						if(rs1 == rd_stage4 && rd_stage4 != 0)begin
 							result <= result | REG_FILE[rs2];
 						end
-						else if(rs2 == rd_stage4)begin
+						else if(rs2 == rd_stage4 && rd_stage4 != 0)begin
 							result <= REG_FILE[rs1] | result;
 						end
 						else begin
@@ -245,10 +247,10 @@ module cpu # (
 					end
 					// and
 					else if(funct3 == 4'h7 && funct7 == 8'h00)begin
-						if(rs1 == rd_stage4)begin
+						if(rs1 == rd_stage4 && rd_stage4 != 0)begin
 							result <= result & REG_FILE[rs2];
 						end
-						else if(rs2 == rd_stage4)begin
+						else if(rs2 == rd_stage4 && rd_stage4 != 0)begin
 							result <= REG_FILE[rs1] & result;
 						end
 						else begin
@@ -257,10 +259,10 @@ module cpu # (
 					end
 					//sll
 					else if(funct3 == 4'h1 && funct7 == 8'h00)begin
-						if(rs1 == rd_stage4)begin
+						if(rs1 == rd_stage4 && rd_stage4 != 0)begin
 							result <= result << REG_FILE[rs2];
 						end
-						else if(rs2 == rd_stage4)begin
+						else if(rs2 == rd_stage4 && rd_stage4 != 0)begin
 							result <= REG_FILE[rs1] << result;
 						end
 						else begin
@@ -269,10 +271,10 @@ module cpu # (
 					end
 					//srl
 					else if(funct3 == 4'h5 && funct7 == 8'h00)begin
-						if(rs1 == rd_stage4)begin
+						if(rs1 == rd_stage4 && rd_stage4 != 0)begin
 							result <= result >> REG_FILE[rs2];
 						end
-						else if(rs2 == rd_stage4)begin
+						else if(rs2 == rd_stage4 && rd_stage4 != 0)begin
 							result <= REG_FILE[rs1] >> result;
 						end
 						else begin
@@ -281,10 +283,10 @@ module cpu # (
 					end
 					//sra
 					else if(funct3 == 4'h5 && funct7 == 8'h20)begin
-						if(rs1 == rd_stage4)begin
+						if(rs1 == rd_stage4 && rd_stage4 != 0)begin
 							result <= $signed(result) >>> REG_FILE[rs2][4:0];
 						end
-						else if(rs2 == rd_stage4)begin
+						else if(rs2 == rd_stage4 && rd_stage4 != 0)begin
 							result <= $signed(REG_FILE[rs1]) >>> result[4:0];
 						end
 						else begin
@@ -293,10 +295,10 @@ module cpu # (
 					end
 					//slt
 					else if(funct3 == 4'h2 && funct7 == 8'h00)begin
-						if(rs1 == rd_stage4)begin
+						if(rs1 == rd_stage4 && rd_stage4 != 0)begin
 							result <= $signed(result) < $signed(REG_FILE[rs2]) ? 1 : 0;
 						end
-						else if(rs2 == rd_stage4)begin
+						else if(rs2 == rd_stage4 && rd_stage4 != 0)begin
 							result <= $signed(REG_FILE[rs1]) < $signed(result) ? 1 : 0;
 						end
 						else begin
@@ -305,10 +307,10 @@ module cpu # (
 					end
 					//sltu
 					else if(funct3 == 4'h3 && funct7 == 8'h00)begin
-						if(rs1 == rd_stage4)begin
+						if(rs1 == rd_stage4 && rd_stage4 != 0)begin
 							result <= result < REG_FILE[rs2] ? 1 : 0;
 						end
-						else if(rs2 == rd_stage4)begin
+						else if(rs2 == rd_stage4 && rd_stage4 != 0)begin
 							result <= REG_FILE[rs1] < result ? 1 : 0;
 						end
 						else begin
@@ -322,7 +324,7 @@ module cpu # (
 				else if(Alu_op == I_imm)begin
 					// addi
 					if(funct3 == 4'h0) begin
-						if(rs1 == rd_stage4)begin
+						if(rs1 == rd_stage4 && rd_stage4 != 0)begin
 							result <= result + immediate;
 						end
 						else begin
@@ -331,7 +333,7 @@ module cpu # (
 					end
 					// xori
 					else if(funct3 == 4'h4)begin
-						if(rs1 == rd_stage4)begin
+						if(rs1 == rd_stage4 && rd_stage4 != 0)begin
 							result <= result ^ immediate;
 						end
 						else begin
@@ -340,7 +342,7 @@ module cpu # (
 					end
 					// ori
 					else if(funct3 == 4'h6)begin
-						if(rs1 == rd_stage4)begin
+						if(rs1 == rd_stage4 && rd_stage4 != 0)begin
 							result <= result | immediate;
 						end
 						else begin
@@ -349,7 +351,7 @@ module cpu # (
 					end
 					// andi
 					else if(funct3 == 4'h7)begin
-						if(rs1 == rd_stage4)begin
+						if(rs1 == rd_stage4 && rd_stage4 != 0)begin
 							result <= result & immediate;
 						end
 						else begin
@@ -358,7 +360,7 @@ module cpu # (
 					end
 					//slli
 					else if(funct3 == 4'h1 && immediate[11:5] == 8'h00)begin
-						if(rs1 == rd_stage4)begin
+						if(rs1 == rd_stage4 && rd_stage4 != 0)begin
 							result <= result << immediate[4:0];
 						end
 						else begin
@@ -367,7 +369,7 @@ module cpu # (
 					end
 					//srli
 					else if(funct3 == 4'h5 && immediate[11:5] == 8'h00)begin
-						if(rs1 == rd_stage4)begin
+						if(rs1 == rd_stage4 && rd_stage4 != 0)begin
 							result <= result >> immediate[4:0];
 						end
 						else begin
@@ -376,7 +378,7 @@ module cpu # (
 					end
 					//srai
 					else if(funct3 == 4'h5 && immediate[11:5] == 8'h20)begin
-						if(rs1 == rd_stage4)begin
+						if(rs1 == rd_stage4 && rd_stage4 != 0)begin
 							result <= $signed(result) >>> immediate[4:0];
 						end
 						else begin
@@ -385,7 +387,7 @@ module cpu # (
 					end
 					//slti
 					else if(funct3 == 4'h2) begin
-						if(rs1 == rd_stage4)begin
+						if(rs1 == rd_stage4 && rd_stage4 != 0)begin
 							result <= $signed(result) < $signed(immediate) ? 1 : 0;
 						end
 						else begin
@@ -394,7 +396,7 @@ module cpu # (
 					end
 					//sltiu
 					else if(funct3 == 4'h3 && funct7 == 8'h00)begin
-						if(rs1 == rd_stage4)begin
+						if(rs1 == rd_stage4 && rd_stage4 != 0)begin
 							result <= result < immediate ? 1 : 0;
 						end
 						else begin
@@ -413,7 +415,7 @@ module cpu # (
 						/* rd = PC + 4 */
 						result <= PC_2;
 						/* account for forwarding */
-						if(rs1 == rd_stage4)begin
+						if(rs1 == rd_stage4 && rd_stage4 != 0)begin
 							PC_1 <= result + immediate;
 							PC_2 <= result + immediate - 4;
 						end
@@ -429,30 +431,30 @@ module cpu # (
 				else if(Alu_op == B)begin
 					// beq
 					if(funct3 == 4'h0)begin
-						if(rs1 == rd_stage4)begin
-							PC_1 <= $signed(result) == $signed(REG_FILE[rs2]) ? PC_2 - 4 + immediate : PC_1 + 4;
+						if(rs1 == rd_stage4 && rd_stage4 != 0)begin
+							PC_1 <= $signed(result) == $signed(REG_FILE[rs2]) ? PC_1 - 8 + immediate : PC_1 + 4;
 							stage2 <= $signed(result) == $signed(REG_FILE[rs2]) ? 0 : stage2;
 							stage3 <= $signed(result) == $signed(REG_FILE[rs2]) ? 0 : stage3;
 						end
-						else if(rs2 == rd_stage4)begin
-							PC_1 <= $signed(REG_FILE[rs1]) == $signed(result) ? PC_2 - 4 + immediate : PC_1 + 4;
+						else if(rs2 == rd_stage4 && rd_stage4 != 0)begin
+							PC_1 <= $signed(REG_FILE[rs1]) == $signed(result) ? PC_1 - 8 + immediate : PC_1 + 4;
 							stage2 <= $signed(REG_FILE[rs1]) == $signed(result) ? 0 : stage2;
 							stage3 <= $signed(REG_FILE[rs1]) == $signed(result) ? 0 : stage3;
 						end
 						else begin
-							PC_1 <= $signed(REG_FILE[rs1]) == $signed(REG_FILE[rs2]) ? PC_2 - 4 + immediate : PC_1 + 4;
+							PC_1 <= $signed(REG_FILE[rs1]) == $signed(REG_FILE[rs2]) ? PC_1 - 8 + immediate : PC_1 + 4;
 							stage2 <= $signed(REG_FILE[rs1]) == $signed(REG_FILE[rs2]) ? 0 : stage2;
 							stage3 <= $signed(REG_FILE[rs1]) == $signed(REG_FILE[rs2]) ? 0 : stage3;
 						end
 					end
 					// bne
 					else if(funct3 == 4'h1)begin
-						if(rs1 == rd_stage4)begin
+						if(rs1 == rd_stage4 && rd_stage4 != 0)begin
 							PC_1 <= $signed(result) != $signed(REG_FILE[rs2]) ? PC_2 - 8 + immediate : PC_2;
 							stage2 <= $signed(result) != $signed(REG_FILE[rs2]) ? 0 : stage2;
 							stage3 <= $signed(result) != $signed(REG_FILE[rs2]) ? 0 : stage3;
 						end
-						else if(rs2 == rd_stage4)begin
+						else if(rs2 == rd_stage4 && rd_stage4 != 0)begin
 							PC_1 <= $signed(REG_FILE[rs1]) != $signed(result) ? PC_2 - 8 + immediate : PC_1 + 4;
 							stage2 <= $signed(REG_FILE[rs1]) != $signed(result) ? 0 : stage2;
 							stage3 <= $signed(REG_FILE[rs1]) != $signed(result) ? 0 : stage3;
@@ -465,30 +467,30 @@ module cpu # (
 					end
 					//blt
 					else if(funct3 == 4'h4)begin
-						if(rs1 == rd_stage4)begin
-							PC_1 <= $signed(result) < $signed(REG_FILE[rs2]) ? PC_2 - 8 + immediate : PC_1 + 4;
+						if(rs1 == rd_stage4 && rd_stage4 != 0)begin
+							PC_1 <= $signed(result) < $signed(REG_FILE[rs2]) ? PC_1 - 8 + immediate : PC_1 + 4;
 							stage2 <= $signed(result) < $signed(REG_FILE[rs2]) ? 0 : stage2;
 							stage3 <= $signed(result) < $signed(REG_FILE[rs2]) ? 0 : stage3;
 						end
-						else if(rs2 == rd_stage4)begin
-							PC_1 <= $signed(REG_FILE[rs1]) < $signed(result) ? PC_2 - 8 + immediate : PC_1 + 4;
+						else if(rs2 == rd_stage4 && rd_stage4 != 0)begin
+							PC_1 <= $signed(REG_FILE[rs1]) < $signed(result) ? PC_1 - 8 + immediate : PC_1 + 4;
 							stage2 <= $signed(REG_FILE[rs1]) < $signed(result) ? 0 : stage2;
 							stage3 <= $signed(REG_FILE[rs1]) < $signed(result) ? 0 : stage3;
 						end
 						else begin
-							PC_1 <= $signed(REG_FILE[rs1]) < $signed(REG_FILE[rs2]) ? PC_2 - 8 + immediate : PC_1 + 4;
+							PC_1 <= $signed(REG_FILE[rs1]) < $signed(REG_FILE[rs2]) ? PC_1 - 8 + immediate : PC_1 + 4;
 							stage2 <= $signed(REG_FILE[rs1]) < $signed(REG_FILE[rs2]) ? 0 : stage2;
 							stage3 <= $signed(REG_FILE[rs1]) < $signed(REG_FILE[rs2]) ? 0 : stage3;
 						end
 					end
 					//bge
 					else if(funct3 == 4'h5)begin
-						if(rs1 == rd_stage4)begin
+						if(rs1 == rd_stage4 && rd_stage4 != 0)begin
 							PC_1 <= $signed(result) >= $signed(REG_FILE[rs2]) ? PC_2 - 8 + immediate : PC_1 + 4;
 							stage2 <= $signed(result) >= $signed(REG_FILE[rs2]) ? 0 : stage2;
 							stage3 <= $signed(result) >= $signed(REG_FILE[rs2]) ? 0 : stage3;
 						end
-						else if(rs2 == rd_stage4)begin
+						else if(rs2 == rd_stage4 && rd_stage4 != 0)begin
 							PC_1 <= $signed(REG_FILE[rs1]) >= $signed(result) ? PC_2 - 8 + immediate : PC_1 + 4;
 							stage2 <= $signed(REG_FILE[rs1]) >= $signed(result) ? 0 : stage2;
 							stage3 <= $signed(REG_FILE[rs1]) >= $signed(result) ? 0 : stage3;
@@ -501,12 +503,12 @@ module cpu # (
 					end
 					//bltu
 					else if(funct3 == 4'h6)begin
-						if(rs1 == rd_stage4)begin
+						if(rs1 == rd_stage4 && rd_stage4 != 0)begin
 							PC_1 <= (result) < (REG_FILE[rs2]) ? PC_2 - 8 + immediate : PC_1 + 4;
 							stage2 <= (result) < (REG_FILE[rs2]) ? 0 : stage2;
 							stage3 <= (result) < (REG_FILE[rs2]) ? 0 : stage3;
 						end
-						else if(rs2 == rd_stage4)begin
+						else if(rs2 == rd_stage4 && rd_stage4 != 0)begin
 							PC_1 <= (REG_FILE[rs1]) < (result) ? PC_2 - 8 + immediate : PC_1 + 4;
 							stage2 <= (REG_FILE[rs1]) < (result) ? 0 : stage2;
 							stage3 <= (REG_FILE[rs1]) < (result) ? 0 : stage3;
@@ -519,12 +521,12 @@ module cpu # (
 					end
 					//bgeu
 					else if(funct3 == 4'h7)begin
-						if(rs1 == rd_stage4)begin
+						if(rs1 == rd_stage4 && rd_stage4 != 0)begin
 							PC_1 <= (result) >= (REG_FILE[rs2]) ? PC_2 - 8 + immediate : PC_1 + 4;
 							stage2 <= (result) >= (REG_FILE[rs2]) ? 0 : stage2;
 							stage3 <= (result) >= (REG_FILE[rs2]) ? 0 : stage3;
 						end
-						else if(rs2 == rd_stage4)begin
+						else if(rs2 == rd_stage4 && rd_stage4 != 0)begin
 							PC_1 <= (REG_FILE[rs1]) >= (result) ? PC_2 - 8 + immediate : PC_1 + 4;
 							stage2 <= (REG_FILE[rs1]) >= (result) ? 0 : stage2;
 							stage3 <= (REG_FILE[rs1]) >= (result) ? 0 : stage3;
@@ -559,8 +561,8 @@ module cpu # (
 					stage3 <= 1'b0;
 					/* rd = PC + 4 */
 					result <= PC_2;
-					PC_1 <= PC_1 + immediate - 12;
-					PC_2 <= PC_1 - 16 + immediate;
+					PC_1 <= PC_1 + immediate - 8;
+					PC_2 <= PC_2 - 4 + immediate;
 					stage4 <= 1'b1;
 				end
 
