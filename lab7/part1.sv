@@ -451,17 +451,17 @@ module cpu # (
 					// bne
 					else if(funct3 == 4'h1)begin
 						if(rs1 == rd_stage4 && rd_stage4 != 0)begin
-							PC_1 <= $signed(result) != $signed(REG_FILE[rs2]) ? PC_1 - 8 + immediate : PC_1 + 4;
+							PC_1 <= $signed(result) != $signed(REG_FILE[rs2]) ? PC_2 - 8 + immediate : PC_1 + 4;
 							stage2 <= $signed(result) != $signed(REG_FILE[rs2]) ? 0 : stage2;
 							stage3 <= $signed(result) != $signed(REG_FILE[rs2]) ? 0 : stage3;
 						end
 						else if(rs2 == rd_stage4 && rd_stage4 != 0)begin
-							PC_1 <= $signed(REG_FILE[rs1]) != $signed(result) ? PC_1 - 8 + immediate : PC_1 + 4;
+							PC_1 <= $signed(REG_FILE[rs1]) != $signed(result) ? PC_2 - 8 + immediate : PC_1 + 4;
 							stage2 <= $signed(REG_FILE[rs1]) != $signed(result) ? 0 : stage2;
 							stage3 <= $signed(REG_FILE[rs1]) != $signed(result) ? 0 : stage3;
 						end
 						else begin
-							PC_1 <= $signed(REG_FILE[rs1]) != $signed(REG_FILE[rs2]) ? PC_1 - 8 + immediate : PC_1 + 4;
+							PC_1 <= $signed(REG_FILE[rs1]) != $signed(REG_FILE[rs2]) ? PC_2 - 8 + immediate : PC_1 + 4;
 							stage2 <= $signed(REG_FILE[rs1]) != $signed(REG_FILE[rs2]) ? 0 : stage2;
 							stage3 <= $signed(REG_FILE[rs1]) != $signed(REG_FILE[rs2]) ? 0 : stage3;
 						end
@@ -569,11 +569,11 @@ module cpu # (
 
 				else if(Alu_op == I_ld)begin
 					stage4 <= 1'b1;
-					result <= ldst_rddata;
+					//result <= ldst_rddata;
 				end
 				else if(Alu_op == S) begin
 					stage4 <= 1'b1;
-					result <= ldst_rddata;
+					//result <= ldst_rddata;
 				end
 			end
 			/* STAGE 4: WRITE_BACK */
@@ -582,19 +582,19 @@ module cpu # (
 				 	REG_FILE[rd_stage4] <= 32'b0;
 				end
 				else if(opcode == I_ld && funct3_stage4 == 4'h0) begin
-					REG_FILE[rd_stage4] <= $signed(result[7:0]);
+					REG_FILE[rd_stage4] <= $signed(ldst_rddata[7:0]);
 				end
 				else if(opcode == I_ld && funct3_stage4 == 4'h1) begin
-					REG_FILE[rd_stage4] <= $signed(result[15:0]);
+					REG_FILE[rd_stage4] <= $signed(ldst_rddata[15:0]);
 				end
 				else if(opcode == I_ld && funct3_stage4 == 4'h2) begin
-					REG_FILE[rd_stage4] <= $signed(result);
+					REG_FILE[rd_stage4] <= $signed(ldst_rddata);
 				end
 				else if(opcode == I_ld && funct3_stage4 == 4'h4) begin
-					REG_FILE[rd_stage4] <= result[7:0];
+					REG_FILE[rd_stage4] <= ldst_rddata[7:0];
 				end
 				else if(opcode == I_ld && funct3_stage4 == 4'h5) begin
-					REG_FILE[rd_stage4] <= result[15:0];
+					REG_FILE[rd_stage4] <= ldst_rddata[15:0];
 				end
 				else begin
 					REG_FILE[rd_stage4] <= result;
