@@ -451,17 +451,17 @@ module cpu # (
 					// bne
 					else if(funct3 == 4'h1)begin
 						if(rs1 == rd_stage4 && rd_stage4 != 0)begin
-							PC_1 <= $signed(result) != $signed(REG_FILE[rs2]) ? PC_2 - 8 + immediate : PC_2;
+							PC_1 <= $signed(result) != $signed(REG_FILE[rs2]) ? PC_1 - 8 + immediate : PC_1 + 4;
 							stage2 <= $signed(result) != $signed(REG_FILE[rs2]) ? 0 : stage2;
 							stage3 <= $signed(result) != $signed(REG_FILE[rs2]) ? 0 : stage3;
 						end
 						else if(rs2 == rd_stage4 && rd_stage4 != 0)begin
-							PC_1 <= $signed(REG_FILE[rs1]) != $signed(result) ? PC_2 - 8 + immediate : PC_1 + 4;
+							PC_1 <= $signed(REG_FILE[rs1]) != $signed(result) ? PC_1 - 8 + immediate : PC_1 + 4;
 							stage2 <= $signed(REG_FILE[rs1]) != $signed(result) ? 0 : stage2;
 							stage3 <= $signed(REG_FILE[rs1]) != $signed(result) ? 0 : stage3;
 						end
 						else begin
-							PC_1 <= $signed(REG_FILE[rs1]) != $signed(REG_FILE[rs2]) ? PC_2 - 8 + immediate : PC_1 + 4;
+							PC_1 <= $signed(REG_FILE[rs1]) != $signed(REG_FILE[rs2]) ? PC_1 - 8 + immediate : PC_1 + 4;
 							stage2 <= $signed(REG_FILE[rs1]) != $signed(REG_FILE[rs2]) ? 0 : stage2;
 							stage3 <= $signed(REG_FILE[rs1]) != $signed(REG_FILE[rs2]) ? 0 : stage3;
 						end
@@ -487,17 +487,17 @@ module cpu # (
 					//bge
 					else if(funct3 == 4'h5)begin
 						if(rs1 == rd_stage4 && rd_stage4 != 0)begin
-							PC_1 <= $signed(result) >= $signed(REG_FILE[rs2]) ? PC_2 - 8 + immediate : PC_1 + 4;
+							PC_1 <= $signed(result) >= $signed(REG_FILE[rs2]) ? PC_1 - 8 + immediate : PC_1 + 4;
 							stage2 <= $signed(result) >= $signed(REG_FILE[rs2]) ? 0 : stage2;
 							stage3 <= $signed(result) >= $signed(REG_FILE[rs2]) ? 0 : stage3;
 						end
 						else if(rs2 == rd_stage4 && rd_stage4 != 0)begin
-							PC_1 <= $signed(REG_FILE[rs1]) >= $signed(result) ? PC_2 - 8 + immediate : PC_1 + 4;
+							PC_1 <= $signed(REG_FILE[rs1]) >= $signed(result) ? PC_1 - 8 + immediate : PC_1 + 4;
 							stage2 <= $signed(REG_FILE[rs1]) >= $signed(result) ? 0 : stage2;
 							stage3 <= $signed(REG_FILE[rs1]) >= $signed(result) ? 0 : stage3;
 						end
 						else begin
-							PC_1 <= $signed(REG_FILE[rs1]) >= $signed(REG_FILE[rs2]) ? PC_2 - 8 + immediate : PC_1 + 4;
+							PC_1 <= $signed(REG_FILE[rs1]) >= $signed(REG_FILE[rs2]) ? PC_1 - 8 + immediate : PC_1 + 4;
 							stage2 <= $signed(REG_FILE[rs1]) >= $signed(REG_FILE[rs2]) ? 0 : stage2;
 							stage3 <= $signed(REG_FILE[rs1]) >= $signed(REG_FILE[rs2]) ? 0 : stage3;
 						end
@@ -505,17 +505,17 @@ module cpu # (
 					//bltu
 					else if(funct3 == 4'h6)begin
 						if(rs1 == rd_stage4 && rd_stage4 != 0)begin
-							PC_1 <= (result) < (REG_FILE[rs2]) ? PC_2 - 8 + immediate : PC_1 + 4;
+							PC_1 <= (result) < (REG_FILE[rs2]) ? PC_1 - 8 + immediate : PC_1 + 4;
 							stage2 <= (result) < (REG_FILE[rs2]) ? 0 : stage2;
 							stage3 <= (result) < (REG_FILE[rs2]) ? 0 : stage3;
 						end
 						else if(rs2 == rd_stage4 && rd_stage4 != 0)begin
-							PC_1 <= (REG_FILE[rs1]) < (result) ? PC_2 - 8 + immediate : PC_1 + 4;
+							PC_1 <= (REG_FILE[rs1]) < (result) ? PC_1 - 8 + immediate : PC_1 + 4;
 							stage2 <= (REG_FILE[rs1]) < (result) ? 0 : stage2;
 							stage3 <= (REG_FILE[rs1]) < (result) ? 0 : stage3;
 						end
 						else begin
-							PC_1 <= (REG_FILE[rs1]) < (REG_FILE[rs2]) ? PC_2 - 8 + immediate : PC_1 + 4;
+							PC_1 <= (REG_FILE[rs1]) < (REG_FILE[rs2]) ? PC_1 - 8 + immediate : PC_1 + 4;
 							stage2 <= (REG_FILE[rs1]) < (REG_FILE[rs2]) ? 0 : stage2;
 							stage3 <= (REG_FILE[rs1]) < (REG_FILE[rs2]) ? 0 : stage3;
 						end
@@ -523,17 +523,17 @@ module cpu # (
 					//bgeu
 					else if(funct3 == 4'h7)begin
 						if(rs1 == rd_stage4 && rd_stage4 != 0)begin
-							PC_1 <= (result) >= (REG_FILE[rs2]) ? PC_2 - 8 + immediate : PC_1 + 4;
+							PC_1 <= (result) >= (REG_FILE[rs2]) ? PC_1 - 8 + immediate : PC_1 + 4;
 							stage2 <= (result) >= (REG_FILE[rs2]) ? 0 : stage2;
 							stage3 <= (result) >= (REG_FILE[rs2]) ? 0 : stage3;
 						end
 						else if(rs2 == rd_stage4 && rd_stage4 != 0)begin
-							PC_1 <= (REG_FILE[rs1]) >= (result) ? PC_2 - 8 + immediate : PC_1 + 4;
+							PC_1 <= (REG_FILE[rs1]) >= (result) ? PC_1 - 8 + immediate : PC_1 + 4;
 							stage2 <= (REG_FILE[rs1]) >= (result) ? 0 : stage2;
 							stage3 <= (REG_FILE[rs1]) >= (result) ? 0 : stage3;
 						end
 						else begin
-							PC_1 <= (REG_FILE[rs1]) >= (REG_FILE[rs2]) ? PC_2 - 8 + immediate : PC_1 + 4;
+							PC_1 <= (REG_FILE[rs1]) >= (REG_FILE[rs2]) ? PC_1 - 8 + immediate : PC_1 + 4;
 							stage2 <= (REG_FILE[rs1]) >= (REG_FILE[rs2]) ? 0 : stage2;
 							stage3 <= (REG_FILE[rs1]) >= (REG_FILE[rs2]) ? 0 : stage3;
 						end
@@ -569,31 +569,32 @@ module cpu # (
 
 				else if(Alu_op == I_ld)begin
 					stage4 <= 1'b1;
+					result <= ldst_rddata;
 				end
 				else if(Alu_op == S) begin
 					stage4 <= 1'b1;
+					result <= ldst_rddata;
 				end
 			end
-
 			/* STAGE 4: WRITE_BACK */
 			if(stage4) begin
 				if(rd_stage4 == 5'b0)begin
-					REG_FILE[rd_stage4] <= 32'b0;
+				 	REG_FILE[rd_stage4] <= 32'b0;
 				end
 				else if(opcode == I_ld && funct3_stage4 == 4'h0) begin
-					REG_FILE[rd_stage4] <= $signed(ldst_rddata[7:0]);
+					REG_FILE[rd_stage4] <= $signed(result[7:0]);
 				end
 				else if(opcode == I_ld && funct3_stage4 == 4'h1) begin
-					REG_FILE[rd_stage4] <= $signed(ldst_rddata[15:0]);
+					REG_FILE[rd_stage4] <= $signed(result[15:0]);
 				end
 				else if(opcode == I_ld && funct3_stage4 == 4'h2) begin
-					REG_FILE[rd_stage4] <= $signed(ldst_rddata);
+					REG_FILE[rd_stage4] <= $signed(result);
 				end
 				else if(opcode == I_ld && funct3_stage4 == 4'h4) begin
-					REG_FILE[rd_stage4] <= ldst_rddata[7:0];
+					REG_FILE[rd_stage4] <= result[7:0];
 				end
 				else if(opcode == I_ld && funct3_stage4 == 4'h5) begin
-					REG_FILE[rd_stage4] <= ldst_rddata[15:0];
+					REG_FILE[rd_stage4] <= result[15:0];
 				end
 				else begin
 					REG_FILE[rd_stage4] <= result;
@@ -607,7 +608,7 @@ module cpu # (
 	// load store read signal
 	always_comb begin : ld_signal
 		// in EXECUTE stage, generate a read/write to memory
-		if(stage3 && Alu_op == I_ld)begin
+		if(stage3 == 1'b1 && Alu_op == I_ld)begin
 			ldst_rd = 1'b1;
 		end
 		else begin
@@ -618,7 +619,7 @@ module cpu # (
 	// load store read signal
 	always_comb begin : st_signal
 		// in EXECUTE stage, generate a read/write to memory
-		if(stage3 && Alu_op == S)begin
+		if(stage3 == 1'b1 && Alu_op == S)begin
 			ldst_wr = 1'b1;
 		end
 		else begin
@@ -634,7 +635,7 @@ module cpu # (
 		ldst_byte_en = 4'b1111;
 		
 		// if in EXECUTE AND LOAD, generate address to load from 
-		if(stage3 && Alu_op == I_ld) begin
+		if(stage3 == 1'b1 && Alu_op == I_ld) begin
 			// load byte
 			if(funct3 == 4'h0)begin
 				if(rs1 == rd_stage4 && rd_stage4 != 0)begin
@@ -692,7 +693,7 @@ module cpu # (
 		end
 
 		// if in EXECUTE and STORE, generate ldst addr and wrdata
-		else if(stage3 && Alu_op == S)begin
+		else if(stage3 == 1'b1 && Alu_op == S)begin
 			// store byte
 			if(funct3 == 4'h0)begin
 				if(rs1 == rd_stage4 && rd_stage4 != 0)begin
