@@ -79,8 +79,9 @@ module cpu # (
 	localparam [6:0] J 		= 7'b1101111;
 	
 	integer i;
-
+	logic [31:0] ld_rddata;
 	assign IR = i_pc_rddata;
+	assign ld_rddata = i_ldst_rddata;
 
 	/* outputs to the Processor Signal Interface */
 	assign o_tb_regs = REG_FILE;
@@ -566,55 +567,11 @@ module cpu # (
 					stage4 <= 1'b1;
 				end
 
-				/* loading instructions */
-				else if(Alu_op == I_ld) begin
-					// load byte
-					if(funct3 == 4'h0)begin
-						ldst_addr <= ($signed(REG_FILE[rs1]) + immediate);
-					end
-
-					// load half
-					else if(funct3 == 4'h1) begin
-						ldst_addr <= ($signed(REG_FILE[rs1]) + immediate);
-					end
-
-					// load word
-					else if(funct3 == 4'h2) begin
-						ldst_addr <= ($signed(REG_FILE[rs1]) + immediate);
-					end
-
-					// load byte (U)
-					else if(funct3 == 4'h4) begin
-						ldst_addr <= (REG_FILE[rs1] + immediate);
-					end
-
-					// Load Half
-					else if(funct3 == 4'h5)begin
-						ldst_addr <= (REG_FILE[rs1] + immediate);
-					end
-					stage4 <= 1'b0;
+				else if(Alu_op == I_ld)begin
+					stage4 <= 1'b1;
 				end
-
-				/* Store */
-				else if(Alu_op == S)begin
-					// store byte
-					if(funct3 == 4'h0)begin
-						ldst_addr <= ($signed(REG_FILE[rs1]) + immediate);
-						ldst_wrdata <= $signed(REG_FILE[rs2][7:0]);
-					end
-
-					//store half
-					else if(funct3 == 4'h1)begin
-						ldst_addr <= $signed(REG_FILE[rs1]) + immediate;
-						ldst_wrdata <= $signed(REG_FILE[rs2][15:0]);
-					end
-
-					//store word
-					else if(funct3 == 4'h2)begin
-						ldst_addr <= ($signed(REG_FILE[rs1]) + immediate);
-						ldst_wrdata <= $signed(REG_FILE[rs2]);
-					end
-					stage4 <= 1'b0;
+				else if(Alu_op == S) begin
+					stage4 <= 1'b1;
 				end
 			end
 
@@ -623,10 +580,169 @@ module cpu # (
 				if(rd_stage4 == 5'b0)begin
 					REG_FILE[rd_stage4] <= 32'b0;
 				end
+				else if(opcode == I_ld && funct3_stage4 == 4'h0) begin
+					REG_FILE[rd_stage4] <= $signed(ldst_rddata[7:0]);
+				end
+				else if(opcode == I_ld && funct3_stage4 == 4'h1) begin
+					REG_FILE[rd_stage4] <= $signed(ldst_rddata[15:0]);
+				end
+				else if(opcode == I_ld && funct3_stage4 == 4'h2) begin
+					REG_FILE[rd_stage4] <= $signed(ldst_rddata);
+				end
+				else if(opcode == I_ld && funct3_stage4 == 4'h4) begin
+					REG_FILE[rd_stage4] <= ldst_rddata[7:0];
+				end
+				else if(opcode == I_ld && funct3_stage4 == 4'h5) begin
+					REG_FILE[rd_stage4] <= ldst_rddata[15:0];
+				end
 				else begin
 					REG_FILE[rd_stage4] <= result;
 				end
 			end
+		end
+	end
+
+	// load store read signal
+	always_comb begin : ld_signal
+		// in EXECUTE stage, generate a read/write to memory
+		if(stage3 && Alu_op == I_ld)begin
+			ldst_rd = 1'b1;
+		end
+		else begin
+			ldst_rd = 1'b0;
+		end
+	end
+
+	// load store read signal
+	always_comb begin : st_signal
+		// in EXECUTE stage, generate a read/write to memory
+		if(stage3 && Alu_op == S)begin
+			ldst_wr = 1'b1;
+		end
+		else begin
+			ldst_wr = 1'b0;
+		end
+	end
+
+	always_comb begin : Loading
+		// if in EXECUTE AND LOAD, generate address to load from 
+		if(stage3 && Alu_op == I_ld) begin
+			// load byte
+			if(funct3 == 4'h0)begin
+				if(rs1 == rd_stage4 && rd_stage4 != 0)begin
+					ldst_addr = ($signed(result) + immediate);
+				end
+				else begin
+					ldst_addr = ($signed(REG_FILE[rs1]) + immediate);
+				end
+				ldst_byte_en = 4'b0001;
+			end
+
+			// load half
+			else if(funct3 == 4'h1) begin
+				if(rs1 == rd_stage4 && rd_stage4 != 0)begin
+					ldst_addr = ($signed(result) + immediate);
+				end
+				else begin
+					ldst_addr = ($signed(REG_FILE[rs1]) + immediate);
+				end
+				ldst_byte_en = 4'b0011;
+			end
+
+			// load word
+			else if(funct3 == 4'h2) begin
+				if(rs1 == rd_stage4 && rd_stage4 != 0)begin
+					ldst_addr = ($signed(result) + immediate);
+				end
+				else begin
+					ldst_addr = ($signed(REG_FILE[rs1]) + immediate);
+				end
+				ldst_byte_en = 4'b1111;
+			end
+
+			// load byte (U)
+			else if(funct3 == 4'h4) begin
+				if(rs1 == rd_stage4 && rd_stage4 != 0)begin
+					ldst_addr = (result + immediate);
+				end
+				else begin
+					ldst_addr = (REG_FILE[rs1] + immediate);
+				end
+				ldst_byte_en = 4'b0001;
+			end
+
+			// Load Half
+			else if(funct3 == 4'h5)begin
+				if(rs1 == rd_stage4 && rd_stage4 != 0)begin
+					ldst_addr = (result + immediate);
+				end
+				else begin
+					ldst_addr = (REG_FILE[rs1] + immediate);
+				end
+				ldst_byte_en = 4'b0011;
+			end
+		end
+
+		// if in EXECUTE and STORE, generate ldst addr and wrdata
+		else if(stage3 && Alu_op == S)begin
+			// store byte
+			if(funct3 == 4'h0)begin
+				if(rs1 == rd_stage4 && rd_stage4 != 0)begin
+					ldst_addr = ($signed(result) + immediate);
+				end
+				else begin
+					ldst_addr = ($signed(REG_FILE[rs1]) + immediate);
+				end
+
+				if(rs2 == rd_stage4 && rd_stage4 != 0)begin
+					ldst_wrdata = $signed(result[7:0]);
+				end
+				else begin
+					ldst_wrdata = $signed(REG_FILE[rs2][7:0]);
+				end
+				ldst_byte_en = 4'b0001;
+			end
+
+			//store half
+			else if(funct3 == 4'h1)begin
+				if(rs1 == rd_stage4 && rd_stage4 != 0)begin
+					ldst_addr = ($signed(result) + immediate);
+				end
+				else begin
+					ldst_addr = ($signed(REG_FILE[rs1]) + immediate);
+				end
+
+				if(rs2 == rd_stage4 && rd_stage4 != 0)begin
+					ldst_wrdata = $signed(result[15:0]);
+				end
+				else begin
+					ldst_wrdata = $signed(REG_FILE[rs2][15:0]);
+				end
+				ldst_byte_en = 4'b0011;
+			end
+
+			//store word
+			else if(funct3 == 4'h2)begin
+				if(rs1 == rd_stage4 && rd_stage4 != 0)begin
+					ldst_addr = ($signed(result) + immediate);
+				end
+				else begin
+					ldst_addr = ($signed(REG_FILE[rs1]) + immediate);
+				end
+
+				if(rs2 == rd_stage4 && rd_stage4 != 0)begin
+					ldst_wrdata = $signed(result);
+				end
+				else begin
+					ldst_wrdata = $signed(REG_FILE[rs2]);
+				end
+				ldst_byte_en = 4'b1111;
+			end
+		end
+		else begin
+			ldst_addr = 32'bx;
+			ldst_wrdata = 32'bx;
+			ldst_byte_en = 4'b1111;
 		end
 	end
 endmodule
